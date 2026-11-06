@@ -28,6 +28,7 @@ import (
 	"time"
 
 	"github.com/kubestellar/console/pkg/safego"
+	"github.com/kubestellar/console/pkg/webbase"
 )
 
 const (
@@ -80,6 +81,8 @@ var cachedGitCommitShort string
 // cachedVersion is cached from Config.Version during Run()
 var cachedVersion string
 
+var cachedFrontendBasePath string
+
 // RuntimeState tracks the private temporary files the watcher uses.
 type RuntimeState struct {
 	Dir       string
@@ -102,6 +105,11 @@ func Run(cfg Config) error {
 	if cfg.PidFile == "" || cfg.StageFile == "" {
 		return fmt.Errorf("watcher runtime files are required")
 	}
+	basePath, err := webbase.FromURL(os.Getenv("FRONTEND_URL"))
+	if err != nil {
+		return err
+	}
+	cachedFrontendBasePath = basePath
 
 	// Cache version and git commit for fallback renders.
 	cachedVersion = cfg.Version
@@ -517,14 +525,21 @@ func ServeFallback(w http.ResponseWriter, r *http.Request, version, commitShort 
 	accept := r.Header.Get("Accept")
 	wantsHTML := strings.Contains(accept, "text/html") || accept == "" || accept == "*/*"
 	if wantsHTML && !IsAPIRequest(r) {
-		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.WriteHeader(http.StatusServiceUnavailable)
 		versionText := "v" + version
 		if commitShort != "" {
 			versionText += " · " + commitShort
 		}
 		html := strings.Replace(fallbackHTML, "{{VERSION_INFO}}", versionText, 1)
-		w.Write([]byte(html))
+		page, err := webbase.HTML([]byte(html), cachedFrontendBasePath)
+		if err != nil {
+			slog.Error("failed to render watchdog page", "error", err)
+			http.Error(w, "Failed to render watchdog page", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-store")
+		w.WriteHeader(http.StatusServiceUnavailable)
+		w.Write(page)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")

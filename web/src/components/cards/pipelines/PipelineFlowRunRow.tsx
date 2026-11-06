@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 // demoData-exempt: presentational row; demo data is supplied by the parent PipelineFlow card.
 import { useState, useMemo, useRef, useLayoutEffect } from 'react'
 import { XCircle, ExternalLink, Stethoscope } from 'lucide-react'
@@ -153,7 +154,7 @@ export function RunRow({ run, onCancel, canMutate, mutating }: RunRowProps) {
       )}>
         {run.run.event}
         {(run.run.pullRequests?.length ?? 0) > 0 && run.run.pullRequests?.[0] && (
-          <a href={sanitizeUrl(run.run.pullRequests[0].url || `https://github.com/${run.run.repo}/pull/${run.run.pullRequests[0].number}`)} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:underline mt-0.5 block">
+          <a href={withOptionalBasePath(sanitizeUrl(run.run.pullRequests[0].url || `https://github.com/${run.run.repo}/pull/${run.run.pullRequests[0].number}`))} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-400 hover:underline mt-0.5 block">
             #{run.run.pullRequests[0].number}
           </a>
         )}
@@ -168,7 +169,7 @@ export function RunRow({ run, onCancel, canMutate, mutating }: RunRowProps) {
         <div className="text-xs text-muted-foreground truncate">
           {run.run.headBranch}
           {(run.run.pullRequests?.length ?? 0) > 0 && (
-            <a href={sanitizeUrl(run.run.pullRequests![0].url || `https://github.com/${run.run.repo}/pull/${run.run.pullRequests![0].number}`)} target="_blank" rel="noopener noreferrer" className="ml-1 text-blue-400 hover:underline">#{run.run.pullRequests![0].number}</a>
+            <a href={withOptionalBasePath(sanitizeUrl(run.run.pullRequests![0].url || `https://github.com/${run.run.repo}/pull/${run.run.pullRequests![0].number}`))} target="_blank" rel="noopener noreferrer" className="ml-1 text-blue-400 hover:underline">#{run.run.pullRequests![0].number}</a>
           )}
         </div>
       </div>
@@ -240,7 +241,7 @@ export function RunRow({ run, onCancel, canMutate, mutating }: RunRowProps) {
       <div className="relative z-20 flex items-center gap-1 justify-end pt-1">
         {run.run.htmlUrl && run.run.htmlUrl !== '#' && (
           <a
-            href={sanitizeUrl(run.run.htmlUrl)}
+            href={withOptionalBasePath(sanitizeUrl(run.run.htmlUrl))}
             target="_blank"
             rel="noreferrer noopener"
             className="text-muted-foreground hover:text-foreground p-1 rounded hover:bg-secondary/50"

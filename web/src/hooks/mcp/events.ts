@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { reportAgentDataSuccess, isAgentUnavailable } from '../useLocalAgent'
 import { fetchSSE } from '../../lib/sseClient'
@@ -139,7 +140,7 @@ export function useEvents(cluster?: string, namespace?: string, limit = 20) {
 
         const timeoutId = setTimeout(() => abortControllerRef.current?.abort(), MCP_HOOK_TIMEOUT_MS)
         const response = clusterModeBackend
-          ? await fetch(`/api/mcp/events?${params}`, {
+          ? await appFetch(`/api/mcp/events?${params}`, {
               signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
               headers: { 'Accept': 'application/json' },
             })

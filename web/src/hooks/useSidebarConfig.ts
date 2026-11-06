@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useSyncExternalStore, useCallback } from 'react'
 import { FETCH_DEFAULT_TIMEOUT_MS } from '../lib/constants/network'
 import { setActiveProject } from '../lib/project/context'
@@ -305,7 +306,7 @@ export async function fetchEnabledDashboards(): Promise<void> {
   if (enabledDashboardsFetched) return
   enabledDashboardsFetched = true
   try {
-    const resp = await fetch('/health', { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
+    const resp = await appFetch('/health', { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
     const data = await resp.json()
 
     // Set active project context for white-label filtering

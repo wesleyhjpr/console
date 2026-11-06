@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
@@ -299,7 +300,7 @@ export function InClusterAgentDialog({ isOpen, onClose }: InClusterAgentDialogPr
 
         <div className="mt-4 flex items-center justify-center gap-4">
           <a
-            href={DOCS_URL}
+            href={withOptionalBasePath(DOCS_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-300 transition-colors"

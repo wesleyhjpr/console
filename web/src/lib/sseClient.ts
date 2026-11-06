@@ -1,3 +1,4 @@
+import { appFetch } from './basePath'
 /**
  * SSE (Server-Sent Events) client for streaming API responses.
  *
@@ -252,7 +253,7 @@ export async function fetchSSE<T>(options: SSEFetchOptions<T>): Promise<T[]> {
         headers.Authorization = `Bearer ${currentToken}`
       }
 
-      fetch(fullUrl, {
+      appFetch(fullUrl, {
         headers,
         signal: timeoutController.signal,
       })

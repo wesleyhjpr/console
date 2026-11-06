@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { safeGetJSON, safeSetJSON, safeGetItem } from '../lib/utils/localStorage'
 import { STORAGE_KEY_NPS_STATE, STORAGE_KEY_SESSION_COUNT } from '../lib/constants/storage'
@@ -168,7 +169,7 @@ export function useNPSSurvey(options: UseNPSSurveyOptions = {}): NPSSurveyState 
     const apiBase = import.meta.env.VITE_API_BASE_URL || ''
     let backendAccepted = false
     try {
-      const resp = await fetch(`${apiBase}/api/nps`, {
+      const resp = await appFetch(`${apiBase}/api/nps`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify({

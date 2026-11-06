@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -107,10 +108,10 @@ export function useIframeEmbed(config: IframeEmbedConfig | undefined, shouldUseD
     // Force iframe reload using the sanitized `url` state — never read back
     // from iframeRef.current.src (DOM property), which is an XSS-through-DOM
     // sink when written back without re-validation.
-    iframeRef.current.src = ''
+    iframeRef.current.src = withBasePath('')
     setTimeout(() => {
       if (iframeRef.current) {
-        iframeRef.current.src = sanitizeIframeUrl(url)
+        iframeRef.current.src = withBasePath(sanitizeIframeUrl(url))
       }
     }, RELOAD_DELAY_MS)
     setLastRefresh(new Date())
@@ -188,7 +189,7 @@ export function useIframeEmbed(config: IframeEmbedConfig | undefined, shouldUseD
 
   const openInNewTab = () => {
     if (url) {
-      window.open(url, '_blank', 'noopener,noreferrer')
+      window.open(withBasePath(url), '_blank', 'noopener,noreferrer')
     }
   }
 

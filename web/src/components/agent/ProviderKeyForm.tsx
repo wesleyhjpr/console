@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { AlertCircle, Check, ExternalLink, Eye, EyeOff, Loader2, Trash2 } from 'lucide-react'
 import type { TFunction } from 'i18next'
 import { cn } from '../../lib/cn'
@@ -107,7 +108,7 @@ export function ProviderKeyForm({
           )}
           {PROVIDER_INFO[keyStatus.provider]?.docsUrl && (
             <a
-              href={PROVIDER_INFO[keyStatus.provider].docsUrl}
+              href={withOptionalBasePath(PROVIDER_INFO[keyStatus.provider].docsUrl)}
               target="_blank"
               rel="noopener noreferrer"
               className="p-1.5 hover:bg-secondary rounded transition-colors text-muted-foreground hover:text-foreground"

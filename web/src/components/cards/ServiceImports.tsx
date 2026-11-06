@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useMemo } from 'react'
 import { CheckCircle2, XCircle, AlertCircle, ExternalLink, Globe } from 'lucide-react'
 import { ClusterBadge } from '../ui/ClusterBadge'
@@ -139,7 +140,7 @@ function ServiceImportsInternal({ config: _config }: ServiceImportsProps) {
       <div className="flex flex-wrap items-center justify-between gap-y-2 mb-2 shrink-0">
         <div className="flex items-center gap-2">
           <a
-            href={K8S_DOCS.mcsApi}
+            href={withOptionalBasePath(K8S_DOCS.mcsApi)}
             target="_blank"
             rel="noopener noreferrer"
             className="p-1 hover:bg-secondary rounded transition-colors text-muted-foreground hover:text-purple-400"
@@ -184,7 +185,7 @@ function ServiceImportsInternal({ config: _config }: ServiceImportsProps) {
             <p className="text-muted-foreground">
               {t('serviceImports.mcsDesc')}{' '}
               <a
-                href={K8S_DOCS.mcsApiServiceImport}
+                href={withOptionalBasePath(K8S_DOCS.mcsApiServiceImport)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:underline"
@@ -279,7 +280,7 @@ function ServiceImportsInternal({ config: _config }: ServiceImportsProps) {
       {/* Footer links */}
       <div className="flex items-center justify-center gap-3 pt-2 mt-2 border-t border-border/50 text-2xs">
         <a
-          href={K8S_DOCS.mcsApi}
+          href={withOptionalBasePath(K8S_DOCS.mcsApi)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"
@@ -288,7 +289,7 @@ function ServiceImportsInternal({ config: _config }: ServiceImportsProps) {
         </a>
         <span className="text-muted-foreground/30">•</span>
         <a
-          href={K8S_DOCS.gammaInitiative}
+          href={withOptionalBasePath(K8S_DOCS.gammaInitiative)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"

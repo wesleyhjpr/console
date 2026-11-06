@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import type { ReactNode } from 'react'
 import { sanitizeUrl } from '@/lib/utils/sanitizeUrl'
 
@@ -17,7 +18,7 @@ export function ExternalLinkRow({
 }) {
   return (
     <a
-      href={sanitizeUrl(href)}
+      href={withOptionalBasePath(sanitizeUrl(href))}
       target="_blank"
       rel="noopener noreferrer"
       className={`${compact ? 'text-xs text-muted-foreground hover:text-foreground' : 'text-xs flex items-center gap-1 mt-1.5'} ${colorClass} flex items-center gap-1`}

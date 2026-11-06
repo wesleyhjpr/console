@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * MissionDetailView metadata sections — type/category/maturity chips,
  * section-completeness badges, source links, prerequisites and the
@@ -131,7 +132,7 @@ export function MissionDetailMeta({ mission, error = null, onRetry }: MissionDet
           <div className="flex items-center gap-3 text-xs">
             {validateExternalUrl(sourceUrls.repo) && (
               <a
-                href={validateExternalUrl(sourceUrls.repo)!}
+                href={withOptionalBasePath(validateExternalUrl(sourceUrls.repo)!)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
@@ -142,7 +143,7 @@ export function MissionDetailMeta({ mission, error = null, onRetry }: MissionDet
             )}
             {validateExternalUrl(sourceUrls.docs) && sourceUrls.docs !== sourceUrls.repo && (
               <a
-                href={validateExternalUrl(sourceUrls.docs)!}
+                href={withOptionalBasePath(validateExternalUrl(sourceUrls.docs)!)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
@@ -153,7 +154,7 @@ export function MissionDetailMeta({ mission, error = null, onRetry }: MissionDet
             )}
             {validateExternalUrl(sourceUrls.helm) && (
               <a
-                href={validateExternalUrl(sourceUrls.helm)!}
+                href={withOptionalBasePath(validateExternalUrl(sourceUrls.helm)!)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
@@ -164,7 +165,7 @@ export function MissionDetailMeta({ mission, error = null, onRetry }: MissionDet
             )}
             {validateExternalUrl(sourceUrls.issue) && (
               <a
-                href={validateExternalUrl(sourceUrls.issue)!}
+                href={withOptionalBasePath(validateExternalUrl(sourceUrls.issue)!)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
@@ -175,7 +176,7 @@ export function MissionDetailMeta({ mission, error = null, onRetry }: MissionDet
             )}
             {validateExternalUrl(sourceUrls.pr) && (
               <a
-                href={validateExternalUrl(sourceUrls.pr)!}
+                href={withOptionalBasePath(validateExternalUrl(sourceUrls.pr)!)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"

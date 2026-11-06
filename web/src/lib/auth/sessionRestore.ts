@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 // Cookie-based session restore extracted from AuthContext.tsx (#24058).
 // No behaviour change — this is the /auth/refresh + /api/me flow that
 // refreshUser() runs when there is no JS-readable token but the
@@ -28,7 +29,7 @@ export async function restoreCookieSession(
   // in-cluster installs without OAuth, so the restore attempt runs
   // whenever the backend is up, not only when OAuth is configured.
   try {
-    const refreshResponse = await fetch('/auth/refresh', {
+    const refreshResponse = await appFetch('/auth/refresh', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -56,7 +57,7 @@ export async function restoreCookieSession(
         // Fetch kc-agent token so agentFetch/WebSocket can authenticate
         if (!isLocalAgentSuppressed()) {
           try {
-            const agentRes = await fetch('/api/agent/token', {
+            const agentRes = await appFetch('/api/agent/token', {
               credentials: 'same-origin',
               headers: { 'X-Requested-With': 'XMLHttpRequest' },
               signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
@@ -71,7 +72,7 @@ export async function restoreCookieSession(
             // Non-fatal: agent auth may fail while the browser session remains intact.
           }
         }
-        const meResponse = await fetch('/api/me', {
+        const meResponse = await appFetch('/api/me', {
           credentials: 'include',
           signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
         })

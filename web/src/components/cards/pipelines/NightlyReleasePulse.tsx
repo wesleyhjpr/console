@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 /**
  * NightlyReleasePulse — NightlyE2E-style card showing per-workflow
  * run dots with hover popups, trend indicators, and clickable links.
@@ -147,7 +148,7 @@ export function NightlyReleasePulse() {
             </div>
           </div>
           {lastRun?.htmlUrl && lastRun.htmlUrl !== '#' && (
-            <a href={sanitizeUrl(lastRun.htmlUrl)} target="_blank" rel="noreferrer noopener"
+            <a href={withOptionalBasePath(sanitizeUrl(lastRun.htmlUrl))} target="_blank" rel="noreferrer noopener"
               className="text-xs text-muted-foreground hover:text-foreground shrink-0">
               <ExternalLink size={12} />
             </a>

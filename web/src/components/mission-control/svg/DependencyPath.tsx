@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 /**
  * DependencyPath — Curved SVG path between project nodes with animated particles.
  * Shows optional label at midpoint describing the integration.
@@ -121,7 +122,7 @@ export function DependencyPath({
             repeatCount="indefinite"
             begin={`${0.8 + index * 0.1}s`}
           >
-            <mpath href={`#${pathId}`} />
+            <mpath href={withOptionalBasePath(`#${pathId}`)} />
           </animateMotion>
         </circle>
       )}

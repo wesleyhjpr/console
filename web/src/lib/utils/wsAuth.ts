@@ -1,3 +1,4 @@
+import { withBasePath } from '../basePath'
 /**
  * Build WebSocket authentication using subprotocol-based token passing.
  *
@@ -49,5 +50,5 @@ export async function getWsAuthParams(url: string): Promise<{ url: string; proto
 
 export async function openAuthenticatedWebSocket(url: string): Promise<WebSocket> {
   const authParams = await getWsAuthParams(url)
-  return new WebSocket(authParams.url, authParams.protocols)
+  return new WebSocket(withBasePath(authParams.url), authParams.protocols)
 }

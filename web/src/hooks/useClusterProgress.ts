@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { useEffect, useState, useRef } from 'react'
 import { LOCAL_AGENT_WS_URL, MAX_WS_RECONNECT_ATTEMPTS, getWsBackoffDelay } from '../lib/constants/network'
 import { getWsAuthParams } from '../lib/utils/wsAuth'
@@ -73,7 +74,7 @@ export function useClusterProgress() {
 
       try {
         const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-        const ws = new WebSocket(url, protocols)
+        const ws = new WebSocket(withBasePath(url), protocols)
         wsRef.current = ws
         reconnectAttemptsRef.current = attemptNumber
 

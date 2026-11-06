@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { motion } from 'framer-motion'
 import {
   AlertTriangle,
@@ -111,7 +112,7 @@ export function GuideRow({ guide, delay, isSelected, onMouseEnter, onRunHover }:
       </div>
       <TrendIndicator trend={guide.trend} passRate={guide.passRate} />
       <a
-        href={sanitizeUrl(workflowUrl)}
+        href={withOptionalBasePath(sanitizeUrl(workflowUrl))}
         target="_blank"
         rel="noopener noreferrer"
         className="ml-auto opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity p-0.5 rounded hover:bg-secondary"

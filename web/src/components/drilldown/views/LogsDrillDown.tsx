@@ -1,3 +1,4 @@
+import { withBasePath } from '../../../lib/basePath'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { Loader2, AlertCircle, Server, Layers, Box, RefreshCw, Filter, ChevronLeft } from 'lucide-react'
 import { useDrillDownActions, useDrillDown } from '../../../hooks/useDrillDown'
@@ -182,7 +183,7 @@ export function LogsDrillDown({ data }: Props) {
     const blob = new Blob([visibleLog], { type: 'text/plain;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url
+    a.href = withBasePath(url)
     a.download = `${pod || 'pod'}${container ? '-' + container : ''}-logs.txt`
     document.body.appendChild(a)
     a.click()

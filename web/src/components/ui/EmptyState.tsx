@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Plus, LucideIcon } from 'lucide-react'
@@ -76,7 +77,7 @@ function ActionButton({ action, variant }: { action: EmptyStateAction, variant: 
   if ('href' in action && action.href) {
     const handleClick = () => {
       if (EXTERNAL_URL_REGEX.test(action.href)) {
-        window.open(action.href, '_blank', 'noopener,noreferrer')
+        window.open(withBasePath(action.href), '_blank', 'noopener,noreferrer')
         return
       }
       navigate(action.href)

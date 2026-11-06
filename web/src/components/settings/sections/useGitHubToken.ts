@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -103,7 +104,7 @@ export function useGitHubToken(forceVersionCheck: () => void): UseGitHubTokenRes
     setTokenTesting(true)
     setTokenError(null)
     try {
-      const response = await fetch('/api/github/rate_limit', {
+      const response = await appFetch('/api/github/rate_limit', {
         headers: {
           ...(await authHeaders()),
           Accept: 'application/vnd.github.v3+json',
@@ -143,7 +144,7 @@ export function useGitHubToken(forceVersionCheck: () => void): UseGitHubTokenRes
       }
 
       try {
-        const response = await fetch('/api/github/token/status', {
+        const response = await appFetch('/api/github/token/status', {
           headers: await authHeaders(),
           signal: controller.signal,
         })
@@ -180,7 +181,7 @@ export function useGitHubToken(forceVersionCheck: () => void): UseGitHubTokenRes
     setTokenError(null)
 
     try {
-      const saveResponse = await fetch('/api/github/token', {
+      const saveResponse = await appFetch('/api/github/token', {
         method: 'POST',
         headers: {
           ...(await authHeaders()),
@@ -226,7 +227,7 @@ export function useGitHubToken(forceVersionCheck: () => void): UseGitHubTokenRes
     if (tokenTesting) return
 
     try {
-      await fetch('/api/github/token', {
+      await appFetch('/api/github/token', {
         method: 'DELETE',
         headers: await authHeaders(),
         signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS),

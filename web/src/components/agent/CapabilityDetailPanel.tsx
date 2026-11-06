@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import {
   AlertTriangle,
   Check,
@@ -105,9 +106,9 @@ export function CapabilityDetailPanel({
                 </p>
                 <a
                   href={
-                    PROVIDER_PREREQUISITES[
+                    withOptionalBasePath(PROVIDER_PREREQUISITES[
                       agentToProviderKey[connectionState.provider] ?? ""
-                    ]?.installUrl
+                    ]?.installUrl)
                   }
                   target="_blank"
                   rel="noopener noreferrer"

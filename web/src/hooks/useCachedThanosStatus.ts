@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Thanos Monitoring Cached Data Hooks
  *
@@ -70,7 +71,7 @@ interface PromQueryResult {
  * Fetch Thanos/Prometheus status via the query API.
  */
 export async function fetchThanosStatus(): Promise<ThanosStatus> {
-    const resp = await fetch('/api/v1/query?query=up', {
+    const resp = await appFetch('/api/v1/query?query=up', {
         headers: { Accept: 'application/json' },
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
     })

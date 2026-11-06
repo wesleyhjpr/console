@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { isDemoMode, isNetlifyDeployment } from '../../lib/demoMode'
 import { emitAgentTokenFailure } from '../../lib/analytics'
 import {
@@ -157,7 +158,7 @@ export function getAgentToken(): Promise<string> {
   if (Date.now() < agentTokenNegativeCacheUntil) return Promise.resolve('')
 
   if (!agentTokenPromise) {
-    agentTokenPromise = fetch('/api/agent/token', {
+    agentTokenPromise = appFetch('/api/agent/token', {
       credentials: 'include',
       signal: AbortSignal.timeout(AGENT_TOKEN_FETCH_TIMEOUT_MS),
     })
@@ -219,7 +220,7 @@ export async function agentFetch(input: RequestInfo | URL, init?: RequestInit): 
   }
   // Use caller-provided signal, or fall back to a default timeout
   const signal = init?.signal ?? AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS)
-  const response = await fetch(input, { ...init, headers, signal })
+  const response = await appFetch(input, { ...init, headers, signal })
 
   // kc-agent generates a new token on each restart. If we get 401 and we
   // actually injected our token (caller had no pre-existing Authorization
@@ -234,7 +235,7 @@ export async function agentFetch(input: RequestInfo | URL, init?: RequestInit): 
       if (!retryHeaders.has('X-Requested-With')) {
         retryHeaders.set('X-Requested-With', 'XMLHttpRequest')
       }
-      return fetch(input, { ...init, headers: retryHeaders, signal })
+      return appFetch(input, { ...init, headers: retryHeaders, signal })
     }
   }
 

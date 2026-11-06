@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 // Fetches recent GitHub Actions workflow runs for the configured repos.
 // Extracted from GitHubCIMonitor.tsx (issue #24058).
 import { FETCH_EXTERNAL_TIMEOUT_MS } from '../../../lib/constants'
@@ -14,7 +15,7 @@ export async function fetchGitHubCIWorkflows(repos: string[]): Promise<GitHubCID
   const allRuns: WorkflowRun[] = []
   for (const repo of repos) {
     try {
-      const response = await fetch(`/api/github/repos/${repo}/actions/runs?per_page=10`, {
+      const response = await appFetch(`/api/github/repos/${repo}/actions/runs?per_page=10`, {
         headers: { Accept: 'application/vnd.github.v3+json' },
         signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) })
       if (response.status === 401 || response.status === 403) {

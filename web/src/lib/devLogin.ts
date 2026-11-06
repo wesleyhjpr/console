@@ -1,3 +1,4 @@
+import { withBasePath } from './basePath'
 /**
  * #20823 — passwordless dev-login helpers for in-cluster installs without a
  * GitHub OAuth app. Kept in a separate module (not auth.tsx) so auth.tsx only
@@ -18,5 +19,5 @@ export const DEV_LOGIN_PATH = '/auth/github'
 
 /** Named helper so tests can stub the navigation. */
 export function redirectToDevLogin(): void {
-  window.location.assign(DEV_LOGIN_PATH)
+  window.location.assign(withBasePath(DEV_LOGIN_PATH))
 }

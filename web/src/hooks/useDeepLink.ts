@@ -1,3 +1,4 @@
+import { getBasePath, withBasePath } from '../lib/basePath'
 import { useEffect } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useDrillDownActions } from './useDrillDown'
@@ -83,8 +84,8 @@ async function getNotificationSW(): Promise<ServiceWorkerRegistration | null> {
   if (!('serviceWorker' in navigator)) return null
 
   try {
-    swRegistration = await navigator.serviceWorker.register('/notification-sw.js', {
-      scope: '/' })
+    swRegistration = await navigator.serviceWorker.register(withBasePath('/notification-sw.js'), {
+      scope: getBasePath() })
     return swRegistration
   } catch {
     return null
@@ -157,16 +158,16 @@ function sendStandardNotification(
     notification.close()
 
     try {
-      const opened = window.open(url, '_self')
+      const opened = window.open(withBasePath(url), '_self')
       if (opened) {
         opened.focus()
       } else {
         window.focus()
-        window.location.href = url
+        window.location.href = withBasePath(url)
       }
     } catch {
       window.focus()
-      window.location.href = url
+      window.location.href = withBasePath(url)
     }
   }
 }

@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Hook for fetching live benchmark data from the backend via SSE streaming.
  *
@@ -114,7 +115,7 @@ async function startGlobalStream(since: string) {
   // long-lived SSE stream can run indefinitely until done or manually aborted.
   const connectTimer = setTimeout(() => abortController?.abort(), FETCH_DEFAULT_TIMEOUT_MS)
 
-  fetch(`/api/benchmarks/reports/stream?since=${encodeURIComponent(since)}`, {
+  appFetch(`/api/benchmarks/reports/stream?since=${encodeURIComponent(since)}`, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     signal: abortController.signal,
   })
@@ -218,7 +219,7 @@ export function useCachedBenchmarkReports() {
         return stream.reports
       }
       // Fallback: try non-streaming endpoint (returns cache quickly)
-      const res = await fetch(`/api/benchmarks/reports?since=${encodeURIComponent(stream.since)}`, {
+      const res = await appFetch(`/api/benchmarks/reports?since=${encodeURIComponent(stream.since)}`, {
         headers: authHeaders(),
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

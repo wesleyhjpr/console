@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect } from 'react'
 import { BACKEND_DEFAULT_URL } from '../../lib/constants'
 import { isDemoModeForced } from '../../lib/demoMode'
@@ -20,7 +21,7 @@ export function useFeedbackToken(isOpen: boolean, token: string | null | undefin
 
     setFeedbackTokenMissing(false)
 
-    fetch(`${BACKEND_DEFAULT_URL}/api/github/token/status`, {
+    appFetch(`${BACKEND_DEFAULT_URL}/api/github/token/status`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       signal: AbortSignal.timeout(FEEDBACK_TOKEN_CHECK_TIMEOUT_MS),
     })

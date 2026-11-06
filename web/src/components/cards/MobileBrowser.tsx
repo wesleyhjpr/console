@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -287,7 +288,7 @@ export function MobileBrowser() {
                   )}
                   <iframe
                     ref={iframeRef}
-                    src={activeTab.url}
+                    src={withOptionalBasePath(activeTab.url)}
                     title={t('mobileBrowser.title')}
                     className="w-full h-full border-none"
                     style={MOBILE_BROWSER_IFRAME_STYLE}

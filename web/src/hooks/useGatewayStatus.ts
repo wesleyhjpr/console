@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Gateway Status Data Hook with real backend API and demo data fallback
  *
@@ -239,7 +240,7 @@ export function useGatewayStatus(): UseGatewayStatusResult {
     }
 
     try {
-      const res = await fetch('/api/gateway/gateways', {
+      const res = await appFetch('/api/gateway/gateways', {
         headers: authHeaders(),
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

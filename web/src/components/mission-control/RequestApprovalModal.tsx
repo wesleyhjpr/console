@@ -1,3 +1,4 @@
+import { appFetch, withOptionalBasePath } from '../../lib/basePath'
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { GitPullRequestArrow, ExternalLink, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -50,7 +51,7 @@ export function RequestApprovalModal({
     setCheckingGitHubToken(true)
     setTokenCheckError(null)
     try {
-      const res = await fetch('/api/github/token/status', { headers: token ? { Authorization: `Bearer ${token}` } : {}, signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
+      const res = await appFetch('/api/github/token/status', { headers: token ? { Authorization: `Bearer ${token}` } : {}, signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setHasGitHubToken(Boolean((await res.json() as { hasToken?: boolean }).hasToken))
     } catch (err) {
@@ -80,7 +81,7 @@ export function RequestApprovalModal({
       const reviewUrl = `${CONSOLE_BASE_URL}?mission-control=review&plan=${encoded}`
       const body = buildApprovalIssueBody(state, installedProjects, notes.trim() || undefined, reviewUrl)
 
-      const res = await fetch(`${GITHUB_API}/repos/${trimmedRepo}/issues`, {
+      const res = await appFetch(`${GITHUB_API}/repos/${trimmedRepo}/issues`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,7 +102,7 @@ export function RequestApprovalModal({
         if (res.status === 404) {
           showToast(`Repository "${trimmedRepo}" not found or you don't have write access`, 'error')
         } else if (res.status === 422 && msg.includes('label')) {
-          const retryRes = await fetch(`${GITHUB_API}/repos/${trimmedRepo}/issues`, {
+          const retryRes = await appFetch(`${GITHUB_API}/repos/${trimmedRepo}/issues`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
@@ -243,7 +244,7 @@ export function RequestApprovalModal({
               </div>
               <p className="text-sm text-foreground font-medium mb-2">Approval request created</p>
               <a
-                href={sanitizeUrl(issueUrl)}
+                href={withOptionalBasePath(sanitizeUrl(issueUrl))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-primary hover:underline text-sm"

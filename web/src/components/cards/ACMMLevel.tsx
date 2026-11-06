@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { BarChart3, ExternalLink } from 'lucide-react'
 import { useCardLoadingState } from './CardDataContext'
 import { CardSkeleton } from '../../lib/cards/CardComponents'
@@ -75,7 +76,7 @@ export function ACMMLevel() {
       <div className="flex flex-wrap items-center justify-between gap-y-2">
         <div className="text-xs text-muted-foreground font-mono truncate">{repo}</div>
         <a
-          href={PAPER_URL}
+          href={withOptionalBasePath(PAPER_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className={cn(LAYOUTS.CENTER_GAP_1, 'text-xs text-muted-foreground hover:text-primary transition-colors shrink-0 ml-2')}

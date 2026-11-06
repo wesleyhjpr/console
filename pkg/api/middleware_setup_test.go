@@ -62,6 +62,36 @@ func cspHeader(t *testing.T, s *Server) string {
 	return resp.Header.Get("Content-Security-Policy")
 }
 
+func TestCORSFrontendSubpath(t *testing.T) {
+	const frontendURL = "https://domain.com/kubestellar"
+	for _, testCase := range []struct {
+		name   string
+		origin string
+		allow  string
+	}{
+		{name: "frontend origin", origin: "https://domain.com", allow: "https://domain.com"},
+		{name: "foreign origin", origin: "https://example.com", allow: ""},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			server := &Server{
+				app:    fiber.New(),
+				config: Config{IntegrationsConfig: IntegrationsConfig{FrontendURL: frontendURL}},
+				auth:   newAuthRuntime(),
+			}
+			server.setupMiddleware()
+			server.app.Get("/health", func(ctx *fiber.Ctx) error {
+				return ctx.SendStatus(fiber.StatusOK)
+			})
+			request := httptest.NewRequest(http.MethodGet, "/health", nil)
+			request.Header.Set("Origin", testCase.origin)
+			response, err := server.app.Test(request)
+			require.NoError(t, err)
+			defer response.Body.Close()
+			assert.Equal(t, testCase.allow, response.Header.Get("Access-Control-Allow-Origin"))
+		})
+	}
+}
+
 // TestCSP_NoWildcardSchemes guards against reintroduction of bare wss: / ws: wildcards
 // in the connect-src directive (regression for PR #17301).
 func TestCSP_NoWildcardSchemes(t *testing.T) {

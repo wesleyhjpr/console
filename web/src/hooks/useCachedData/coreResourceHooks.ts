@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 /**
  * Cached hooks for deployments, services, security issues and workloads.
  *
@@ -246,7 +247,7 @@ async function fetchWorkloadsViaRest(): Promise<Workload[] | null> {
   const hasRealToken = token && token !== 'demo-token'
   if (!hasRealToken || isBackendUnavailable()) return null
 
-  const res = await fetch('/api/workloads', {
+  const res = await appFetch('/api/workloads', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}` },

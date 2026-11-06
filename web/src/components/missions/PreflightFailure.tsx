@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { COPY_FEEDBACK_TIMEOUT_MS } from '../../lib/constants'
 /**
  * PreflightFailure — Renders a structured preflight error with remediation actions.
@@ -146,7 +147,7 @@ function ActionButton({
   if (action.actionType === 'link' && action.href) {
     return (
       <a
-        href={action.href}
+        href={withOptionalBasePath(action.href)}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-2 text-xs text-blue-400 hover:underline"

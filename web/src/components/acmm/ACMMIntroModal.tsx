@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * ACMM Intro Modal
  *
@@ -209,7 +210,7 @@ export function ACMMIntroModal({ isOpen, onClose }: ACMMIntroModalProps) {
           {/* Paper + documentation links */}
           <section className="border-t border-border pt-3 flex flex-wrap gap-x-4 gap-y-1">
             <a
-              href={PAPER_URL}
+              href={withOptionalBasePath(PAPER_URL)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-primary hover:underline text-xs"
@@ -218,7 +219,7 @@ export function ACMMIntroModal({ isOpen, onClose }: ACMMIntroModalProps) {
               {t('acmmIntro.paperLink')}
             </a>
             <a
-              href={ACMM_DOCS_URL}
+              href={withOptionalBasePath(ACMM_DOCS_URL)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-primary hover:underline text-xs"

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { X, AlertTriangle, Settings, ExternalLink, Coins, Eye, Maximize2 } from 'lucide-react'
 import { Save } from 'lucide-react'
 import { Github } from '@/lib/icons'
@@ -207,7 +208,7 @@ export function LoginPromptDialog({
                   Cancel
                 </Button>
                 <a
-                  href={sanitizeUrl(githubIssueUrl)}
+                  href={withOptionalBasePath(sanitizeUrl(githubIssueUrl))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 px-4 py-2 text-sm rounded-lg border border-border text-foreground hover:bg-secondary/50 transition-colors flex items-center justify-center gap-2"
@@ -340,13 +341,13 @@ export function ScreenshotPreviewOverlay({ src, onClose }: ScreenshotPreviewOver
         <div className="flex-1 overflow-auto p-4 flex items-center justify-center">
           {isVideo ? (
             <video
-              src={src}
+              src={withOptionalBasePath(src)}
               controls
               className="max-w-full max-h-[75vh] rounded-lg"
             />
           ) : (
             <img
-              src={src}
+              src={withOptionalBasePath(src)}
               alt="Screenshot preview"
               className="max-w-full max-h-[75vh] object-contain rounded-lg"
               loading="lazy"

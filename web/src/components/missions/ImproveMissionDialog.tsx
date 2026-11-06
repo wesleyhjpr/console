@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * ImproveMissionDialog
  *
@@ -101,7 +102,7 @@ export function ImproveMissionDialog({
   const handleSubmit = () => {
     if (!mission) return
     const url = buildIssueUrl(mission, selectedCategory || 'other', activeSection, details)
-    window.open(url, '_blank', 'noopener,noreferrer')
+    window.open(withBasePath(url), '_blank', 'noopener,noreferrer')
     onClose()
   }
 

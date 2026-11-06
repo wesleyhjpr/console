@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { useTranslation } from 'react-i18next'
 import { Download, LogOut, Lightbulb } from 'lucide-react'
 import { Linkedin } from '@/lib/icons'
@@ -30,7 +31,7 @@ export function ProfileActionMenu({
 
   const handleLinkedInShare = () => {
     const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://kubestellar.io')}`
-    window.open(linkedInUrl, '_blank', 'noopener,noreferrer,width=600,height=600')
+    window.open(withBasePath(linkedInUrl), '_blank', 'noopener,noreferrer,width=600,height=600')
     emitLinkedInShare('profile_dropdown')
     awardCoins('linkedin_share')
     closeDropdown()

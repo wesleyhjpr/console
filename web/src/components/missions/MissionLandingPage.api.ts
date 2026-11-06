@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { validateMissionExport } from '../../lib/missions/types'
 import type { MissionExport } from '../../lib/missions/types'
 import { FETCH_TIMEOUT_MS } from './MissionLandingPage.constants'
@@ -54,7 +55,7 @@ export async function fetchMissionBySlug(slug: string): Promise<{ mission: Missi
   for (const path of getPreferredPaths(slug)) {
     try {
       const url = `/api/missions/file?path=${encodeURIComponent(path)}`
-      const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
+      const res = await appFetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
       if (!res.ok) continue
       const raw = await res.text()
       const parsed = JSON.parse(raw)
@@ -67,7 +68,7 @@ export async function fetchMissionBySlug(slug: string): Promise<{ mission: Missi
 
   // Fallback: search index.json for missions in unexpected directories
   try {
-    const res = await fetch('/api/missions/file?path=fixes/index.json', {
+    const res = await appFetch('/api/missions/file?path=fixes/index.json', {
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     })
     if (res.ok) {
@@ -77,7 +78,7 @@ export async function fetchMissionBySlug(slug: string): Promise<{ mission: Missi
         return filename.replace('.json', '') === slug
       })
       if (match) {
-        const fileRes = await fetch(`/api/missions/file?path=${encodeURIComponent(match.path)}`, {
+        const fileRes = await appFetch(`/api/missions/file?path=${encodeURIComponent(match.path)}`, {
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         })
         if (fileRes.ok) {

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import type { TFunction } from 'i18next'
 import { RefreshCw, GitBranch, FolderGit, Box, Loader2, ExternalLink } from 'lucide-react'
 import { StatusIndicator } from '../charts/StatusIndicator'
@@ -243,7 +244,7 @@ export function GitOpsIntegrationInfo({ t }: GitOpsIntegrationInfoProps) {
         ] as const).map(({ key, label, href }) => (
           <a
             key={key}
-            href={href}
+            href={withOptionalBasePath(href)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-card/50 border border-border text-sm text-foreground hover:bg-card transition-colors"

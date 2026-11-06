@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { BookOpen, Check, Play } from "lucide-react";
 import { AgentIcon } from "./AgentIcon";
 import { cn } from "../../lib/cn";
@@ -125,7 +126,7 @@ export function AgentCardGrid({
         )}
         {!agent.available && agent.installUrl && !agent.installMissionId && (
           <a
-            href={sanitizeUrl(agent.installUrl)}
+            href={withOptionalBasePath(sanitizeUrl(agent.installUrl))}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}

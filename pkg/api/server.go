@@ -27,6 +27,7 @@ import (
 	"github.com/kubestellar/console/pkg/safego"
 	"github.com/kubestellar/console/pkg/settings"
 	"github.com/kubestellar/console/pkg/store"
+	"github.com/kubestellar/console/pkg/webbase"
 )
 
 const (
@@ -45,6 +46,7 @@ type Server struct {
 	app                 *fiber.App
 	store               store.Store
 	config              Config
+	frontendBasePath    string
 	hub                 *transport.Hub
 	bridge              *mcp.Bridge
 	k8sClient           *k8s.MultiClusterClient
@@ -79,6 +81,11 @@ func NewServer(cfg Config) (*Server, error) {
 		}
 	}
 
+	frontendBasePath, err := webbase.FromURL(cfg.FrontendURL)
+	if err != nil {
+		return nil, err
+	}
+
 	// JWT secret handling — in dev mode, generate a random secret and persist
 	// it to .jwt-secret so it survives server restarts and hot-reloads (#6850).
 	// Set JWT_SECRET in .env to use a fixed secret instead.
@@ -100,7 +107,7 @@ func NewServer(cfg Config) (*Server, error) {
 		listenPort = cfg.BackendPort
 	}
 	addr := fmt.Sprintf(":%d", listenPort)
-	loadingSrv := startLoadingServer(addr)
+	loadingSrv := startLoadingServer(addr, frontendBasePath)
 
 	// --- Heavy initialization (loading page is already being served) ---
 
@@ -250,6 +257,7 @@ func NewServer(cfg Config) (*Server, error) {
 		app:                 app,
 		store:               db,
 		config:              cfg,
+		frontendBasePath:    frontendBasePath,
 		hub:                 hub,
 		bridge:              bridge,
 		k8sClient:           k8sClient,

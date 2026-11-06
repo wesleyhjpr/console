@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState } from 'react'
 import { Download, Loader2, Check, Trash2, HandHelping, Sparkles, LayoutGrid, Puzzle, Palette } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -63,7 +64,7 @@ export function MarketplaceCard({ item, onInstall, onRemove, isInstalled }: {
         {item.screenshot ? (
           <div className="h-20 bg-muted overflow-hidden">
             <img
-              src={item.screenshot}
+              src={withOptionalBasePath(item.screenshot)}
               alt={item.name}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               loading="lazy"
@@ -168,7 +169,7 @@ export function MarketplaceCard({ item, onInstall, onRemove, isInstalled }: {
           {/* Action button */}
           {isHelpWanted ? (
             <a
-              href={validateExternalUrl(item.issueUrl) || ISSUES_URL}
+              href={withOptionalBasePath(validateExternalUrl(item.issueUrl) || ISSUES_URL)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 rounded-md transition-colors"

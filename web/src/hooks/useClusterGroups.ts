@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePersistence } from './usePersistence'
@@ -140,7 +141,7 @@ export function useClusterGroups() {
   }
 
   const syncClusterGroupsRequest = async (input: string, init: RequestInit) => {
-    const response = await fetch(input, {
+    const response = await appFetch(input, {
       ...init,
       signal: init.signal ?? AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
     })
@@ -260,7 +261,7 @@ export function useClusterGroups() {
     }
 
     try {
-      const resp = await fetch('/api/cluster-groups/evaluate', {
+      const resp = await appFetch('/api/cluster-groups/evaluate', {
         method: 'POST',
         headers: authHeaders(),
         body: JSON.stringify(group.query),
@@ -283,7 +284,7 @@ export function useClusterGroups() {
   /** Preview which clusters match a query without saving */
   const previewQuery = async (query: ClusterGroupQuery): Promise<{ clusters: string[]; count: number }> => {
     try {
-      const resp = await fetch('/api/cluster-groups/evaluate', {
+      const resp = await appFetch('/api/cluster-groups/evaluate', {
         method: 'POST',
         headers: authHeaders(),
         body: JSON.stringify(query),
@@ -300,7 +301,7 @@ export function useClusterGroups() {
   /** Use AI to generate a cluster query from natural language */
   const generateAIQuery = async (prompt: string): Promise<AIQueryResult> => {
     try {
-      const resp = await fetch('/api/cluster-groups/ai-query', {
+      const resp = await appFetch('/api/cluster-groups/ai-query', {
         method: 'POST',
         headers: authHeaders(),
         body: JSON.stringify({ prompt }),

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 // ai-quality-ignore — pure UI sub-components; all data is passed via props, no data fetching
 /**
  * GitHubActivityItems — Pure UI item components for GitHubActivity card.
@@ -31,7 +32,7 @@ const PRItem = memo(function PRItem({ pr }: { pr: GitHubPR }) {
 
   return (
     <a
-      href={sanitizeUrl(pr.html_url)}
+      href={withOptionalBasePath(sanitizeUrl(pr.html_url))}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
@@ -76,7 +77,7 @@ const PRItem = memo(function PRItem({ pr }: { pr: GitHubPR }) {
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <img src={pr.user.avatar_url} alt={pr.user.login} className="w-4 h-4 rounded-full" loading="lazy" width={16} height={16} />
+              <img src={withOptionalBasePath(pr.user.avatar_url)} alt={pr.user.login} className="w-4 h-4 rounded-full" loading="lazy" width={16} height={16} />
               {pr.user.login}
             </span>
             <span className="flex items-center gap-1" title={`Updated ${formatTimeAgo(pr.updated_at, { extended: true })}`}>
@@ -97,7 +98,7 @@ const IssueItem = memo(function IssueItem({ issue }: { issue: GitHubIssue }) {
 
   return (
     <a
-      href={sanitizeUrl(issue.html_url)}
+      href={withOptionalBasePath(sanitizeUrl(issue.html_url))}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
@@ -133,7 +134,7 @@ const IssueItem = memo(function IssueItem({ issue }: { issue: GitHubIssue }) {
           </div>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <img src={issue.user.avatar_url} alt={issue.user.login} className="w-4 h-4 rounded-full" loading="lazy" width={16} height={16} />
+              <img src={withOptionalBasePath(issue.user.avatar_url)} alt={issue.user.login} className="w-4 h-4 rounded-full" loading="lazy" width={16} height={16} />
               {issue.user.login}
             </span>
             <span className="flex items-center gap-1" title={`Updated ${formatTimeAgo(issue.updated_at, { extended: true })}`}>
@@ -154,7 +155,7 @@ const ReleaseItem = memo(function ReleaseItem({ release }: { release: GitHubRele
   const { t } = useTranslation(['cards'])
   return (
     <a
-      href={sanitizeUrl(release.html_url)}
+      href={withOptionalBasePath(sanitizeUrl(release.html_url))}
       target="_blank"
       rel="noopener noreferrer"
       className="block p-3 rounded-lg bg-secondary/20 hover:bg-secondary/40 border border-border/50 transition-colors"
@@ -187,13 +188,13 @@ const ContributorItem = memo(function ContributorItem({ contributor }: { contrib
   const { t } = useTranslation(['cards'])
   return (
     <a
-      href={sanitizeUrl(contributor.html_url)}
+      href={withOptionalBasePath(sanitizeUrl(contributor.html_url))}
       target="_blank"
       rel="noopener noreferrer"
       className="block p-3 rounded-lg bg-secondary/20 hover:bg-secondary/40 border border-border/50 transition-colors"
     >
       <div className="flex items-center gap-3">
-        <img src={contributor.avatar_url} alt={contributor.login} className="w-10 h-10 rounded-full" loading="lazy" width={40} height={40} />
+        <img src={withOptionalBasePath(contributor.avatar_url)} alt={contributor.login} className="w-10 h-10 rounded-full" loading="lazy" width={40} height={40} />
         <div className="flex-1 min-w-0">
           <div className="text-sm font-medium">{contributor.login}</div>
           <div className="text-xs text-muted-foreground">

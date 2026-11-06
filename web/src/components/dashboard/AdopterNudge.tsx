@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * Adopter Nudge — shown after a user has been using the console for 3+ days.
  *
@@ -69,7 +70,7 @@ export function AdopterNudge() {
   const handleAddOrg = () => {
     emitAdopterNudgeActioned('add_org')
     emitConversionStep(7, 'adopter_cta')
-    window.open(ADOPTERS_EDIT_URL, '_blank', 'noopener,noreferrer')
+    window.open(withBasePath(ADOPTERS_EDIT_URL), '_blank', 'noopener,noreferrer')
     handleDismiss()
   }
 

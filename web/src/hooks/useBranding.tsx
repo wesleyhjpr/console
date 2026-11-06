@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Branding Context Provider
  *
@@ -35,7 +36,7 @@ export function BrandingProvider({ children }: BrandingProviderProps) {
 
     async function fetchBranding() {
       try {
-        const resp = await fetch('/health', {
+        const resp = await appFetch('/health', {
           signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
         })
         const data = await resp.json()

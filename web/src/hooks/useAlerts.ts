@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useContext } from 'react'
 import { AlertsContext } from '../contexts/AlertsContext'
 import { FETCH_DEFAULT_TIMEOUT_MS } from '../lib/constants'
@@ -211,7 +212,7 @@ export function useSlackNotification() {
       }
 
       // Route through backend notification service (#5713, Copilot followup)
-      const response = await fetch('/api/notifications/send', {
+      const response = await appFetch('/api/notifications/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),

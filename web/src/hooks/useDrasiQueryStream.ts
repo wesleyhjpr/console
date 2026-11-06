@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from '../lib/basePath'
 /**
  * Hook for subscribing to a Drasi continuous-query event stream over SSE.
  *
@@ -141,7 +142,7 @@ export function useDrasiQueryStream(args: Args): UseDrasiQueryStreamResult {
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), PREFLIGHT_ABORT_TIMEOUT_MS)
       try {
-        const resp = await fetch(proxyUrl, {
+        const resp = await appFetch(proxyUrl, {
           method: 'GET',
           headers: { Accept: 'text/event-stream' },
           credentials: 'same-origin',
@@ -202,7 +203,7 @@ export function useDrasiQueryStream(args: Args): UseDrasiQueryStreamResult {
 
       // Successful preflight — open EventSource and wire handlers
       try {
-        es = new EventSource(proxyUrl)
+        es = new EventSource(withBasePath(proxyUrl))
         sourceRef.current = es
 
         es.onopen = () => {

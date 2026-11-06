@@ -1,3 +1,4 @@
+import { withBasePath } from './basePath'
 /**
  * AI-powered icon suggestion for custom dashboards.
  * Uses the local agent WebSocket to ask the AI for the best Lucide icon
@@ -110,7 +111,7 @@ async function askAgentForIcon(name: string): Promise<string | null> {
     }, ICON_SUGGESTION_TIMEOUT_MS)
 
     try {
-      const ws = new WebSocket(wsUrl, wsProtocols)
+      const ws = new WebSocket(withBasePath(wsUrl), wsProtocols)
       let response = ''
       const requestId = `icon-suggest-${Date.now()}`
 

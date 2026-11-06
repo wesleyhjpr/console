@@ -1,3 +1,4 @@
+import { withBasePath } from '../../../lib/basePath'
 import { useState, useMemo, useEffect, useRef } from 'react'
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { BACKEND_DEFAULT_URL } from '../../../lib/constants'
@@ -142,7 +143,7 @@ export function useWidgetExport(cardType?: string) {
     const blob = new Blob([widgetCode], { type: 'text/javascript' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url
+    a.href = withBasePath(url)
     a.download = filename
     document.body.appendChild(a)
     a.click()

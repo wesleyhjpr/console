@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isAgentUnavailable } from '../../useLocalAgent'
 import { isDemoMode } from '../../../lib/demoMode'
@@ -76,7 +77,7 @@ export function usePVs(cluster?: string) {
           params.append('cluster', c.context || c.name)
           if (isClusterModeBackend()) {
             try {
-              const response = await fetch(`/api/mcp/pvs?${params}`, {
+              const response = await appFetch(`/api/mcp/pvs?${params}`, {
                 signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
               })
               if (response.ok) {

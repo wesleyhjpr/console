@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * MissionDetailView tab navigation and tab content (step cards, security
  * fallback panel and the install "Expected Result" resolution block).
@@ -105,7 +106,7 @@ export function MissionDetailTabContent({
                     where AI keys live, what leaves your machine, and how to run air-gapped — read the
                     {' '}
                     <a
-                      href={SECURITY_MODEL_DOC_URL}
+                      href={withOptionalBasePath(SECURITY_MODEL_DOC_URL)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"
@@ -118,7 +119,7 @@ export function MissionDetailTabContent({
                     For the LLM-specific threat model (prompt injection, supply chain, agent drift), see the
                     {' '}
                     <a
-                      href={SECURITY_AI_DOC_URL}
+                      href={withOptionalBasePath(SECURITY_AI_DOC_URL)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"
@@ -143,7 +144,7 @@ export function MissionDetailTabContent({
                   </p>
                   <p>
                     <a
-                      href={SECURITY_MODEL_DOC_URL}
+                      href={withOptionalBasePath(SECURITY_MODEL_DOC_URL)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"
@@ -153,7 +154,7 @@ export function MissionDetailTabContent({
                     </a>
                     {' · '}
                     <a
-                      href={SECURITY_AI_DOC_URL}
+                      href={withOptionalBasePath(SECURITY_AI_DOC_URL)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"

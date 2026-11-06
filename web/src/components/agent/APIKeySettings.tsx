@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Key, Loader2 } from 'lucide-react'
 import { BaseModal } from '../../lib/modals'
@@ -34,7 +35,7 @@ export function APIKeySettings({ isOpen, onClose }: APIKeySettingsProps) {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch(`${KC_AGENT_URL}/settings/keys`, {
+      const response = await appFetch(`${KC_AGENT_URL}/settings/keys`, {
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })
       if (!response.ok) {

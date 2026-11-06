@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { createCachedHook } from '../../../lib/cache'
 import { useCardLoadingState } from '../CardDataContext'
 import {
@@ -133,7 +134,7 @@ async function fetchCR(group: string, version: string, resource: string): Promis
 // ---------------------------------------------------------------------------
 
 async function fetchPods(url: string): Promise<BackendPodInfo[]> {
-  const resp = await fetch(url, {
+  const resp = await appFetch(url, {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

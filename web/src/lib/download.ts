@@ -1,3 +1,4 @@
+import { withBasePath } from './basePath'
 /**
  * Delay in ms before revoking a blob Object URL after triggering a download.
  * Browsers (especially Firefox) may still need the URL reference while the
@@ -50,7 +51,7 @@ export function downloadBlob(filename: string, blob: Blob): DownloadResult {
   try {
     url = URL.createObjectURL(blob)
     anchor = document.createElement('a')
-    anchor.href = url
+    anchor.href = withBasePath(url)
     anchor.download = filename
     // Older Firefox requires the anchor to be in the document tree for
     // click() to actually trigger a download.
@@ -105,7 +106,7 @@ export function downloadDataUrl(filename: string, dataUrl: string): DownloadResu
   let anchor: HTMLAnchorElement | undefined
   try {
     anchor = document.createElement('a')
-    anchor.href = dataUrl
+    anchor.href = withBasePath(dataUrl)
     anchor.download = filename
     document.body.appendChild(anchor)
     anchor.click()

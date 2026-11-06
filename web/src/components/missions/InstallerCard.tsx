@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * InstallerCard — Rich card for CNCF installer missions.
  * Shows project logo (falls back to category icon), maturity badge, difficulty,
@@ -143,7 +144,7 @@ function ProjectLogo({ cncfProject, iconPath, size }: {
   return (
     <div className={backdropCls}>
       <img
-        src={getProjectLogoUrl(cncfProject)}
+        src={withOptionalBasePath(getProjectLogoUrl(cncfProject))}
         alt={cncfProject}
         className={cn(imgCls, 'object-contain')}
         onError={() => setFailed(true)}
@@ -308,7 +309,7 @@ export function InstallerCard({ mission, onImport, onSelect, onCopyLink, compact
           <div className="flex items-center gap-2 text-muted-foreground min-w-0">
             {mission.authorGithub && (
               <a
-                href={`https://github.com/${mission.authorGithub}`}
+                href={withOptionalBasePath(`https://github.com/${mission.authorGithub}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={e => e.stopPropagation()}
@@ -316,7 +317,7 @@ export function InstallerCard({ mission, onImport, onSelect, onCopyLink, compact
                 title={mission.author ?? mission.authorGithub}
               >
                 <img
-                  src={`https://github.com/${mission.authorGithub}.png?size=32`}
+                  src={withOptionalBasePath(`https://github.com/${mission.authorGithub}.png?size=32`)}
                   alt={mission.authorGithub}
                   className="w-4 h-4 rounded-full"
                   loading="lazy"
@@ -328,7 +329,7 @@ export function InstallerCard({ mission, onImport, onSelect, onCopyLink, compact
             )}
             {mission.cncfProject && (
               <a
-                href={`https://www.cncf.io/projects/${mission.cncfProject}`}
+                href={withOptionalBasePath(`https://www.cncf.io/projects/${mission.cncfProject}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={e => e.stopPropagation()}

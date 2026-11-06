@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useEffect } from 'react'
 import { ArrowRight, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -113,7 +114,7 @@ export function CompetitorLandingPage({
             {appreciationDescription}
           </div>
           <a
-            href={appreciationLinkHref}
+            href={withOptionalBasePath(appreciationLinkHref)}
             target="_blank"
             rel="noopener noreferrer"
             className={`inline-flex items-center gap-1.5 mt-4 text-sm ${accent.text} hover:opacity-80 transition-opacity`}

@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 import {
   demoGPUNodes,
@@ -8,7 +9,7 @@ import {
 export const scenarios = {
   // Scenario with many issues (triggers AI recommendations)
   manyIssues: [
-    http.get('/api/mcp/pod-issues', async () => {
+    http.get(withBasePath('/api/mcp/pod-issues'), async () => {
       await delay(100)
       // Return 10+ pod issues to trigger high priority recommendations
       return HttpResponse.json({
@@ -29,7 +30,7 @@ export const scenarios = {
 
   // Scenario with high GPU utilization
   highGPUUsage: [
-    http.get('/api/mcp/gpu-nodes', async () => {
+    http.get(withBasePath('/api/mcp/gpu-nodes'), async () => {
       await delay(100)
       return HttpResponse.json({
         nodes: demoGPUNodes.map((n) => ({ ...n, gpuAllocated: n.gpuCount })), // 100% allocated
@@ -39,19 +40,19 @@ export const scenarios = {
 
   // Scenario with no issues (clean cluster)
   cleanCluster: [
-    http.get('/api/mcp/pod-issues', async () => {
+    http.get(withBasePath('/api/mcp/pod-issues'), async () => {
       await delay(100)
       return HttpResponse.json({ issues: [] })
     }),
-    http.get('/api/mcp/deployment-issues', async () => {
+    http.get(withBasePath('/api/mcp/deployment-issues'), async () => {
       await delay(100)
       return HttpResponse.json({ issues: [] })
     }),
-    http.get('/api/mcp/security-issues', async () => {
+    http.get(withBasePath('/api/mcp/security-issues'), async () => {
       await delay(100)
       return HttpResponse.json({ issues: [] })
     }),
-    http.get('/api/mcp/events/warnings', async () => {
+    http.get(withBasePath('/api/mcp/events/warnings'), async () => {
       await delay(100)
       return HttpResponse.json({ events: [] })
     }),
@@ -59,7 +60,7 @@ export const scenarios = {
 
   // Scenario: user not onboarded
   notOnboarded: [
-    http.get('/api/auth/me', async () => {
+    http.get(withBasePath('/api/auth/me'), async () => {
       await delay(100)
       return HttpResponse.json({
         user: { ...getDefaultUser(), onboarded: false },
@@ -69,7 +70,7 @@ export const scenarios = {
 
   // Scenario: MCP unavailable
   mcpUnavailable: [
-    http.get('/api/mcp/status', async () => {
+    http.get(withBasePath('/api/mcp/status'), async () => {
       await delay(100)
       return HttpResponse.json({
         opsClient: { available: false, toolCount: 0 },

@@ -23,6 +23,7 @@ import { loadDynamicCards, getAllDynamicCards, loadDynamicStats } from './lib/dy
 import { STORAGE_KEY_SQLITE_MIGRATED } from './lib/constants'
 import { initAnalytics } from './lib/analytics'
 import { prefetchTopDashboards } from './lib/dashboardPrefetch'
+import { appFetch as fetch, getBasePath } from './lib/basePath'
 
 function BootstrapLoadingScreen() {
   return (
@@ -157,7 +158,7 @@ enableMocking()
 
     // ── Render FIRST — don't block on async work ──────────────────────
     root.render(
-      <BrowserRouter>
+      <BrowserRouter basename={getBasePath()}>
         <App />
       </BrowserRouter>,
     )

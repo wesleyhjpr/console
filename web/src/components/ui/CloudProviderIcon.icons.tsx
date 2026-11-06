@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 // Cloud provider SVG icon components.
 // Extracted from CloudProviderIcon.tsx so the public helper API (provider
 // detection, labels, colors, console URLs) stays readable in one file.
@@ -206,7 +207,7 @@ const KIND_ICON_STYLE: React.CSSProperties = { objectFit: 'contain' }
 // Kind icon - official logo (ship in bottle)
 export const KindIcon: React.FC<{ size: number; className?: string }> = ({ size, className }) => (
   <img
-    src="/kind-logo.png"
+    src={withBasePath("/kind-logo.png")}
     alt="Kind logo"
     width={size}
     height={size}

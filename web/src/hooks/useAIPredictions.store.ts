@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import type { AIPrediction, AIPredictionsResponse } from '../types/predictions'
 import { getPredictionSettings, getSettingsForBackend } from './usePredictionSettings'
 import { getDemoMode } from './useDemoMode'
@@ -227,7 +228,7 @@ export async function connectWebSocket(): Promise<void> {
 
   try {
     const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-    ws = new WebSocket(url, protocols)
+    ws = new WebSocket(withBasePath(url), protocols)
 
     ws.onopen = () => {
       wsConnected = true

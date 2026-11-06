@@ -1,3 +1,4 @@
+import { appFetch, withOptionalBasePath } from '../../../lib/basePath'
 import {
   useCallback,
   useEffect,
@@ -133,7 +134,7 @@ export function RunDot({ run, guide, isDemoMode, isHighlighted, onMouseEnter, on
         } else {
           const API_BASE = import.meta.env.VITE_API_BASE_URL || BACKEND_DEFAULT_URL
           try {
-            const resp = await fetch(
+            const resp = await appFetch(
               `${API_BASE}/api/public/nightly-e2e/run-logs?repo=${encodeURIComponent(guide.repo)}&runId=${run.id}`,
               { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) }
             )
@@ -204,7 +205,7 @@ Please provide:
       <a
         ref={dotRef}
         data-run-dot="true"
-        href={sanitizeUrl(run.htmlUrl)}
+        href={withOptionalBasePath(sanitizeUrl(run.htmlUrl))}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Run #${run.runNumber}: ${title}`}
@@ -283,7 +284,7 @@ Please provide:
                   {isDiagnosing ? 'Loading...' : 'AI Diagnose'}
                 </button>
               )}
-              <a href={sanitizeUrl(logsUrl)} target="_blank" rel="noopener noreferrer"
+              <a href={withOptionalBasePath(sanitizeUrl(logsUrl))} target="_blank" rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-0.5 min-h-11 min-w-11"
                 onClick={e => e.stopPropagation()}>
                 View Logs <ExternalLink size={8} />

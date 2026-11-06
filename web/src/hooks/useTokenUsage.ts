@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect } from 'react'
 import { isAgentUnavailable, reportAgentDataSuccess, reportAgentDataError } from './useLocalAgent'
 import { getDemoMode } from './useDemoMode'
@@ -124,7 +125,7 @@ async function fetchTokenUsage() {
     const timeoutId = setTimeout(() => controller.abort(), QUICK_ABORT_TIMEOUT_MS)
     // Use plain fetch — /health does not require auth and avoids CORS
     // preflight failures from X-Requested-With header (#10459).
-    const response = await fetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
+    const response = await appFetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
       method: 'GET',
       headers: { 'Accept': 'application/json' },
       signal: controller.signal })

@@ -1,4 +1,4 @@
-    const API_URL = '/api/analytics-dashboard';
+    const API_URL = './api/analytics-dashboard';
     const CHART_COLORS = ['#6366f1', '#06b6d4', '#22c55e', '#f97316', '#a855f7', '#ef4444', '#eab308', '#3b82f6'];
     const FUNNEL_COLORS = ['#6366f1', '#818cf8', '#a855f7', '#3b82f6', '#06b6d4', '#22c55e'];
 
@@ -789,7 +789,7 @@
 
         // Fetch NPS data (separate endpoint, independent of GA4)
         try {
-          const npsResp = await fetch('/api/nps?t=' + Date.now(), { cache: 'no-store' });
+          const npsResp = await fetch('./api/nps?t=' + Date.now(), { cache: 'no-store' });
           if (npsResp.ok) {
             const npsData = await npsResp.json();
             if (npsData && npsData.totalResponses > 0) {
@@ -800,7 +800,7 @@
 
         // Fetch ACCM metrics (GitHub API — independent of GA4)
         try {
-          const accmResp = await fetch('/api/analytics-accm?t=' + Date.now(), { cache: 'no-store' });
+          const accmResp = await fetch('./api/analytics-accm?t=' + Date.now(), { cache: 'no-store' });
           if (accmResp.ok) {
             const accmData = await accmResp.json();
             renderACCMSection(accmData);

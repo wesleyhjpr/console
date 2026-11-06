@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * ContributorLadder — shows current level, progress to next, and the full ladder
  */
@@ -38,7 +39,7 @@ export function ContributorBanner() {
   const handleLinkedInShare = () => {
     const text = `I'm a Level ${current.rank} "${current.name}" contributor on the KubeStellar Console with ${totalCoins.toLocaleString()} coins! Join the open-source KubeStellar project and start your contributor journey.`
     const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://kubestellar.io')}&summary=${encodeURIComponent(text)}`
-    window.open(linkedInUrl, '_blank', 'noopener,noreferrer,width=600,height=600')
+    window.open(withBasePath(linkedInUrl), '_blank', 'noopener,noreferrer,width=600,height=600')
     emitLinkedInShare('contributor_ladder')
   }
 

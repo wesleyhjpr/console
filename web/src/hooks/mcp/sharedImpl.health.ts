@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 // Health checking and distribution detection for clusters
 
 import { api } from '../../lib/api'
@@ -114,7 +115,7 @@ export async function fetchSingleClusterHealth(clusterName: string, kubectlConte
   // Fall back to backend API
   const agentToken = getStoredAgentToken()
   try {
-    const response = await fetch(
+    const response = await appFetch(
       `${LOCAL_AGENT_HTTP_URL}/clusters/${encodeURIComponent(clusterName)}/health`,
       {
         signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
@@ -195,7 +196,7 @@ export async function detectClusterDistribution(clusterName: string, kubectlCont
 
   // Try pods endpoint first
   try {
-    const response = await fetch(
+    const response = await appFetch(
       `${LOCAL_AGENT_HTTP_URL}/pods?cluster=${encodeURIComponent(clusterName)}&limit=500`,
       { signal: AbortSignal.timeout(METRICS_SERVER_TIMEOUT_MS), headers }
     )
@@ -217,7 +218,7 @@ export async function detectClusterDistribution(clusterName: string, kubectlCont
 
   // Fallback: try events endpoint
   try {
-    const response = await fetch(
+    const response = await appFetch(
       `${LOCAL_AGENT_HTTP_URL}/events?cluster=${encodeURIComponent(clusterName)}&limit=200`,
       { signal: AbortSignal.timeout(METRICS_SERVER_TIMEOUT_MS), headers }
     )
@@ -239,7 +240,7 @@ export async function detectClusterDistribution(clusterName: string, kubectlCont
 
   // Fallback: try deployments endpoint
   try {
-    const response = await fetch(
+    const response = await appFetch(
       `${LOCAL_AGENT_HTTP_URL}/deployments?cluster=${encodeURIComponent(clusterName)}`,
       { signal: AbortSignal.timeout(METRICS_SERVER_TIMEOUT_MS), headers }
     )

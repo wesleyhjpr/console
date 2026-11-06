@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { usePersistence } from './usePersistence'
 import { agentFetch } from './mcp/shared'
@@ -226,7 +227,7 @@ function useConsoleCR<T extends { metadata: { name: string } }>(
     }
 
     try {
-      const response = await fetch(`/api/persistence/${endpoint}`, {
+      const response = await appFetch(`/api/persistence/${endpoint}`, {
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       if (response.ok) {
         const data = await response.json()
@@ -254,7 +255,7 @@ function useConsoleCR<T extends { metadata: { name: string } }>(
     if (!shouldUseCRs) return null
 
     try {
-      const response = await fetch(`/api/persistence/${endpoint}/${name}`, {
+      const response = await appFetch(`/api/persistence/${endpoint}/${name}`, {
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       if (response.ok) {
         return await response.json()

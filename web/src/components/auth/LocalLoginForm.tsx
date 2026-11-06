@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { LoginOptions } from '../../lib/devLogin'
@@ -146,8 +147,8 @@ export function LocalLoginForm({ login, isLoading, isAuthenticated, starStyles }
           hideManualSetupLabel={t('login.hideManualSetup')}
           showManualSetupLabel={t('login.showManualSetup')}
           continueInDemoModeLabel={t('login.continueInDemoMode')}
-          onClusterAccess={() => { emitLogin('dev-login'); window.location.href = '/auth/github' }}
-          onSetupGitHub={() => { window.location.href = '/auth/manifest/setup' }}
+          onClusterAccess={() => { emitLogin('dev-login'); window.location.href = withBasePath('/auth/github') }}
+          onSetupGitHub={() => { window.location.href = withBasePath('/auth/manifest/setup') }}
           onToggleManualSetup={toggleOauthSetupExpanded}
           onDemoMode={() => { emitLogin('demo-from-login'); login({ preferDemo: true }) }}
         />

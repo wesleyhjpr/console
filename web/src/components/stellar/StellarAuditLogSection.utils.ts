@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import type { StellarAuditEntry } from '../../types/stellar'
 
 export const AUDIT_FETCH_LIMIT = 100
@@ -77,7 +78,7 @@ export function exportEntries(
   const href = URL.createObjectURL(blob)
   const link = document.createElement('a')
   const stamp = new Date().toISOString().slice(0, 10)
-  link.href = href
+  link.href = withBasePath(href)
   link.download = `${EXPORT_FILENAME_PREFIX}-${stamp}.csv`
   link.click()
   URL.revokeObjectURL(href)

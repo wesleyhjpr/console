@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 // Logout cleanup helpers for AuthProvider.
 // Extracted from AuthContext.tsx (issue #24058) — logic unchanged.
 
@@ -21,7 +22,7 @@ import { AUTH_USER_CACHE_KEY, cacheUser } from './tokenHelpers'
 export async function invalidateServerSession(): Promise<void> {
   const currentToken = await getStoredAuthToken()
   if (currentToken && currentToken !== DEMO_TOKEN_VALUE) {
-    fetch('/auth/logout', {
+    appFetch('/auth/logout', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${currentToken}`,

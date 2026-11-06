@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 /**
  * IssueActivityChart data layer — constants, types, demo data generator, and
  * GitHub fetch helpers used by the IssueActivityChart card.
@@ -109,7 +110,7 @@ async function fetchAllPages(
   let page = 1
   while (page <= MAX_PAGES) {
     const separator = url.includes('?') ? '&' : '?'
-    const response = await fetch(
+    const response = await appFetch(
       `${url}${separator}per_page=${GITHUB_PER_PAGE}&page=${page}`,
       { signal }
     )

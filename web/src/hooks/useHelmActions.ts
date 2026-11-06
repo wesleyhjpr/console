@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Helm Write Operations Hook
  *
@@ -82,7 +83,7 @@ export function useHelmActions(): UseHelmActionsResult {
 
     try {
       const headers = await helmAgentAuthHeaders()
-      const response = await fetch(endpoint, {
+      const response = await appFetch(endpoint, {
         method: 'POST',
         headers,
         body: JSON.stringify(body),

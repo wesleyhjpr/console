@@ -1,3 +1,4 @@
+import { withBasePath } from '../../../../lib/basePath'
 import { useState } from 'react'
 import { Key, Check, AlertCircle } from 'lucide-react'
 
@@ -95,7 +96,7 @@ export function QuantumCredentialsDrillDown({ data }: Props) {
             Get your API key from{' '}
             <button
               type="button"
-              onClick={() => window.open('https://quantum.ibm.com/account', '_blank', 'noopener,noreferrer')}
+              onClick={() => window.open(withBasePath('https://quantum.ibm.com/account'), '_blank', 'noopener,noreferrer')}
               className="text-blue-600 dark:text-blue-400 hover:underline"
             >
               IBM Quantum Platform

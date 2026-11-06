@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useTranslation } from 'react-i18next'
 import { ChevronUp, ChevronDown, ExternalLink } from 'lucide-react'
 import { sanitizeUrl } from '../../lib/utils/sanitizeUrl'
@@ -36,7 +37,7 @@ export function UpdateReleaseNotes({ latestRelease, releaseNotes }: UpdateReleas
         <div className="mt-2 p-4 rounded-lg bg-secondary/30 border border-border">
           <pre className="text-sm text-muted-foreground whitespace-pre-wrap font-sans">{latestRelease.releaseNotes}</pre>
           <a
-            href={sanitizeUrl(latestRelease.url)}
+            href={withOptionalBasePath(sanitizeUrl(latestRelease.url))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 mt-3 text-sm text-primary hover:underline"

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 // Pricing-mode toggle + uniform provider selector for the ClusterCosts card.
 // Extracted from ClusterCosts.tsx (issue #24058) — markup unchanged.
 import { useState } from 'react'
@@ -168,7 +169,7 @@ export function ClusterCostsPricingControls({
       {/* Provider link (uniform mode only) */}
       {pricingMode === 'uniform' && selectedProvider !== 'estimate' && pricing.pricingUrl && (
         <a
-          href={sanitizeUrl(pricing.pricingUrl)}
+          href={withOptionalBasePath(sanitizeUrl(pricing.pricingUrl))}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 transition-colors"

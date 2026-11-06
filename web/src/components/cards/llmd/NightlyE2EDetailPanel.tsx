@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { useMemo } from 'react'
 import { useDemoMode } from '../../../hooks/useDemoMode'
 import { motion } from 'framer-motion'
@@ -97,7 +98,7 @@ export function GuideDetailPanel({ guide, hoveredRun, onRunHover }: {
         <div className="flex items-center gap-2 text-2xs text-muted-foreground">
           <span style={{ color: PLATFORM_COLORS[guide.platform] }}>{guide.platform}</span>
           <span>&middot;</span>
-          <a href={sanitizeUrl(workflowUrl)} target="_blank" rel="noopener noreferrer"
+          <a href={withOptionalBasePath(sanitizeUrl(workflowUrl))} target="_blank" rel="noopener noreferrer"
             className="hover:text-foreground transition-colors flex items-center gap-0.5 min-h-11 min-w-11">
             {guide.repo.split('/')[1]} <ExternalLink size={9} />
           </a>

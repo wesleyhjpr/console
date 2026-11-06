@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { ExternalLink, Eye, Loader2 } from 'lucide-react'
 import type { FeatureRequest } from '../../hooks/useFeatureRequests'
 import { PREVIEW_WARMUP_SECONDS, type PreviewResult } from './FeatureRequestTypes'
@@ -47,7 +48,7 @@ export function PreviewSection({
             onClick={(event) => {
               event.stopPropagation()
               if (isValidPreviewUrl(safePreviewUrl)) {
-                window.open(safePreviewUrl, '_blank', 'noopener,noreferrer')
+                window.open(withBasePath(safePreviewUrl), '_blank', 'noopener,noreferrer')
               }
             }}
             className="px-2 py-1 text-xs rounded bg-green-500 hover:bg-green-600 text-white transition-colors flex items-center gap-1"
@@ -66,7 +67,7 @@ export function PreviewSection({
         onClick={(event) => {
           event.stopPropagation()
           if (isValidPreviewUrl(safePreviewUrl)) {
-            window.open(safePreviewUrl, '_blank', 'noopener,noreferrer')
+            window.open(withBasePath(safePreviewUrl), '_blank', 'noopener,noreferrer')
           }
         }}
         className="text-xs text-green-400 hover:text-green-300 flex items-center gap-1 mt-1 bg-transparent border-0 p-0 cursor-pointer"

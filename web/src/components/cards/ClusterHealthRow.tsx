@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { CheckCircle, WifiOff, Cpu, Loader2, ExternalLink, AlertTriangle, KeyRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { ClusterInfo } from '../../hooks/useMCP'
@@ -107,7 +108,7 @@ export function ClusterHealthRow({
         )}
         {consoleUrl && (
           <a
-            href={sanitizeUrl(consoleUrl)}
+            href={withOptionalBasePath(sanitizeUrl(consoleUrl))}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}

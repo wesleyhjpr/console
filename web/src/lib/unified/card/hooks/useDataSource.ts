@@ -1,3 +1,4 @@
+import { appFetch } from '../../../basePath'
 /**
  * useDataSource - Unified data fetching hook for cards
  *
@@ -275,7 +276,7 @@ function useApiDataSourceInternal(
         url = `${endpoint}?${searchParams.toString()}`
       }
 
-      const response = await fetch(url, {
+      const response = await appFetch(url, {
         method,
         headers: method === 'POST' ? { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } : undefined,
         body: method === 'POST' && params ? JSON.stringify(params) : undefined,

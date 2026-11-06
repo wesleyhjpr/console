@@ -4,6 +4,7 @@ import { BrandingProvider } from './hooks/useBranding'
 import { ThemeProvider } from './hooks/useTheme'
 import { useLiveUrl, LiveLocationProvider } from './hooks/useAppSideEffects'
 import { AppRoutes } from './routes/AppRoutes'
+import { withoutBasePath } from './lib/basePath'
 
 function App() {
   const liveUrl = useLiveUrl()
@@ -17,7 +18,7 @@ function App() {
     const url = new URL(liveUrl, window.location.origin)
     return {
       ...routerLocation,
-      pathname: url.pathname,
+      pathname: withoutBasePath(url.pathname),
       search: url.search,
       hash: url.hash,
     }

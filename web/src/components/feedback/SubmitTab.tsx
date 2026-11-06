@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { Settings, ExternalLink, Loader2 } from 'lucide-react'
 import { Github } from '@/lib/icons'
 import { useToast } from '../ui/Toast'
@@ -268,7 +269,7 @@ export function SubmitForm({
               </p>
               <div className="flex items-center gap-2 flex-wrap">
                 <a
-                  href={sanitizeUrl(directIssueUrl)}
+                  href={withOptionalBasePath(sanitizeUrl(directIssueUrl))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-1.5 text-xs rounded-lg border border-border text-foreground hover:bg-secondary/50 transition-colors flex items-center gap-1.5"

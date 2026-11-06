@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 /**
  * Backend availability tracking and OAuth configuration probing.
  * Split from api.ts (tracked by #21384 / #21375).
@@ -71,7 +72,7 @@ export async function checkBackendAvailability(forceCheck = false): Promise<bool
   // Start a new check
   backendCheckPromise = (async () => {
     try {
-      const response = await fetch(`${API_BASE}/health`, {
+      const response = await appFetch(`${API_BASE}/health`, {
         method: 'GET',
         signal: AbortSignal.timeout(BACKEND_HEALTH_CHECK_TIMEOUT_MS),
       })
@@ -118,7 +119,7 @@ export async function checkBackendAvailability(forceCheck = false): Promise<bool
  */
 export async function checkOAuthConfigured(): Promise<OAuthProbeResult> {
   try {
-    const response = await fetch(`${API_BASE}/health`, {
+    const response = await appFetch(`${API_BASE}/health`, {
       method: 'GET',
       signal: AbortSignal.timeout(BACKEND_HEALTH_CHECK_TIMEOUT_MS),
     })

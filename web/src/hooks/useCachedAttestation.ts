@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * useCachedAttestation — Hook for the Runtime Attestation Score card (#9987).
  *
@@ -135,7 +136,7 @@ const INITIAL_DATA: AttestationData = {
 // ---------------------------------------------------------------------------
 
 async function fetchAttestationScore(): Promise<AttestationData> {
-  const resp = await fetch('/api/attestation/score', {
+  const resp = await appFetch('/api/attestation/score', {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

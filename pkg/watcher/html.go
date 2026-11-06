@@ -205,7 +205,7 @@ async function checkNow(){
   }
 
   try{
-    var r=await fetch('/watchdog/health',{cache:'no-store'});
+    var r=await fetch(document.querySelector('meta[name="console-base-path"]').content+'watchdog/health',{cache:'no-store'});
     if(r.ok){
       var d=await r.json();
       var stage=d.stage||'watchdog';

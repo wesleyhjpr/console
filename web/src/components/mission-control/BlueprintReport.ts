@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * BlueprintReport — PDF/print export for the Flight Plan Blueprint.
  *
@@ -206,7 +207,7 @@ ${toRemove.length > 0 ? `
 <script>window.onload = () => window.print()</script>
 </body></html>`
 
-  const w = window.open('', '_blank')
+  const w = window.open(withBasePath(''), '_blank')
   if (w) {
     w.document.write(html)
     w.document.close()

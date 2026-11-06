@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfirmDialog } from '../../lib/modals'
@@ -78,7 +79,7 @@ export function SavedKeysTable({
     try {
       setSaving(true)
       const body = buildBaseURLPayload(provider, draft)
-      const response = await fetch(`${KC_AGENT_URL}/settings/keys`, {
+      const response = await appFetch(`${KC_AGENT_URL}/settings/keys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -109,7 +110,7 @@ export function SavedKeysTable({
     try {
       setSaving(true)
       setEditError(null)
-      const response = await fetch(`${KC_AGENT_URL}/settings/keys`, {
+      const response = await appFetch(`${KC_AGENT_URL}/settings/keys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ provider, apiKey: newKeyValue }),
@@ -145,7 +146,7 @@ export function SavedKeysTable({
     try {
       setSaving(true)
       setIsDeletingKey(true)
-      const response = await fetch(`${KC_AGENT_URL}/settings/keys/${provider}`, {
+      const response = await appFetch(`${KC_AGENT_URL}/settings/keys/${provider}`, {
         method: 'DELETE',
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

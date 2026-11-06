@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../lib/basePath'
 /**
  * EmbedCard — standalone page that renders a single CI/CD pipeline card
  * without navigation, sidebar, or chrome. Designed for iframe embedding.
@@ -86,7 +87,7 @@ export function EmbedCard() {
       <div className="flex items-center justify-between px-3 py-1 border-t border-border/50 text-2xs text-muted-foreground">
         <span>{cardLabel}{validRepo ? ` — ${validRepo}` : ''}</span>
         <a
-          href={BRANDING_URL}
+          href={withOptionalBasePath(BRANDING_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:text-foreground transition-colors"

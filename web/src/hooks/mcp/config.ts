@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchSSE } from '../../lib/sseClient'
 import { reportAgentDataSuccess, isAgentUnavailable } from '../useLocalAgent'
@@ -82,7 +83,7 @@ export function useConfigMaps(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/configmaps?${params}`, {
+          const response = await appFetch(`/api/mcp/configmaps?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {
@@ -207,7 +208,7 @@ export function useSecrets(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/secrets?${params}`, {
+          const response = await appFetch(`/api/mcp/secrets?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {
@@ -305,7 +306,7 @@ export function useServiceAccounts(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/serviceaccounts?${params}`, {
+          const response = await appFetch(`/api/mcp/serviceaccounts?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {

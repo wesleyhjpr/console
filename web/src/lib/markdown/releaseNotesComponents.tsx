@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../basePath'
 import type { ReactNode } from 'react'
 import { CodeBlock } from '../../components/ui/CodeBlock'
 
@@ -21,7 +22,7 @@ export function buildReleaseNotesComponents(fontSize: 'sm' | 'base' | 'lg' = 'sm
     a: ({ href, children }: LinkProp) => {
       const safeHref = href && /^(https?:|\/|mailto:|#)/i.test(href) ? href : undefined
       if (!safeHref) return <span className="text-muted-foreground">{children}</span>
-      return <a href={safeHref} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300">{children}</a>
+      return <a href={withOptionalBasePath(safeHref)} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300">{children}</a>
     },
     h1: ({ children }: ChildrenProp) => (
       <div role="heading" aria-level={1} className="mt-6 mb-3 pt-3 pl-3 border-l-3 border-purple-500/50 border-t border-border/30 first:border-t-0 first:pt-0 first:mt-0 text-xl font-bold">{children}</div>

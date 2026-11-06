@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * useCachedKagentStatus — Hook for kagent monitoring status.
  *
@@ -248,7 +249,7 @@ const INITIAL_DATA: KagentStatusData = {
 // ---------------------------------------------------------------------------
 
 async function fetchKagentStatus(): Promise<KagentStatusData> {
-  const resp = await fetch('/api/kagent/status', {
+  const resp = await appFetch('/api/kagent/status', {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

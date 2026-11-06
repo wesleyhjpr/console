@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useCache } from '../lib/cache'
 import { FETCH_DEFAULT_TIMEOUT_MS } from '../lib/constants/network'
 import { isGlobalQuantumPollingPaused } from '../lib/quantum/pollingContext'
@@ -176,7 +177,7 @@ const DEFAULT_AUTH_STATUS: QuantumAuthStatus = {
 }
 
 async function fetchQuantumJson<T>(endpoint: string): Promise<T> {
-  const response = await fetch(endpoint, {
+  const response = await appFetch(endpoint, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -246,7 +247,7 @@ async function fetchQuantumAuthStatus(): Promise<QuantumAuthStatus> {
 }
 
 async function fetchQuantumCircuitAscii(): Promise<QuantumCircuitAsciiData> {
-  const response = await fetch(QUANTUM_CIRCUIT_ENDPOINT, {
+  const response = await appFetch(QUANTUM_CIRCUIT_ENDPOINT, {
     credentials: 'include',
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

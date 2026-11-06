@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 /**
  * Data-orchestration hook for DrasiReactiveGraph.
  *
@@ -189,7 +190,7 @@ export function useDrasiReactiveGraphState({ isDemoData, drasiData, refetchDrasi
       const isCreate = sourceId === null
       const path = isCreate ? basePath : `${basePath}/${encodeURIComponent(sourceId)}`
       try {
-        await fetch(`/api/drasi/proxy${path}?${drasiProxyTarget()}`, {
+        await appFetch(`/api/drasi/proxy${path}?${drasiProxyTarget()}`, {
           method: isCreate ? 'POST' : 'PUT',
           headers: { 'content-type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
           body: JSON.stringify({ id: config.name, spec: { kind: config.kind } }),
@@ -224,7 +225,7 @@ export function useDrasiReactiveGraphState({ isDemoData, drasiData, refetchDrasi
       const isCreate = queryId === null
       const path = isCreate ? basePath : `${basePath}/${encodeURIComponent(queryId)}`
       try {
-        await fetch(`/api/drasi/proxy${path}?${drasiProxyTarget()}`, {
+        await appFetch(`/api/drasi/proxy${path}?${drasiProxyTarget()}`, {
           method: isCreate ? 'POST' : 'PUT',
           headers: { 'content-type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
           body: JSON.stringify({
@@ -267,7 +268,7 @@ export function useDrasiReactiveGraphState({ isDemoData, drasiData, refetchDrasi
     const defaultName = `reaction-${Date.now().toString(36).slice(-5)}`
     if (isLive && liveData) {
       try {
-        await fetch(`/api/drasi/proxy${drasiResourcePath('reaction')}?${drasiProxyTarget()}`, {
+        await appFetch(`/api/drasi/proxy${drasiResourcePath('reaction')}?${drasiProxyTarget()}`, {
           method: 'POST',
           headers: { 'content-type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
           body: JSON.stringify({
@@ -298,7 +299,7 @@ export function useDrasiReactiveGraphState({ isDemoData, drasiData, refetchDrasi
     if (!isLive || !liveData) return
     const reactionName = `result-${queryId}`.toLowerCase().replace(/[^a-z0-9-]/g, '-')
     try {
-      await fetch(`/api/drasi/proxy${drasiResourcePath('reaction')}?${drasiProxyTarget()}`, {
+      await appFetch(`/api/drasi/proxy${drasiResourcePath('reaction')}?${drasiProxyTarget()}`, {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify({
@@ -320,7 +321,7 @@ export function useDrasiReactiveGraphState({ isDemoData, drasiData, refetchDrasi
       onConfirm: async () => {
         if (isLive && liveData) {
           try {
-            await fetch(`/api/drasi/proxy${drasiResourcePath(kind)}/${encodeURIComponent(id)}?${drasiProxyTarget()}`, {
+            await appFetch(`/api/drasi/proxy${drasiResourcePath(kind)}/${encodeURIComponent(id)}?${drasiProxyTarget()}`, {
               method: 'DELETE',
               signal: AbortSignal.timeout(DRASI_PROXY_TIMEOUT_MS),
             })

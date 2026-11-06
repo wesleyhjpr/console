@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 import {
   pruneRegistry,
@@ -7,13 +8,13 @@ import {
 export function createPlatformHandlers() {
   return [
   // List dashboards
-  http.get('/api/dashboards', async () => {
+  http.get(withBasePath('/api/dashboards'), async () => {
     await delay(100)
     return HttpResponse.json([])
   }),
 
   // Save dashboard configuration
-  http.post('/api/dashboards/save', async ({ request }) => {
+  http.post(withBasePath('/api/dashboards/save'), async ({ request }) => {
     await delay(100)
     const body = (await request.json()) as { name: string; config: unknown }
     const shareId = `dashboard-${Date.now()}`
@@ -27,7 +28,7 @@ export function createPlatformHandlers() {
   }),
 
   // Get shared dashboard
-  http.get('/api/dashboards/shared/:shareId', async ({ params }) => {
+  http.get(withBasePath('/api/dashboards/shared/:shareId'), async ({ params }) => {
     await delay(100)
     const dashboard = sharedDashboards[params.shareId as string]
     if (dashboard) {
@@ -37,7 +38,7 @@ export function createPlatformHandlers() {
   }),
 
   // Export dashboard as JSON
-  http.get('/api/dashboards/export', async () => {
+  http.get(withBasePath('/api/dashboards/export'), async () => {
     await delay(100)
     return HttpResponse.json({
       version: '1.0',
@@ -50,14 +51,14 @@ export function createPlatformHandlers() {
   }),
 
   // Import dashboard from JSON
-  http.post('/api/dashboards/import', async ({ request }) => {
+  http.post(withBasePath('/api/dashboards/import'), async ({ request }) => {
     await delay(100)
     const body = await request.json()
     return HttpResponse.json({ success: true, imported: body })
   }),
 
   // AI analysis endpoint (for AI interactivity testing)
-  http.post('/api/ai/analyze', async ({ request }) => {
+  http.post(withBasePath('/api/ai/analyze'), async ({ request }) => {
     await delay(500) // Simulate AI processing time
     const body = (await request.json()) as { context: string }
     return HttpResponse.json({
@@ -71,7 +72,7 @@ export function createPlatformHandlers() {
   }),
 
   // Card chat endpoint (AI conversation with card)
-  http.post('/api/ai/card-chat', async ({ request }) => {
+  http.post(withBasePath('/api/ai/card-chat'), async ({ request }) => {
     await delay(300)
     const body = (await request.json()) as { cardType: string; question: string }
     return HttpResponse.json({
@@ -82,7 +83,7 @@ export function createPlatformHandlers() {
   }),
 
   // ReplicaSets (for deployments/pods pages)
-  http.get('/api/mcp/replicasets', async () => {
+  http.get(withBasePath('/api/mcp/replicasets'), async () => {
     await delay(100)
     return HttpResponse.json({
       replicasets: [
@@ -94,7 +95,7 @@ export function createPlatformHandlers() {
   }),
 
   // HPAs (for deployments/pods pages)
-  http.get('/api/mcp/hpas', async () => {
+  http.get(withBasePath('/api/mcp/hpas'), async () => {
     await delay(100)
     return HttpResponse.json({
       hpas: [
@@ -106,7 +107,7 @@ export function createPlatformHandlers() {
 
   // StatefulSets (for workloads/operators pages)
   // Both /api/mcp/ (legacy) and / (hooks with empty LOCAL_AGENT_HTTP_URL) paths
-  http.get('/api/mcp/statefulsets', async () => {
+  http.get(withBasePath('/api/mcp/statefulsets'), async () => {
     await delay(100)
     return HttpResponse.json({
       statefulsets: [
@@ -115,7 +116,7 @@ export function createPlatformHandlers() {
       ],
     })
   }),
-  http.get('/statefulsets', async () => {
+  http.get(withBasePath('/statefulsets'), async () => {
     await delay(100)
     return HttpResponse.json({
       statefulsets: [
@@ -126,7 +127,7 @@ export function createPlatformHandlers() {
   }),
 
   // DaemonSets (for workloads/operators pages)
-  http.get('/api/mcp/daemonsets', async () => {
+  http.get(withBasePath('/api/mcp/daemonsets'), async () => {
     await delay(100)
     return HttpResponse.json({
       daemonsets: [
@@ -135,7 +136,7 @@ export function createPlatformHandlers() {
       ],
     })
   }),
-  http.get('/daemonsets', async () => {
+  http.get(withBasePath('/daemonsets'), async () => {
     await delay(100)
     return HttpResponse.json({
       daemonsets: [
@@ -146,7 +147,7 @@ export function createPlatformHandlers() {
   }),
 
   // CronJobs (for workloads/operators pages)
-  http.get('/api/mcp/cronjobs', async () => {
+  http.get(withBasePath('/api/mcp/cronjobs'), async () => {
     await delay(100)
     return HttpResponse.json({
       cronjobs: [
@@ -155,7 +156,7 @@ export function createPlatformHandlers() {
       ],
     })
   }),
-  http.get('/cronjobs', async () => {
+  http.get(withBasePath('/cronjobs'), async () => {
     await delay(100)
     return HttpResponse.json({
       cronjobs: [
@@ -166,7 +167,7 @@ export function createPlatformHandlers() {
   }),
 
   // Topology (for services/workloads pages)
-  http.get('/api/topology', async () => {
+  http.get(withBasePath('/api/topology'), async () => {
     await delay(150)
     return HttpResponse.json({
       graph: {
@@ -195,7 +196,7 @@ export function createPlatformHandlers() {
   // branding in sync with that file (and the Go side at pkg/api/projects.go);
   // the parity test in web/netlify/functions/__tests__/health.test.ts catches
   // drift across all three copies.
-  http.get('/health', async () => {
+  http.get(withBasePath('/health'), async () => {
     await delay(50)
     return HttpResponse.json({
       status: 'ok',

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { AlertTriangle, Check, ChevronDown, ChevronRight, Copy, ExternalLink, KeyRound, Settings } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { sanitizeUrl } from '@/lib/utils/sanitizeUrl'
@@ -67,7 +68,7 @@ export function OAuthErrorBanner({ errorInfo, errorDetail, repoUrl }: OAuthError
             GitHub OAuth Settings
           </a>
           <a
-            href={`${repoUrl}#quick-start`}
+            href={withOptionalBasePath(`${repoUrl}#quick-start`)}
             target="_blank"
             rel="noopener noreferrer"
             className="px-2.5 py-1.5 text-xs rounded border border-red-500/30 text-red-300 hover:bg-red-500/10 transition-colors flex items-center gap-1.5"
@@ -133,7 +134,7 @@ export function OAuthSetupNotice({
                   <span className="text-muted-foreground">
                     {idx + 1}. {step.label}{' '}
                     <a
-                      href={sanitizeUrl(step.link)}
+                      href={withOptionalBasePath(sanitizeUrl(step.link))}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-400 hover:text-blue-300 underline"
@@ -174,7 +175,7 @@ export function OAuthSetupNotice({
             ))}
             <div className="flex items-center gap-2 mt-3 pt-2 border-t border-border/30">
               <a
-                href={GITHUB_DEVELOPER_SETTINGS_URL}
+                href={withOptionalBasePath(GITHUB_DEVELOPER_SETTINGS_URL)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1.5 text-xs rounded border border-blue-500/30 text-blue-300 hover:bg-blue-500/10 transition-colors flex items-center gap-1.5"
@@ -183,7 +184,7 @@ export function OAuthSetupNotice({
                 {t('login.openGitHubSettings')}
               </a>
               <a
-                href={`${repoUrl}#quick-start`}
+                href={withOptionalBasePath(`${repoUrl}#quick-start`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1.5 text-xs rounded border border-blue-500/30 text-blue-300 hover:bg-blue-500/10 transition-colors flex items-center gap-1.5"

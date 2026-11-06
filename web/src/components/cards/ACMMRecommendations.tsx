@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * ACMM Recommendations Card
  *
@@ -196,7 +197,7 @@ export function ACMMRecommendations() {
                       </span>
                     )
                     return src?.url ? (
-                      <a key={s} href={sanitizeUrl(src.url)} target="_blank" rel="noopener noreferrer" className="no-underline">
+                      <a key={s} href={withOptionalBasePath(sanitizeUrl(src.url))} target="_blank" rel="noopener noreferrer" className="no-underline">
                         {badge}
                       </a>
                     ) : (

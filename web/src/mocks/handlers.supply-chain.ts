@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 import {
   DEMO_30_SEC_MS,
@@ -23,7 +24,7 @@ export function createSupplyChainHandlers() {
   //         #9647 (SLSA), #9648 (License Compliance)
 
   // SBOM — #9644
-  http.get('/api/supply-chain/sbom/summary', async () => {
+  http.get(withBasePath('/api/supply-chain/sbom/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_workloads: 42,
@@ -36,7 +37,7 @@ export function createSupplyChainHandlers() {
     })
   }),
 
-  http.get('/api/supply-chain/sbom/documents', async () => {
+  http.get(withBasePath('/api/supply-chain/sbom/documents'), async () => {
     await delay(200)
     return HttpResponse.json([
       {
@@ -106,7 +107,7 @@ export function createSupplyChainHandlers() {
   }),
 
   // Sigstore/Cosign Signing — #9646
-  http.get('/api/supply-chain/signing/summary', async () => {
+  http.get(withBasePath('/api/supply-chain/signing/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_images: 37,
@@ -119,7 +120,7 @@ export function createSupplyChainHandlers() {
     })
   }),
 
-  http.get('/api/supply-chain/signing/images', async () => {
+  http.get(withBasePath('/api/supply-chain/signing/images'), async () => {
     await delay(200)
     return HttpResponse.json([
       { image: 'ghcr.io/vllm-project/vllm:v0.4.0', digest: 'sha256:a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4', workload: 'vllm-engine', namespace: 'inference', cluster: 'gpu-prod', signed: true, verified: true, signer: 'sigstore@github.com', keyless: true, transparency_log: true, signed_at: new Date(Date.now() - DEMO_1_DAY_MS).toISOString(), failure_reason: null },
@@ -132,7 +133,7 @@ export function createSupplyChainHandlers() {
     ])
   }),
 
-  http.get('/api/supply-chain/signing/policies', async () => {
+  http.get(withBasePath('/api/supply-chain/signing/policies'), async () => {
     await delay(150)
     return HttpResponse.json([
       { name: 'prod-east-enforce', cluster: 'prod-east', mode: 'enforce', scope: 'all namespaces', rules: 3, violations: 1 },
@@ -143,7 +144,7 @@ export function createSupplyChainHandlers() {
   }),
 
   // SLSA Provenance — #9647
-  http.get('/api/supply-chain/slsa/summary', async () => {
+  http.get(withBasePath('/api/supply-chain/slsa/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_workloads: 28,
@@ -155,7 +156,7 @@ export function createSupplyChainHandlers() {
     })
   }),
 
-  http.get('/api/supply-chain/slsa/workloads', async () => {
+  http.get(withBasePath('/api/supply-chain/slsa/workloads'), async () => {
     await delay(200)
     return HttpResponse.json([
       {
@@ -216,7 +217,7 @@ export function createSupplyChainHandlers() {
   }),
 
   // License Compliance — #9648
-  http.get('/api/supply-chain/licenses/summary', async () => {
+  http.get(withBasePath('/api/supply-chain/licenses/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_packages: 3847,
@@ -229,7 +230,7 @@ export function createSupplyChainHandlers() {
     })
   }),
 
-  http.get('/api/supply-chain/licenses/categories', async () => {
+  http.get(withBasePath('/api/supply-chain/licenses/categories'), async () => {
     await delay(150)
     return HttpResponse.json([
       { name: 'Permissive (Allowed)', count: 3214, risk: 'allowed', examples: ['MIT', 'Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 'ISC'] },
@@ -239,7 +240,7 @@ export function createSupplyChainHandlers() {
     ])
   }),
 
-  http.get('/api/supply-chain/licenses/packages', async () => {
+  http.get(withBasePath('/api/supply-chain/licenses/packages'), async () => {
     await delay(200)
     return HttpResponse.json([
       { name: 'openssl', version: '3.0.8', license: 'OpenSSL (GPL-2.0 exception)', risk: 'warn', workload: 'model-server', namespace: 'inference', cluster: 'gpu-prod', spdx_id: 'OpenSSL' },
@@ -258,7 +259,7 @@ export function createSupplyChainHandlers() {
   }),
 
   // SIEM Export — #9643
-  http.get('/api/audit/export/summary', async () => {
+  http.get(withBasePath('/api/audit/export/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_destinations: 4,
@@ -270,7 +271,7 @@ export function createSupplyChainHandlers() {
     })
   }),
 
-  http.get('/api/audit/export/destinations', async () => {
+  http.get(withBasePath('/api/audit/export/destinations'), async () => {
     await delay(200)
     return HttpResponse.json([
       {
@@ -305,7 +306,7 @@ export function createSupplyChainHandlers() {
     ])
   }),
 
-  http.get('/api/audit/export/events', async () => {
+  http.get(withBasePath('/api/audit/export/events'), async () => {
     await delay(150)
     const now = Date.now()
     return HttpResponse.json([

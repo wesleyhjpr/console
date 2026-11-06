@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * Quantum Workload Detection Banner
  *
@@ -31,7 +32,7 @@ function IBMQuantumLinks() {
       </p>
       <div className="flex gap-2 mt-1.5">
         <a
-          href={IBM_COMPOSER_URL}
+          href={withOptionalBasePath(IBM_COMPOSER_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -40,7 +41,7 @@ function IBMQuantumLinks() {
           <ExternalLink className="w-3 h-3" />
         </a>
         <a
-          href={IBM_LEARNING_URL}
+          href={withOptionalBasePath(IBM_LEARNING_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"

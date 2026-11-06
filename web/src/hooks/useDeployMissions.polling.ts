@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { clusterCacheRef, agentFetch } from './mcp/shared'
 import { kubectlProxy } from '../lib/kubectlProxy'
 import { isInClusterMode } from './useBackendHealth'
@@ -188,7 +189,7 @@ export async function pollClusterStatus(
 
   // Fall back to REST API
   try {
-    const res = await fetch(
+    const res = await appFetch(
       `/api/workloads/deploy-status/${encodeURIComponent(cluster)}/${encodeURIComponent(mission.namespace)}/${encodeURIComponent(mission.workload)}`,
       { headers: authHeaders(), signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) }
     )
@@ -269,7 +270,7 @@ export async function pollClusterStatus(
     // Fetch deploy events/logs
     let logs: string[] | undefined
     try {
-      const logRes = await fetch(
+      const logRes = await appFetch(
         `/api/workloads/deploy-logs/${encodeURIComponent(cluster)}/${encodeURIComponent(mission.namespace)}/${encodeURIComponent(mission.workload)}?tail=8`,
         { headers: authHeaders(), signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) }
       )

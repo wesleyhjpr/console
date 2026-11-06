@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { ExternalLink } from 'lucide-react'
 import { SECURITY_AI_DOC_URL, SECURITY_DOC_REPO_URL, SECURITY_DOC_URL } from './setupInstructions.constants'
 
@@ -50,7 +51,7 @@ export function SetupSecurityPosture() {
       </div>
       <div className="pt-1 flex flex-col gap-1">
         <a
-          href={SECURITY_DOC_URL}
+          href={withOptionalBasePath(SECURITY_DOC_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"
@@ -59,7 +60,7 @@ export function SetupSecurityPosture() {
           <ExternalLink className="w-3 h-3" />
         </a>
         <a
-          href={SECURITY_AI_DOC_URL}
+          href={withOptionalBasePath(SECURITY_AI_DOC_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"
@@ -68,7 +69,7 @@ export function SetupSecurityPosture() {
           <ExternalLink className="w-3 h-3" />
         </a>
         <a
-          href={SECURITY_DOC_REPO_URL}
+          href={withOptionalBasePath(SECURITY_DOC_REPO_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"

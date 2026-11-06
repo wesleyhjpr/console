@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * useMiniDashboard – state and side-effect logic for the MiniDashboard widget.
  *
@@ -259,7 +260,7 @@ export function useMiniDashboard(): MiniDashboardState {
 
     const separator = path.includes('?') ? '&' : '?'
     window.open(
-      `${targetOrigin}${path}${separator}${WIDGET_UTM_PARAMS}`,
+      withBasePath(`${targetOrigin}${path}${separator}${WIDGET_UTM_PARAMS}`),
       '_blank',
       'noopener,noreferrer'
     )

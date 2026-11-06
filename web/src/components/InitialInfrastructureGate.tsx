@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { useEffect, useReducer, type ReactNode } from 'react'
 import { AlertTriangle, Loader2, RefreshCw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -79,7 +80,7 @@ const clearStaleSessionAndRedirectToLogin = (): void => {
   safeRemove(LEGACY_STORAGE_KEY_KC_TOKEN)
   clearStoredAuthToken()
   safeRemove(STORAGE_KEY_HAS_SESSION)
-  window.location.href = LOGIN_PATH
+  window.location.href = withBasePath(LOGIN_PATH)
 }
 
 export function InitialInfrastructureGate({ children }: InitialInfrastructureGateProps) {

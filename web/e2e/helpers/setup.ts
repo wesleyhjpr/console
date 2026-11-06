@@ -59,8 +59,8 @@ import { waitForWorkloadsReady } from './waits'
 // entry points most specs import.
 // ---------------------------------------------------------------------------
 
-export async function setupDemoMode(page: Page) {
-  await mockApiFallback(page)
+export async function setupDemoMode(page: Page, basePath = '/') {
+  await mockApiFallback(page, basePath)
   // #17406 — Mock local agent as unavailable so usePersistedSettings cannot
   // restore settings from the agent and overwrite test-set localStorage values.
   await mockLocalAgentUnavailable(page)
@@ -91,7 +91,7 @@ export async function setupDemoMode(page: Page) {
     localStorage.setItem('kc-agent-setup-dismissed', 'true')
   })
   // Mock /api/me so AuthProvider has a deterministic user without a backend.
-  await mockApiMe(page)
+  await mockApiMe(page, basePath)
 }
 
 // ---------------------------------------------------------------------------

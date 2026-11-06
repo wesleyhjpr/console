@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 /**
  * Search / location management UI for the Weather card: city geocoding
  * search, current-location save/remove, saved-location list, and the
@@ -62,7 +63,7 @@ export function WeatherSearch({
 
     setIsSearching(true)
     try {
-      const response = await fetch(
+      const response = await appFetch(
         `${WEATHER_API.geocodingUrl}?name=${encodeURIComponent(query)}&count=5&language=en&format=json`,
         { signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) }
       )

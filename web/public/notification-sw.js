@@ -20,7 +20,7 @@ self.addEventListener('notificationclick', (event) => {
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
       // Try to find an existing tab with the same origin
       for (const client of windowClients) {
-        if (client.url.startsWith(self.location.origin)) {
+        if (client.url.startsWith(self.registration.scope)) {
           client.navigate(url)
           return client.focus()
         }

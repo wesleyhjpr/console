@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import React from 'react'
 import { ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -96,7 +97,7 @@ export const QuantumCircuitViewer: React.FC<QuantumCircuitViewerProps> = ({ isDe
 
   const handlePopout = async () => {
     try {
-      const response = await fetch(CIRCUIT_POPOUT_URL, {
+      const response = await appFetch(CIRCUIT_POPOUT_URL, {
         signal: AbortSignal.timeout(CIRCUIT_POPOUT_FETCH_TIMEOUT_MS),
       })
       if (!response.ok) {

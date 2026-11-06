@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Hook for fetching GitHub-sourced reward data.
  * Calls the Netlify function on console.kubestellar.io (10-min Blob cache)
@@ -166,7 +167,7 @@ async function fetchRecentContributions(
   for (let page = 1; page <= MAX_CONTRIBUTION_PAGES; page += 1) {
     const url = `${GITHUB_SEARCH_API}?q=${query}&sort=updated&per_page=${CONTRIBUTIONS_PER_PAGE}&page=${page}`
 
-    const res = await fetch(url, {
+    const res = await appFetch(url, {
       headers: { Accept: 'application/vnd.github.v3+json' },
       signal: parentSignal ?? AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
     })
@@ -235,7 +236,7 @@ export function useGitHubRewards() {
     setIsLoading(true)
     try {
       const [rewardsRes, contributions] = await Promise.all([
-        fetch(`${REWARDS_API_BASE}/api/rewards/github?login=${encodeURIComponent(githubLogin)}`, {
+        appFetch(`${REWARDS_API_BASE}/api/rewards/github?login=${encodeURIComponent(githubLogin)}`, {
           signal: signal ?? AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
         }),
         fetchRecentContributions(githubLogin, signal).catch(() => [] as GitHubContribution[]),

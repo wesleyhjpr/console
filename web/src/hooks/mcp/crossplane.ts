@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isNetlifyDeployment, isDemoMode } from '../../lib/demoMode'
 import { useDemoMode } from '../useDemoMode'
@@ -212,7 +213,7 @@ export function useCrossplaneManagedResources(cluster?: string) {
           return
         }
 
-        const response = await fetch(url, { signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
+        const response = await appFetch(url, { signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`)
         }

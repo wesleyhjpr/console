@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Hook for fetching bonus point awards from [bonus] issues.
  * Queries /api/rewards/bonus?login=X which scans GitHub issues
@@ -85,7 +86,7 @@ export function useBonusPoints() {
     setIsLoading(true)
     try {
       const apiBase = import.meta.env.VITE_API_BASE_URL || BACKEND_DEFAULT_URL
-      const res = await fetch(`${apiBase}/api/rewards/bonus?login=${encodeURIComponent(githubLogin)}`, {
+      const res = await appFetch(`${apiBase}/api/rewards/bonus?login=${encodeURIComponent(githubLogin)}`, {
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })
       if (res.status === 404) {

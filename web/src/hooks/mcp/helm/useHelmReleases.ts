@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isNetlifyDeployment, isDemoMode } from '../../../lib/demoMode'
 import { fetchSSE } from '../../../lib/sseClient'
@@ -173,7 +174,7 @@ export function useHelmReleases(cluster?: string) {
       if (!sseSucceeded) {
         const headers: Record<string, string> = { 'Content-Type': 'application/json' }
         headers['Authorization'] = `Bearer ${token}`
-        const response = await fetch(url, { method: 'GET', headers, signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
+        const response = await appFetch(url, { method: 'GET', headers, signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
         if (!response.ok) {
           throw new Error(`API error: ${response.status}`)
         }

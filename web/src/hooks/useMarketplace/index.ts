@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useEffect, useRef, useState } from 'react'
 import { FETCH_EXTERNAL_TIMEOUT_MS } from '../../lib/constants/network'
 import { MS_PER_DAY } from '../../lib/constants/time'
@@ -123,7 +124,7 @@ export function useAuthorProfile(handle?: string, enabled = false): AuthorProfil
 
     const fetchPRCount = async (repo: string): Promise<number> => {
       try {
-        const response = await fetch(
+        const response = await appFetch(
           `https://api.github.com/search/issues?q=author:${encodeURIComponent(handle)}+repo:${repo}+type:pr+is:merged&per_page=1`,
           { signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) }
         )

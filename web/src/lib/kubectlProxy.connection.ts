@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from './basePath'
 import { isNetlifyDeployment } from './demoMode'
 import { isInClusterMode } from '../hooks/useBackendHealth'
 import { getWsAuthParams } from './utils/wsAuth'
@@ -51,7 +52,7 @@ export class KubectlProxyConnection {
     }
 
     try {
-      const res = await fetch('/health', {
+      const res = await appFetch('/health', {
         method: 'GET',
         headers: { Accept: 'application/json' },
         signal: AbortSignal.timeout(BACKEND_HEALTH_CHECK_TIMEOUT_MS),
@@ -115,7 +116,7 @@ export class KubectlProxyConnection {
         void (async () => {
           try {
             const { url, protocols } = await getWsAuthParams(wsURL)
-            this.ws = new WebSocket(url, protocols)
+            this.ws = new WebSocket(withBasePath(url), protocols)
             connectTimeout = setTimeout(() => {
               try {
                 this.ws?.close()

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useCardExpanded } from './CardWrapper'
 import {
   ExternalLink, Settings, X, AlertTriangle,
@@ -247,7 +248,7 @@ export function IframeEmbed({ config }: { config?: IframeEmbedConfig }) {
             {!shouldUseDemoData && url ? (
               <iframe
                 ref={iframeRef}
-                src={url}
+                src={withOptionalBasePath(url)}
                 title={title}
                 width="100%"
                 height={displayHeight}

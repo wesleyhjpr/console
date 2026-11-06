@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { agentFetch } from '../shared'
 import { MCP_HOOK_TIMEOUT_MS, LOCAL_AGENT_HTTP_URL } from '../../../lib/constants/network'
 import { isClusterModeBackend } from '../../../lib/cache/fetcherUtils'
@@ -56,7 +57,7 @@ export function useLimitRanges(cluster?: string, namespace?: string) {
 // Create or update a ResourceQuota
 export async function createOrUpdateResourceQuota(spec: ResourceQuotaSpec): Promise<ResourceQuota> {
   if (isClusterModeBackend()) {
-    const response = await fetch('/api/mcp/resourcequotas', {
+    const response = await appFetch('/api/mcp/resourcequotas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(spec),
@@ -82,7 +83,7 @@ export async function deleteResourceQuota(cluster: string, namespace: string, na
   const params = new URLSearchParams({ cluster, namespace, name })
 
   if (isClusterModeBackend()) {
-    const response = await fetch(`/api/mcp/resourcequotas?${params.toString()}`, {
+    const response = await appFetch(`/api/mcp/resourcequotas?${params.toString()}`, {
       method: 'DELETE',
       signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
     })

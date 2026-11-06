@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 /**
  * Pod Exec Terminal Session Hook
  *
@@ -261,7 +262,7 @@ export function useExecSession(): UseExecSessionResult {
     let ws: WebSocket
     try {
       const { url: authUrl, protocols } = await getWsAuthParams(wsUrl)
-      ws = new WebSocket(authUrl, protocols)
+      ws = new WebSocket(withBasePath(authUrl), protocols)
     } catch (err: unknown) {
       staleDetection.stop()
       const message = err instanceof Error ? err.message : 'Failed to create WebSocket connection'

@@ -1,3 +1,4 @@
+import { withBasePath, withOptionalBasePath } from '../../../lib/basePath'
 /**
  * RecentFailures — lists the last N failed GitHub Actions runs across the
  * tracked repos, with the first failing step and drill-down to the log.
@@ -171,7 +172,7 @@ export function RecentFailures() {
                       <button
                         type="button"
                         onClick={() => window.open(
-                          sanitizeUrl(r.pullRequests![0].url || `https://github.com/${r.repo}/pull/${r.pullRequests![0].number}`),
+                          withBasePath(sanitizeUrl(r.pullRequests![0].url || `https://github.com/${r.repo}/pull/${r.pullRequests![0].number}`)),
                           '_blank',
                           'noopener,noreferrer',
                         )}
@@ -229,7 +230,7 @@ export function RecentFailures() {
                       <RefreshCw className={cn('w-3 h-3', mutating === r.runId && 'animate-spin')} /> Re-run
                     </button>
                     <a
-                      href={sanitizeUrl(r.htmlUrl)}
+                      href={withOptionalBasePath(sanitizeUrl(r.htmlUrl))}
                       target="_blank"
                       rel="noreferrer noopener"
                       className="inline-flex items-center gap-1 px-2 py-0.5 rounded hover:bg-secondary/50 text-muted-foreground hover:text-foreground ml-1"

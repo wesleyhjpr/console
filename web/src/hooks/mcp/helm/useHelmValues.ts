@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isDemoMode } from '../../../lib/demoMode'
 import { useDemoMode } from '../../useDemoMode'
@@ -82,7 +83,7 @@ export function useHelmValues(cluster?: string, release?: string, namespace?: st
       // Use direct fetch to bypass the global circuit breaker
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       headers['Authorization'] = `Bearer ${token}`
-      const response = await fetch(url, {
+      const response = await appFetch(url, {
         method: 'GET',
         headers,
         signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
@@ -209,7 +210,7 @@ export function useHelmValues(cluster?: string, release?: string, namespace?: st
           // Use direct fetch to bypass the global circuit breaker
           const headers: Record<string, string> = { 'Content-Type': 'application/json' }
           headers['Authorization'] = `Bearer ${token}`
-          const response = await fetch(url, {
+          const response = await appFetch(url, {
             method: 'GET',
             headers,
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })

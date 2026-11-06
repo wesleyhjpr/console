@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import type { CSSProperties } from 'react'
 import {
   RefreshCw, AlertCircle, Package, ExternalLink, Heart,
@@ -180,7 +181,7 @@ export function MarketplaceContributeFooter({ helpWanted }: { helpWanted: number
       <div className="flex items-center gap-2 shrink-0">
         {helpWanted > 0 && (
           <a
-            href={ISSUES_URL}
+            href={withOptionalBasePath(ISSUES_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 rounded-md transition-colors"
@@ -190,7 +191,7 @@ export function MarketplaceContributeFooter({ helpWanted }: { helpWanted: number
           </a>
         )}
         <a
-          href={CONTRIBUTE_URL}
+          href={withOptionalBasePath(CONTRIBUTE_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-primary/10 hover:bg-primary/20 text-primary rounded-md transition-colors"

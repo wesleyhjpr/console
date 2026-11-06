@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 // demoData-exempt: presentational piece; demo data is supplied by the parent NightlyReleasePulse card.
 import { useState, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom'
@@ -61,7 +62,7 @@ export function RunDot({ dot }: { dot: DotInfo }) {
     <>
       <div ref={dotRef} className="group relative" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
         {dot.htmlUrl && dot.htmlUrl !== '#' && !isEmpty ? (
-          <a href={sanitizeUrl(dot.htmlUrl)} target="_blank" rel="noopener noreferrer">
+          <a href={withOptionalBasePath(sanitizeUrl(dot.htmlUrl))} target="_blank" rel="noopener noreferrer">
             <div className={cn('w-3 h-3 rounded-full transition-all', dotColor(dot.conclusion),
               'group-hover:ring-2 group-hover:ring-white/30')} />
           </a>
@@ -78,7 +79,7 @@ export function RunDot({ dot }: { dot: DotInfo }) {
               {' '}&middot; {dot.date}
             </div>
             {dot.htmlUrl && dot.htmlUrl !== '#' && (
-              <a href={sanitizeUrl(dot.htmlUrl)} target="_blank" rel="noopener noreferrer"
+              <a href={withOptionalBasePath(sanitizeUrl(dot.htmlUrl))} target="_blank" rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 mt-0.5"
                 onClick={(e) => e.stopPropagation()}>
                 View on GitHub <ExternalLink size={8} />
@@ -177,7 +178,7 @@ export function WorkflowRow({ wf }: { wf: MatrixWorkflow }) {
           <ClipboardCheck className="w-3 h-3" />
         </button>
       )}
-      <a href={`${WORKFLOW_URL_BASE}/${wf.repo}/actions`} target="_blank" rel="noopener noreferrer"
+      <a href={withOptionalBasePath(`${WORKFLOW_URL_BASE}/${wf.repo}/actions`)} target="_blank" rel="noopener noreferrer"
         className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity p-0.5 rounded hover:bg-secondary"
         onClick={(e) => e.stopPropagation()}>
         <ExternalLink size={12} className="text-muted-foreground" />

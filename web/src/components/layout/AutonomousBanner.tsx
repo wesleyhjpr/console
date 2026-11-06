@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { ExternalLink, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { safeSetItem } from '../../lib/utils/localStorage'
@@ -18,7 +19,7 @@ export function AutonomousBanner({ onDismiss }: { onDismiss: () => void }) {
       </div>
       <div className="flex shrink-0 items-center gap-1 md:gap-2">
         <a
-          href={HIVE_DASHBOARD_URL}
+          href={withOptionalBasePath(HIVE_DASHBOARD_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:inline-flex items-center gap-1 rounded bg-purple-500/20 px-2 py-1 text-xs text-purple-300 transition-colors whitespace-nowrap hover:bg-purple-500/30"
@@ -27,7 +28,7 @@ export function AutonomousBanner({ onDismiss }: { onDismiss: () => void }) {
           <ExternalLink className="w-3 h-3" aria-hidden="true" />
         </a>
         <a
-          href={HIVE_DASHBOARD_URL}
+          href={withOptionalBasePath(HIVE_DASHBOARD_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs text-purple-300 underline underline-offset-2 whitespace-nowrap sm:hidden"

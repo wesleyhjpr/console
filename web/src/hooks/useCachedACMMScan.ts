@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * ACMM Scan Hook
  *
@@ -187,7 +188,7 @@ function getDemoFallback(repo: string): boolean {
 
 async function fetchACMMScan(repo: string, force: boolean): Promise<ACMMScanData> {
   const qs = force ? `&force=true` : ''
-  const res = await fetch(`${API_PATH}?repo=${encodeURIComponent(repo)}${qs}`, {
+  const res = await appFetch(`${API_PATH}?repo=${encodeURIComponent(repo)}${qs}`, {
     signal: AbortSignal.timeout(ACMM_SCAN_TIMEOUT_MS),
   })
   if (!res.ok) {

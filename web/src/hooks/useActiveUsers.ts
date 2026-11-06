@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from '../lib/basePath'
 import { useState, useEffect } from 'react'
 import { getDemoMode, isDemoModeForced } from './useDemoMode'
 import { getStoredAuthToken, getStoredAuthTokenSync } from '../lib/authToken'
@@ -168,7 +169,7 @@ async function sendHeartbeat() {
   heartbeatRequestController = controller
 
   try {
-    await fetch('/api/active-users', {
+    await appFetch('/api/active-users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
       body: JSON.stringify({ sessionId: getSessionId() }),
@@ -261,7 +262,7 @@ async function startPresenceConnection() {
   async function connect() {
     try {
       const { url, protocols } = await getWsAuthParams(wsUrl)
-      presenceWs = new WebSocket(url, protocols)
+      presenceWs = new WebSocket(withBasePath(url), protocols)
     } catch {
       presenceStarted = false
       return
@@ -419,7 +420,7 @@ async function fetchActiveUsers(bypassThrottle = false) {
 
   activeUsersFetchPromise = (async () => {
     try {
-      const resp = await fetch('/api/active-users', { signal: controller.signal })
+      const resp = await appFetch('/api/active-users', { signal: controller.signal })
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
       // Guard: if the response is HTML (e.g. Netlify SPA catch-all returning
       // index.html because MSW hasn't intercepted yet), skip JSON parsing

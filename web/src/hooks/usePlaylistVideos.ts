@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect } from 'react'
 import { MS_PER_MINUTE } from '../lib/constants/time'
 
@@ -71,7 +72,7 @@ export function usePlaylistVideos() {
 
     async function fetchPlaylist() {
       try {
-        const resp = await fetch('/api/youtube/playlist', {
+        const resp = await appFetch('/api/youtube/playlist', {
           signal: AbortSignal.timeout(PLAYLIST_FETCH_TIMEOUT_MS),
         })
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`)

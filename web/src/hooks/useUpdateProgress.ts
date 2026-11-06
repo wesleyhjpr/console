@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from '../lib/basePath'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import type { UpdateProgress, UpdateStepEntry } from '../types/updates'
 import { LOCAL_AGENT_WS_URL, FETCH_DEFAULT_TIMEOUT_MS, MAX_WS_RECONNECT_ATTEMPTS, getWsBackoffDelay, POLL_INTERVAL_FAST_MS } from '../lib/constants/network'
@@ -190,7 +191,7 @@ export function useUpdateProgress() {
         }, FETCH_DEFAULT_TIMEOUT_MS)
 
         try {
-          const resp = await fetch('/health', { cache: 'no-store', signal: controller.signal })
+          const resp = await appFetch('/health', { cache: 'no-store', signal: controller.signal })
           if (resp.ok) {
             const data = await resp.json()
             // The loading server returns {"status":"starting"} while the backend
@@ -223,7 +224,7 @@ export function useUpdateProgress() {
     async function connect(attemptNumber = 0) {
       try {
         const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-        const ws = new WebSocket(url, protocols)
+        const ws = new WebSocket(withBasePath(url), protocols)
         wsRef.current = ws
         reconnectAttemptsRef.current = attemptNumber
 

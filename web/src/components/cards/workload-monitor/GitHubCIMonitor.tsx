@@ -1,3 +1,4 @@
+import { withBasePath } from '../../../lib/basePath'
 import { useState, useMemo, useImperativeHandle, type Ref } from 'react'
 import { GitBranch, AlertTriangle, Key, Settings, Plus, X, Check } from 'lucide-react'
 import { Button } from '../../ui/Button'
@@ -266,7 +267,7 @@ export function GitHubCIMonitor({ config, ref }: GitHubCIMonitorProps & { ref?: 
             No GitHub token configured — showing sample data.
           </p>
           <a
-            href="/settings#github-token"
+            href={withBasePath("/settings#github-token")}
             className="text-xs px-2 py-0.5 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 rounded transition-colors whitespace-nowrap"
           >
             Add Token

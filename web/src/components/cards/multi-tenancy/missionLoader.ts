@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 /**
  * Load and import missions from console-kb for multi-tenancy cards.
  *
@@ -45,7 +46,7 @@ export async function loadMissionPrompt(
 
   try {
     const url = `/api/missions/file?path=${encodeURIComponent(path)}`
-    const response = await fetch(url, {
+    const response = await appFetch(url, {
       signal: AbortSignal.timeout(MISSION_FETCH_TIMEOUT_MS),
     })
 
@@ -149,7 +150,7 @@ export async function loadMissionExport(
 
   try {
     const url = `/api/missions/file?path=${encodeURIComponent(path)}`
-    const response = await fetch(url, {
+    const response = await appFetch(url, {
       signal: AbortSignal.timeout(MISSION_FETCH_TIMEOUT_MS),
     })
 

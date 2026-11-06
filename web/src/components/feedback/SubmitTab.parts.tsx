@@ -1,3 +1,4 @@
+import { withBasePath, withOptionalBasePath } from '../../lib/basePath'
 import { Lock, AlertTriangle, FileText, Monitor, BookOpen, Bug, Sparkles } from 'lucide-react'
 import { ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -43,7 +44,7 @@ export function AuthGateBanner({ directIssueUrl, onShowLoginPrompt }: AuthGateBa
             {isDemoModeForced ? t('feedback.loginWithGitHub') : t('feedback.setupOAuth')}
           </Button>
           <a
-            href={sanitizeUrl(directIssueUrl)}
+            href={withOptionalBasePath(sanitizeUrl(directIssueUrl))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-border text-foreground hover:bg-secondary/50 transition-colors"
@@ -79,7 +80,7 @@ export function FeedbackTokenMissingBanner({ targetRepo, description }: Feedback
         </ul>
         <div className="text-muted-foreground text-xs mt-1.5 flex flex-wrap gap-1 items-center">
           <a
-            href={sanitizeUrl(buildDirectIssueUrl(targetRepo, description))}
+            href={withOptionalBasePath(sanitizeUrl(buildDirectIssueUrl(targetRepo, description)))}
             target="_blank"
             rel="noopener noreferrer"
             className="text-purple-400 hover:text-purple-300 underline underline-offset-2"
@@ -89,7 +90,7 @@ export function FeedbackTokenMissingBanner({ targetRepo, description }: Feedback
           <span>{' · '}</span>
           <button
             type="button"
-            onClick={() => window.open(GITHUB_TOKEN_CREATE_URL, '_blank', 'noopener,noreferrer')}
+            onClick={() => window.open(withBasePath(GITHUB_TOKEN_CREATE_URL), '_blank', 'noopener,noreferrer')}
             className="text-purple-400 hover:text-purple-300 underline underline-offset-2"
           >
             Create token on GitHub
@@ -97,7 +98,7 @@ export function FeedbackTokenMissingBanner({ targetRepo, description }: Feedback
           <span>{' · '}</span>
           <button
             type="button"
-            onClick={() => { window.location.href = getSettingsWithHash('github-token') }}
+            onClick={() => { window.location.href = withBasePath(getSettingsWithHash('github-token')) }}
             className="text-purple-400 hover:text-purple-300 underline underline-offset-2 p-0 h-auto bg-transparent border-none"
           >
             Console Settings

@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * Submit to KB Dialog
  *
@@ -132,9 +133,9 @@ export function SubmitToKBDialog({ resolution, isOpen, onClose }: SubmitToKBDial
           labels: ['new-mission', missionClass],
         })
 
-        window.open(issueUrl, '_blank', 'noopener,noreferrer')
+        window.open(withBasePath(issueUrl), '_blank', 'noopener,noreferrer')
       } else {
-        window.open(url, '_blank', 'noopener,noreferrer')
+        window.open(withBasePath(url), '_blank', 'noopener,noreferrer')
       }
 
       onClose()

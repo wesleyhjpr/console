@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * ArgoCD Data Hooks with real backend API and mock data fallback.
  *
@@ -174,7 +175,7 @@ async function fetchArgoApplications(): Promise<ArgoApplication[]> {
   const ctrl = new AbortController()
   const tid = setTimeout(() => ctrl.abort(), FETCH_DEFAULT_TIMEOUT_MS)
   try {
-    const res = await fetch('/api/gitops/argocd/applications', {
+    const res = await appFetch('/api/gitops/argocd/applications', {
       signal: ctrl.signal,
       headers: authHeaders() })
     if (!res.ok) {
@@ -194,7 +195,7 @@ async function fetchArgoHealth(): Promise<ArgoHealthData> {
   const ctrl = new AbortController()
   const tid = setTimeout(() => ctrl.abort(), FETCH_DEFAULT_TIMEOUT_MS)
   try {
-    const res = await fetch('/api/gitops/argocd/health', {
+    const res = await appFetch('/api/gitops/argocd/health', {
       signal: ctrl.signal,
       headers: authHeaders() })
     if (!res.ok) {
@@ -214,7 +215,7 @@ async function fetchArgoSync(): Promise<ArgoSyncData> {
   const ctrl = new AbortController()
   const tid = setTimeout(() => ctrl.abort(), FETCH_DEFAULT_TIMEOUT_MS)
   try {
-    const res = await fetch('/api/gitops/argocd/sync', {
+    const res = await appFetch('/api/gitops/argocd/sync', {
       signal: ctrl.signal,
       headers: authHeaders() })
     if (!res.ok) {
@@ -517,7 +518,7 @@ async function fetchArgoApplicationSets(): Promise<ArgoApplicationSet[]> {
   const ctrl = new AbortController()
   const tid = setTimeout(() => ctrl.abort(), FETCH_DEFAULT_TIMEOUT_MS)
   try {
-    const res = await fetch('/api/gitops/argocd/applicationsets', {
+    const res = await appFetch('/api/gitops/argocd/applicationsets', {
       signal: ctrl.signal,
       headers: authHeaders() })
     if (!res.ok) {

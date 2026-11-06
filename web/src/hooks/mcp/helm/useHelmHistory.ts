@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isDemoMode } from '../../../lib/demoMode'
 import { useDemoMode } from '../../useDemoMode'
@@ -71,7 +72,7 @@ export function useHelmHistory(cluster?: string, release?: string, namespace?: s
       // Use direct fetch to bypass the global circuit breaker
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }
       headers['Authorization'] = `Bearer ${token}`
-      const response = await fetch(url, { method: 'GET', headers, signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
+      const response = await appFetch(url, { method: 'GET', headers, signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`)
       }

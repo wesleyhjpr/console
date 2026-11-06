@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useCallback, useEffect } from 'react'
 import { useAuth } from '../lib/auth'
 import { useCache } from '../lib/cache'
@@ -125,7 +126,7 @@ async function fetchHistogramWithRetry(
   attempt: number = 0,
   maxAttempts: number = 3,
 ): Promise<HistogramData> {
-  const response = await fetch(`${HISTOGRAM_ENDPOINT}?sort=${sortBy}`, {
+  const response = await appFetch(`${HISTOGRAM_ENDPOINT}?sort=${sortBy}`, {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),

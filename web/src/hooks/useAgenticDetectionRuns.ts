@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * useAgenticDetectionRuns — fetch detection run data from the active
  * GitHub "[aw] Detection Runs" tracking issue.
@@ -71,7 +72,7 @@ const DEMO_DATA: DetectionRunsData = {
 }
 
 async function fetchDetectionRuns(): Promise<DetectionRunsData> {
-  const resp = await fetch('/api/agentic/detection-runs', {
+  const resp = await appFetch('/api/agentic/detection-runs', {
     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   })
   if (!resp.ok) {

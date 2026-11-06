@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 /**
  * Pure async data-fetch helpers for MissionBrowser tree navigation.
  *
@@ -55,7 +56,7 @@ export function resetCachedKubaraConfig(): void {
 export async function getKubaraConfig(): Promise<KubaraConfig> {
   if (cachedKubaraConfig) return cachedKubaraConfig
   try {
-    const res = await fetch('/api/kubara/config', { signal: AbortSignal.timeout(5_000) })
+    const res = await appFetch('/api/kubara/config', { signal: AbortSignal.timeout(5_000) })
     if (res.ok) {
       const cfg = (await res.json()) as { repo?: string; path?: string }
       const [owner, name] = (cfg.repo ?? '').split('/')
@@ -340,7 +341,7 @@ export async function fetchNodeFileContent(node: TreeNode, signal?: AbortSignal)
       return atob(ghFile.content.replace(/\n/g, ''))
     }
     if (ghFile.download_url) {
-      const rawResp = await fetch(ghFile.download_url, {
+      const rawResp = await appFetch(ghFile.download_url, {
         signal: getExternalFetchSignal(signal),
       })
       return await rawResp.text()

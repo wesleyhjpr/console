@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * PayloadCard — A single CNCF project card in the payload grid.
  * Shows GitHub avatar, maturity badge, category gradient, priority, and remove button.
@@ -114,7 +115,7 @@ export function PayloadCard({ project, onRemove, onUpdatePriority, onHover, onCl
           <div className="shrink-0 w-10 h-10 rounded-lg bg-white/90 dark:bg-white/10 shadow-xs flex items-center justify-center overflow-hidden">
             {!imgFailed ? (
               <img
-                src={getAvatarUrl(project)}
+                src={withOptionalBasePath(getAvatarUrl(project))}
                 alt={`${project.displayName} payload image`}
                 className="w-8 h-8 rounded object-contain"
                 onError={() => setImgFailed(true)}

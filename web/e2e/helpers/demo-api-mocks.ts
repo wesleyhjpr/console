@@ -45,10 +45,10 @@ const LOCAL_AGENT_UNAVAILABLE_MESSAGE = 'agent not running'
  * multiple times — Playwright will overwrite the handler. Tests that need
  * to simulate an unauthenticated state should NOT call this helper.
  */
-export async function mockApiMe(page: Page) {
+export async function mockApiMe(page: Page, basePath = '/') {
   await page.route('**/api/**', (route) => {
     const { pathname } = new URL(route.request().url())
-    if (pathname !== '/api/me') return route.fallback()
+    if (pathname !== `${basePath}api/me`) return route.fallback()
     return route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -99,13 +99,13 @@ export async function mockLocalAgentUnavailable(page: Page) {
  *
  * Register BEFORE specific mocks (Playwright matches in reverse order).
  */
-export async function mockApiFallback(page: Page) {
+export async function mockApiFallback(page: Page, basePath = '/') {
   // Mock the root /health endpoint. Omitting enabled_dashboards means all
   // dashboards are shown (applyDashboardFilter only filters when the array
-  // is present and non-empty). Only matches the root-level path.
+  // is present and non-empty). Match only this deployment's health route.
   await page.route('**/health', (route) => {
     const url = new URL(route.request().url())
-    if (url.pathname !== '/health') return route.fallback()
+    if (url.pathname !== `${basePath}health`) return route.fallback()
     return route.fulfill({
       status: 200,
       contentType: 'application/json',

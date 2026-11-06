@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { memo, useState, useRef, useEffect, useCallback, type KeyboardEvent, type MutableRefObject } from 'react'
 import {
   Folder, FolderOpen, FileJson, FileCode, FileText, ChevronRight, ChevronDown,
@@ -256,7 +257,7 @@ export const TreeNodeItem = memo(function TreeNodeItem({
                 <>
                   <span className="w-3.5 shrink-0" />
                   <img
-                    src={`https://github.com/${projectOrg}.png?size=32`}
+                    src={withOptionalBasePath(`https://github.com/${projectOrg}.png?size=32`)}
                     alt={projectOrg}
                     className="w-4 h-4 rounded-sm shrink-0"
                     loading="lazy"

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
@@ -189,7 +190,7 @@ export function DeveloperSetupDialog({ isOpen, onClose }: DeveloperSetupDialogPr
       <BaseModal.Footer showKeyboardHints={false}>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <a
-            href={REPO_URL}
+            href={withOptionalBasePath(REPO_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors"

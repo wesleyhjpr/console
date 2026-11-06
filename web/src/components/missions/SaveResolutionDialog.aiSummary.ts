@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * AI summary generation for SaveResolutionDialog.
  *
@@ -186,7 +187,7 @@ function extractLastJsonObject(content: string): string | null {
 export async function generateAISummary(mission: Mission): Promise<AISummary> {
   const { url: wsUrl, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(wsUrl, protocols)
+    const ws = new WebSocket(withBasePath(wsUrl), protocols)
 
     let responseContent = ''
     // #9162 — Track whether the connection ever opened. If the agent closes

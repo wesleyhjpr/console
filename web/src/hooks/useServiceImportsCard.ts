@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * ServiceImports Card Data Hook with real backend API and demo data fallback
  *
@@ -173,7 +174,7 @@ export function useServiceImportsCard(): UseServiceImportsCardResult {
     }
 
     try {
-      const res = await fetch('/api/mcs/imports', {
+      const res = await appFetch('/api/mcs/imports', {
         headers: authHeaders(),
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

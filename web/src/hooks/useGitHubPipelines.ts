@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * useGitHubPipelines — shared data hooks for the /ci-cd pipeline cards.
  *
@@ -331,7 +332,7 @@ export const DEMO_FAILURES: FailuresPayload = {
 
 async function fetchView<T>(params: URLSearchParams): Promise<T> {
   const url = `/api/github-pipelines?${params.toString()}`
-  const res = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
+  const res = await appFetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   // Guard against non-JSON responses (e.g. HTML error pages from proxies)
   // that cause unhandled SyntaxError rejections (#10092).
@@ -520,7 +521,7 @@ export function usePipelineMutations() {
     async (op: 'rerun' | 'cancel', repo: string, runId: number): Promise<MutationResult> => {
       const p = new URLSearchParams({ view: 'mutate', op, repo, run: String(runId) })
       try {
-        const res = await fetch(`/api/github-pipelines?${p.toString()}`, {
+        const res = await appFetch(`/api/github-pipelines?${p.toString()}`, {
           method: 'POST',
           headers: { 'X-Requested-With': 'XMLHttpRequest' },
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
@@ -546,7 +547,7 @@ export async function fetchPipelineLog(
 ): Promise<{ log: string; lines: number; truncatedFrom: number } | { error: string }> {
   const p = new URLSearchParams({ view: 'log', repo, job: String(jobId) })
   try {
-    const res = await fetch(`/api/github-pipelines?${p.toString()}`, {
+    const res = await appFetch(`/api/github-pipelines?${p.toString()}`, {
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     })
     // Guard against non-JSON responses (#10092)

@@ -4,6 +4,7 @@ import istanbul from 'vite-plugin-istanbul'
 import { compression } from 'vite-plugin-compression2'
 import { execSync } from 'child_process'
 import path from 'path'
+import { loadEnv } from 'vite'
 
 const isE2ECoverage = process.env.VITE_COVERAGE === 'true'
 
@@ -32,7 +33,9 @@ function getGitCommitHash(): string {
 }
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, command }) => ({
+  // Relative chunks, CSS and worker URLs let the server select the public path at runtime.
+  base: command === 'build' ? './' : loadEnv(mode, process.cwd(), 'VITE_').VITE_BASE || '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -72,6 +75,22 @@ export default defineConfig(({ mode }) => ({
       name: 'inject-build-id',
       transformIndexHtml(html: string) {
         return html.replace('__COMMIT_HASH__', process.env.VITE_COMMIT_HASH || getGitCommitHash())
+      },
+    },
+    {
+      name: 'console-base-path',
+      transformIndexHtml: {
+        order: 'post',
+        handler(html: string) {
+          const base = loadEnv(mode, process.cwd(), 'VITE_').VITE_BASE || '/'
+          if (!/^\/(?:[A-Za-z0-9_~-]+(?:\.[A-Za-z0-9_~-]+)*\/?)*$/.test(base)) {
+            throw new Error('VITE_BASE must be an absolute URL path with safe path segments')
+          }
+          const normalized = base.endsWith('/') ? base : `${base}/`
+          return html
+            .replace(/(<meta name="console-base-path" content=")[^"]*"/, `$1${normalized}"`)
+            .replace(/((?:src|href)=")\.\//g, `$1${normalized}`)
+        },
       },
     },
     // Pre-compress assets at build time — avoids chunked encoding on slow networks

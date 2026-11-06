@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isNetlifyDeployment, isDemoMode } from '../../lib/demoMode'
 import { useDemoMode } from '../useDemoMode'
@@ -189,7 +190,7 @@ export function useBuildpackImages(cluster?: string) {
           headers['Authorization'] = `Bearer ${token}`
         }
 
-        const response = await fetch(url, { method: 'GET', headers, signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
+        const response = await appFetch(url, { method: 'GET', headers, signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS) })
         if (response.status === 404) {
           // Endpoint not yet available; treat as empty list
           const newImages: BuildpackImage[] = []

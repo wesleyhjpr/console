@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 /**
  * ProjectNode — Circle node in the Flight Plan SVG representing a CNCF project.
  * GitHub avatar icon, full label, status indicator. Tooltip rendered by parent as HTML overlay.
@@ -269,7 +270,7 @@ export function ProjectNode({
         >
           {!imgFailed ? (
             <img
-              src={getAvatarUrl(name)}
+              src={withOptionalBasePath(getAvatarUrl(name))}
               alt={`${displayName} project icon`}
               style={{
                 width: iconSize,

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { memo } from 'react'
 import { Rss, ExternalLink, Clock, ArrowUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -64,7 +65,7 @@ export const FeedItemsList = memo(function FeedItemsList({
       {paginatedItems.map((item) => (
         <a
           key={item.id}
-          href={sanitizeUrl(normalizeRedditLink(item.link))}
+          href={withOptionalBasePath(sanitizeUrl(normalizeRedditLink(item.link)))}
           target="_blank"
           rel="noopener noreferrer"
           className="block p-3 rounded-lg bg-secondary/20 hover:bg-secondary/40 border border-border/50 transition-colors group"
@@ -73,7 +74,7 @@ export const FeedItemsList = memo(function FeedItemsList({
             {/* Thumbnail for Reddit posts */}
             {item.thumbnail && item.thumbnail.startsWith('http') && (
               <img
-                src={item.thumbnail}
+                src={withOptionalBasePath(item.thumbnail)}
                 alt={item.title || 'Feed item thumbnail'}
                 className="w-16 h-16 object-cover rounded shrink-0"
                 loading="lazy"

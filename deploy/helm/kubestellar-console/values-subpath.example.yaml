@@ -1,0 +1,23 @@
+frontendConfigMap: kubestellar-console-subpath
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-cookie-path: "/ /kubestellar/"
+    nginx.ingress.kubernetes.io/proxy-redirect-from: "~^(/.*)$"
+    nginx.ingress.kubernetes.io/proxy-redirect-to: /kubestellar$1
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  hosts:
+    - host: domain.com
+      paths:
+        - path: /kubestellar(/|$)(.*)
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: domain-com-tls
+      hosts:
+        - domain.com

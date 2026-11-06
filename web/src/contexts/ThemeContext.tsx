@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { useState, useEffect, useLayoutEffect, useMemo, useCallback, type ReactNode } from 'react'
 import { Theme, themes, getAllThemes, getThemeById, getDefaultTheme } from '../lib/themes'
 import { emitThemeChanged } from '../lib/analytics'
@@ -37,7 +38,7 @@ function loadThemeFont(fontFamily: string) {
   loadedFonts.add(fontName)
   const link = document.createElement('link')
   link.rel = 'stylesheet'
-  link.href = `${GOOGLE_FONTS_API_URL}?family=${fontName.replace(/ /g, '+')}:wght@400;500;600;700&display=swap`
+  link.href = withBasePath(`${GOOGLE_FONTS_API_URL}?family=${fontName.replace(/ /g, '+')}:wght@400;500;600;700&display=swap`)
   document.head.appendChild(link)
 }
 

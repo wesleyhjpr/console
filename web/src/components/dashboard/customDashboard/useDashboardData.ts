@@ -1,3 +1,4 @@
+import { withBasePath } from '../../../lib/basePath'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api, BackendUnavailableError, UnauthenticatedError } from '../../../lib/api'
@@ -321,7 +322,7 @@ export function useDashboardData({ id, isActiveDashboard, sidebarItem, removeIte
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = url
+      a.href = withBasePath(url)
       a.download = `${(dashboard?.name || 'dashboard').replace(/\s+/g, '-').toLowerCase()}.json`
       a.click()
       safeRevokeObjectURL(url)

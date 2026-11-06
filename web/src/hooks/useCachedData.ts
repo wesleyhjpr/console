@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Unified Data Hooks using the new caching layer
  *
@@ -441,7 +442,7 @@ export const coreFetchers = {
     if (agentData) return agentData
     const token = getToken()
     if (token && token !== 'demo-token' && !isBackendUnavailable()) {
-      const res = await fetch('/api/workloads', {
+      const res = await appFetch('/api/workloads', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`

@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { logger } from '../lib/logger'
 import { getNextBatchTime, resolveStellarBatchIntervalMs } from '../components/stellar/lib/time'
@@ -201,7 +202,7 @@ export function useStellarSource() {
     }
 
     esRef.current?.close()
-    const es = new EventSource('/api/stellar/stream', { withCredentials: true })
+    const es = new EventSource(withBasePath('/api/stellar/stream'), { withCredentials: true })
     const on = <T,>(eventName: string, handler: (payload: T) => void) => {
       es.addEventListener(eventName, event => {
         const payload = parseStellarEvent<T>(event, eventName)

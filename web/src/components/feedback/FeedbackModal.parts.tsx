@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useRef } from 'react'
 import { Bug, Lightbulb, ImagePlus, Trash2, Copy, Check, Film, ExternalLink, CheckCircle2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -120,11 +121,11 @@ export function ScreenshotAttacher({
             <div key={i} className="relative group w-20 h-20 shrink-0">
               {s.mediaType === 'video' ? (
                 <div className="w-20 h-20 rounded-lg border border-border bg-black flex items-center justify-center overflow-hidden">
-                  <video src={s.preview} className="w-full h-full object-cover" muted playsInline />
+                  <video src={withOptionalBasePath(s.preview)} className="w-full h-full object-cover" muted playsInline />
                   <Film className="absolute w-5 h-5 text-white/80 drop-shadow-md" />
                 </div>
               ) : (
-                <img src={s.preview} alt={`Attachment ${i + 1}`} className="w-20 h-20 object-cover rounded-lg border border-border" loading="lazy" width={80} height={80} />
+                <img src={withOptionalBasePath(s.preview)} alt={`Attachment ${i + 1}`} className="w-20 h-20 object-cover rounded-lg border border-border" loading="lazy" width={80} height={80} />
               )}
               <div className="absolute inset-0 flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 bg-black/60 rounded-lg transition-opacity">
                 {s.mediaType !== 'video' && (
@@ -175,7 +176,7 @@ export function FeedbackSuccessView({
       <p className="text-sm text-yellow-400 mb-4">+{coins} coins earned!</p>
 
       {issueUrl && (
-        <a href={sanitizeUrl(issueUrl)} target="_blank" rel="noopener noreferrer"
+        <a href={withOptionalBasePath(sanitizeUrl(issueUrl))} target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary/80 text-foreground text-sm font-medium transition-colors mb-4">
           <ExternalLink className="w-4 h-4" />
           View issue on GitHub

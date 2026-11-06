@@ -29,7 +29,7 @@ import (
 
 func newStaticTestApp(root string) *fiber.App {
 	app := fiber.New(fiber.Config{DisableStartupMessage: true})
-	app.Use(preCompressedStatic(root))
+	app.Use(preCompressedStatic(root, "/"))
 	// Terminal handler after c.Next() so we can distinguish next() from serve.
 	app.Get("/*", func(c *fiber.Ctx) error {
 		return c.Status(404).SendString("passthrough")
@@ -85,7 +85,7 @@ func TestPreCompressedStatic_RootRewritesToIndexHTML(t *testing.T) {
 	if strings.Contains(hdrs["Cache-Control"], "immutable") {
 		t.Errorf("HTML must not be immutable: %q", hdrs["Cache-Control"])
 	}
-	if body != "<html>root</html>" {
+	if !strings.Contains(body, "<body>root</body>") || !strings.Contains(body, `name="console-base-path" content="/"`) {
 		t.Errorf("body = %q", body)
 	}
 }

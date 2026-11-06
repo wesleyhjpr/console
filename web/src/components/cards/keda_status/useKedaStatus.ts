@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useCache } from '../../../lib/cache'
 import { useCardLoadingState } from '../CardDataContext'
 import { useDemoMode } from '../../../hooks/useDemoMode'
@@ -158,7 +159,7 @@ function parseScaledObject(item: CRItem): KedaScaledObject {
 // ---------------------------------------------------------------------------
 
 async function fetchPods(url: string): Promise<BackendPodInfo[]> {
-  const resp = await fetch(url, {
+  const resp = await appFetch(url, {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

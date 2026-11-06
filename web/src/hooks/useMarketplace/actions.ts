@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useEffect, useRef, useSyncExternalStore } from 'react'
 import { api } from '../../lib/api'
 import { addCustomTheme, removeCustomTheme } from '../../lib/themes'
@@ -222,7 +223,7 @@ export function useMarketplaceActions(installedItems: InstalledMap) {
 
     let response: Response
     try {
-      response = await fetch(item.downloadUrl, {
+      response = await appFetch(item.downloadUrl, {
         signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) })
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'network error'

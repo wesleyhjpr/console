@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { useMemo, useState } from 'react'
 import { AlertCircle, AlertTriangle, ExternalLink, Loader2, ShieldOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -257,7 +258,7 @@ Please proceed step by step.`,
                     </span>
                     {frameworkInfo?.url && (
                       <a
-                        href={sanitizeUrl(frameworkInfo.url)}
+                        href={withOptionalBasePath(sanitizeUrl(frameworkInfo.url))}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(event) => event.stopPropagation()}

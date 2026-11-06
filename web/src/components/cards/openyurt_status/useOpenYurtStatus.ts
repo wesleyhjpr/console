@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useCache } from '../../../lib/cache'
 import { useCardLoadingState } from '../CardDataContext'
 import { OPENYURT_DEMO_DATA, type OpenYurtDemoData, type OpenYurtNodePool, type NodePoolType, type NodePoolStatus, type GatewayStatus } from './demoData'
@@ -181,7 +182,7 @@ function parseGateway(item: CRItem): { name: string; nodePool: string; status: G
 // ---------------------------------------------------------------------------
 
 async function fetchPods(url: string): Promise<BackendPodInfo[]> {
-  const resp = await fetch(url, {
+  const resp = await appFetch(url, {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { Component, Fragment, type ReactNode, type ErrorInfo } from 'react'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import i18next from 'i18next'
@@ -60,7 +61,7 @@ export class AppErrorBoundary extends Component<Props, State> {
   handleGoHome = () => {
     // Full navigation (not client-side) so any bad state in the SPA —
     // including router/query caches — is cleared before landing on "/".
-    window.location.href = ROUTES.HOME
+    window.location.href = withBasePath(ROUTES.HOME)
   }
 
   handleRecover = () => {

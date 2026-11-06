@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { memo, useState } from 'react'
 
 // Pure UI component — renders user lists based on props; no data fetching.
@@ -73,7 +74,7 @@ export const ConsoleUsersTab = memo(function ConsoleUsersTab({
               <div className="flex items-center gap-3">
                 {user.avatar_url ? (
                   <img
-                    src={user.avatar_url}
+                    src={withOptionalBasePath(user.avatar_url)}
                     alt={user.github_login || 'User avatar'}
                     className="w-8 h-8 rounded-full"
                     loading="lazy"

@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 /**
  * ApiClient class (get/post/patch/put/delete), singleton `api`, and authFetch helper.
  * Split from api.ts (tracked by #21384 / #21375).
@@ -45,7 +46,7 @@ class ApiClient {
         // would revoke a token we still rely on for the rest of the session
         // and race against the cookie delivery. Cookie-only flow: send the
         // HttpOnly kc_auth cookie via credentials + CSRF header only.
-        const response = await fetch(`${API_BASE}/auth/refresh`, {
+        const response = await appFetch(`${API_BASE}/auth/refresh`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -156,7 +157,7 @@ class ApiClient {
     const signal = options?.signal ? AbortSignal.any([options.signal, controller.signal]) : controller.signal
 
     try {
-      const response = await fetch(`${API_BASE}${path}`, {
+      const response = await appFetch(`${API_BASE}${path}`, {
         method: 'GET',
         headers,
         signal,
@@ -214,7 +215,7 @@ class ApiClient {
     const { controller, timeoutId } = this.createAbortController(options?.timeout ?? DEFAULT_TIMEOUT)
 
     try {
-      const response = await fetch(`${API_BASE}${path}`, {
+      const response = await appFetch(`${API_BASE}${path}`, {
         method: 'POST',
         headers: { ...await this.getHeaders(), ...options?.headers },
         body: body ? JSON.stringify(body) : undefined,
@@ -269,7 +270,7 @@ class ApiClient {
     const { controller, timeoutId } = this.createAbortController(options?.timeout ?? DEFAULT_TIMEOUT)
 
     try {
-      const response = await fetch(`${API_BASE}${path}`, {
+      const response = await appFetch(`${API_BASE}${path}`, {
         method: 'PATCH',
         headers: { ...await this.getHeaders(), ...options?.headers },
         body: body ? JSON.stringify(body) : undefined,
@@ -320,7 +321,7 @@ class ApiClient {
     const { controller, timeoutId } = this.createAbortController(options?.timeout ?? DEFAULT_TIMEOUT)
 
     try {
-      const response = await fetch(`${API_BASE}${path}`, {
+      const response = await appFetch(`${API_BASE}${path}`, {
         method: 'PUT',
         headers: await this.getHeaders(),
         body: body ? JSON.stringify(body) : undefined,
@@ -375,7 +376,7 @@ class ApiClient {
     const { controller, timeoutId } = this.createAbortController(options?.timeout ?? DEFAULT_TIMEOUT)
 
     try {
-      const response = await fetch(`${API_BASE}${path}`, {
+      const response = await appFetch(`${API_BASE}${path}`, {
         method: 'DELETE',
         headers: await this.getHeaders(),
         signal: controller.signal,
@@ -445,7 +446,7 @@ export async function authFetch(input: RequestInfo | URL, init?: RequestInit): P
   const signal = init?.signal ?? AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS)
 
   try {
-    const response = await fetch(input, { ...init, headers, signal })
+    const response = await appFetch(input, { ...init, headers, signal })
     if (shouldTreatAsBackendOutage(input, response.status)) {
       markBackendFailure(response.status)
     } else {

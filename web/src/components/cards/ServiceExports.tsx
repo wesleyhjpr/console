@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { CheckCircle2, Clock, XCircle, HelpCircle, AlertCircle, ExternalLink, Server } from 'lucide-react'
 import { ClusterBadge } from '../ui/ClusterBadge'
 import { CardSearchInput, CardControlsRow, CardPaginationFooter, CardAIActions } from '../../lib/cards/CardComponents'
@@ -152,7 +153,7 @@ function ServiceExportsInternal({ config: _config }: ServiceExportsProps) {
       <div className="flex flex-wrap items-center justify-between gap-y-2 mb-2 shrink-0">
         <div className="flex items-center gap-2">
           <a
-            href={K8S_DOCS.mcsApi}
+            href={withOptionalBasePath(K8S_DOCS.mcsApi)}
             target="_blank"
             rel="noopener noreferrer"
             className="p-1 hover:bg-secondary rounded transition-colors text-muted-foreground hover:text-purple-400"
@@ -200,7 +201,7 @@ function ServiceExportsInternal({ config: _config }: ServiceExportsProps) {
             <p className="text-muted-foreground">
               {t('serviceExports.mcsDesc')}{' '}
               <a
-                href={K8S_DOCS.mcsApiInstall}
+                href={withOptionalBasePath(K8S_DOCS.mcsApiInstall)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:underline"
@@ -306,7 +307,7 @@ function ServiceExportsInternal({ config: _config }: ServiceExportsProps) {
       {/* Footer links */}
       <div className="flex items-center justify-center gap-3 pt-2 mt-2 border-t border-border/50 text-2xs">
         <a
-          href={K8S_DOCS.mcsApi}
+          href={withOptionalBasePath(K8S_DOCS.mcsApi)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"
@@ -315,7 +316,7 @@ function ServiceExportsInternal({ config: _config }: ServiceExportsProps) {
         </a>
         <span className="text-muted-foreground/30">•</span>
         <a
-          href={K8S_DOCS.gammaInitiative}
+          href={withOptionalBasePath(K8S_DOCS.gammaInitiative)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"

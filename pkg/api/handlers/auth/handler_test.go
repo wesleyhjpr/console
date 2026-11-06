@@ -57,6 +57,17 @@ func TestNewAuthHandler(t *testing.T) {
 			},
 		},
 		{
+			name: "oauth URLs preserve deployment prefix",
+			cfg: AuthConfig{
+				FrontendURL: "https://domain.com/kubestellar",
+				BackendURL:  "https://domain.com/kubestellar",
+			},
+			expect: func(t *testing.T, h *AuthHandler) {
+				require.Equal(t, "https://domain.com/kubestellar", h.frontendURL)
+				require.Equal(t, "https://domain.com/kubestellar/auth/github/callback", h.oauthConfig.RedirectURL)
+			},
+		},
+		{
 			name: "custom github url",
 			cfg: AuthConfig{
 				GitHubClientID: "client-id",

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { WifiOff, CheckCircle, AlertTriangle, X, Pencil, Trash2, Server, ExternalLink } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { StatusBadge } from '../ui/StatusBadge'
@@ -82,7 +83,7 @@ export function ClusterDetailHeader({
         </div>
         {consoleUrl ? (
           <a
-            href={sanitizeUrl(consoleUrl)}
+            href={withOptionalBasePath(sanitizeUrl(consoleUrl))}
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-sm font-medium ${providerInfo.bgColor} ${providerInfo.color} hover:opacity-80 transition-opacity`}

@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useMemo, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { TFunction } from 'i18next'
@@ -95,7 +96,7 @@ export function useGitOps() {
 
     async function detectAllDrift() {
       try {
-        const health = await fetch('/api/health', { signal: AbortSignal.timeout(DRIFT_HEALTHCHECK_TIMEOUT_MS) })
+        const health = await appFetch('/api/health', { signal: AbortSignal.timeout(DRIFT_HEALTHCHECK_TIMEOUT_MS) })
         if (!health.ok) {
           setIsDetecting(false)
           return

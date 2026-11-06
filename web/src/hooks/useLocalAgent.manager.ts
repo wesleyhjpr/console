@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { isDemoModeForced } from './useDemoMode'
 import { LOCAL_AGENT_HTTP_URL } from '../lib/constants'
 import { isLocalAgentSuppressed } from '../lib/constants/network'
@@ -257,7 +258,7 @@ class AgentManager {
       //    backend is slow, this delays the health check. The AbortSignal
       //    timeout starts when created (at call site), not when fetch starts,
       //    so the token delay can consume the timeout budget.
-      const response = await fetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
+      const response = await appFetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
         method: 'GET',
         headers: { Accept: 'application/json' },
         signal,

@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { isDemoMode } from '../../lib/demoMode'
 import { registerRefetch } from '../../lib/modeTransition'
@@ -103,7 +104,7 @@ export function useClusterResourceQuery<T>(
       // Try backend API first (cluster-mode)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/${endpoint}?${params}`, {
+          const response = await appFetch(`/api/mcp/${endpoint}?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {

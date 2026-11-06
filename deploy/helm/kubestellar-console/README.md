@@ -12,6 +12,7 @@ Helm chart for deploying the KubeStellar Console to a Kubernetes cluster.
 - [Secrets and configuration](#secrets-and-configuration)
 - [Quickstart: Kind or Minikube](#quickstart-kind-or-minikube)
 - [Installing on a real cluster](#installing-on-a-real-cluster)
+- [Hosting under a URL prefix](#hosting-under-a-url-prefix)
 - [Connecting Kagenti](#connecting-kagenti)
 - [Schema validation](#schema-validation)
 - [Configuration reference](#configuration-reference)
@@ -98,6 +99,110 @@ helm install kc ./deploy/helm/kubestellar-console \
 
 The release-fullname Secret the chart would otherwise render is skipped when
 `jwt.existingSecret` is set.
+
+## Hosting under a URL prefix
+
+The supplied example publishes the Console at
+`https://domain.com/kubestellar/` using NGINX Ingress Controller.
+Replace `domain.com` with your own hostname before deploying.
+It does not reserve `/api`, `/auth`, or `/assets` at the domain root.
+
+| Setting | Value | Applied when |
+|---|---|---|
+| `FRONTEND_URL` | `https://domain.com/kubestellar` | Container startup; assets, routing, API/WebSocket URLs and frontend redirects |
+| `BACKEND_URL` | `https://domain.com/kubestellar` | Container startup; OAuth callback URL |
+
+**The same runtime-base-compatible image works at `/`, `/kubestellar/`, or
+another prefix.** Set the public URLs in the ConfigMap, adjust the Ingress
+path and cookie/redirect annotations, then restart the Pods. No per-prefix
+rebuild is needed. URLs without a path preserve root deployments.
+
+The server derives the base from `FRONTEND_URL` and renders it into HTML
+before scripts load. React routing, URL helpers and service workers read that
+runtime base from a meta tag, without changing the document base (fragment
+links and SVG references keep working). Built chunks, CSS and workers use
+relative URLs; HTML entry URLs are rendered for the public prefix. No
+JavaScript files are rewritten and the container root filesystem can remain read-only.
+The Ingress must still strip the prefix before forwarding requests.
+
+Build once, without prefix-specific arguments:
+
+```bash
+docker build -t YOUR_REGISTRY/kubestellar-console:runtime-base .
+docker push YOUR_REGISTRY/kubestellar-console:runtime-base
+```
+
+Images built before runtime-base support require a one-time rebuild/upgrade.
+The Dockerfile rejects pre-built frontend artifacts without the runtime-base
+marker and builds them from source instead. Compatible pre-built artifacts
+are still reused; remove stale `web/dist` before local builds.
+Do not set `VITE_API_BASE_URL` to a deployment prefix: it is a legacy build-time
+API override. `VITE_BASE` remains available for the Vite development server
+and standalone static hosting, not as a Pod environment setting.
+Do not enable `VITE_DEMO_MODE` for a live deployment.
+Build and lint are validated by CI on the PR.
+
+Create the namespace if needed. Provision a TLS Secret named
+`domain-com-tls` in that namespace, and point the hostname at your
+NGINX ingress. Keep OAuth credentials and other secrets in Kubernetes Secrets,
+not in this ConfigMap. Set the GitHub OAuth application's callback URL to:
+
+```text
+https://domain.com/kubestellar/auth/github/callback
+```
+
+From the repository root, apply the ConfigMap and install the matching image:
+
+```bash
+kubectl -n kubestellar-console apply \
+  -f deploy/helm/kubestellar-console/subpath-configmap.example.yaml
+
+helm upgrade --install console ./deploy/helm/kubestellar-console \
+  -n kubestellar-console \
+  -f deploy/helm/kubestellar-console/values-subpath.example.yaml \
+  --set image.repository=YOUR_REGISTRY/kubestellar-console \
+  --set image.tag=runtime-base \
+  --set github.existingSecret=YOUR_OAUTH_SECRET
+```
+
+The chart reads `frontendConfigMap` through `envFrom` and does not override
+its `FRONTEND_URL` with a host-only value. Do not also define these URLs in
+`extraEnv`, since explicit environment entries take precedence over `envFrom`.
+Restart the release's Deployment after changing this external ConfigMap.
+Keep `BACKEND_URL` and the registered OAuth callback aligned with the new
+public URL. Invalid public URLs or unsafe path segments fail startup.
+
+NGINX strips `/kubestellar` before proxying to the backend, which retains its
+existing internal routes and health probes. The example scopes cookies to
+`/kubestellar/`, rewrites relative backend redirects, and extends streaming
+timeouts. External service URLs and localhost kc-agent URLs are unchanged.
+Avoid another ingress rule overlapping this prefix on the same hostname.
+
+Verify the deployment:
+
+```bash
+curl --fail https://domain.com/kubestellar/health
+```
+
+Then open the Console, navigate to Settings, reload that nested URL, and sign
+in. Requests to this hostname should stay beneath `/kubestellar/`. Kubernetes
+deployment and real OAuth verification require access to your environment.
+
+For runtime regression testing, run the same image behind a prefix-stripping
+proxy, changing only `FRONTEND_URL`/`BACKEND_URL` between `/`, `/kubestellar/`
+and a nested prefix such as `/tools/console/`. Run the `app-base-path-visual`
+suite with `APP_VISUAL_BASE_URL` set to each public URL:
+
+```bash
+cd web
+APP_VISUAL_BASE_URL=http://localhost:5174/kubestellar/ \
+  npx playwright test --config e2e/visual/app-visual.config.ts app-base-path-visual
+```
+
+The suite uses `setupDemoMode` to isolate browser data, verifies navigation,
+deep-link reloads and escaped same-origin requests, and compares screenshots.
+Also verify real OAuth, WebSockets and unmocked `/health` through the Ingress
+before publishing; browser demo tests do not exercise real credentials.
 
 ## Quickstart: Kind or Minikube
 

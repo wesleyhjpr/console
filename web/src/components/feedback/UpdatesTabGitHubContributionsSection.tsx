@@ -1,3 +1,4 @@
+import { withBasePath, withOptionalBasePath } from '../../lib/basePath'
 import { AlertCircle, Bug, ExternalLink, GitMerge, GitPullRequest, Lightbulb, RefreshCw } from 'lucide-react'
 import { StatusBadge } from '../ui/StatusBadge'
 import { RefreshIndicator } from '../ui/RefreshIndicator'
@@ -48,7 +49,7 @@ export function GitHubContributionsSection({
                 const issueCount = (breakdown?.bug_issues ?? 0) + (breakdown?.feature_issues ?? 0) + (breakdown?.other_issues ?? 0)
                 const text = `I've earned ${githubPoints.toLocaleString()} contributor coins on the KubeStellar Console! ${prCount > 0 ? `${prCount} PRs` : ''}${prCount > 0 && issueCount > 0 ? ' and ' : ''}${issueCount > 0 ? `${issueCount} issues` : ''} contributed to the open-source KubeStellar project.`
                 const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://kubestellar.io')}&summary=${encodeURIComponent(text)}`
-                window.open(linkedInUrl, '_blank', `noopener,noreferrer,width=${LINKEDIN_POPUP_SIZE},height=${LINKEDIN_POPUP_SIZE}`)
+                window.open(withBasePath(linkedInUrl), '_blank', `noopener,noreferrer,width=${LINKEDIN_POPUP_SIZE},height=${LINKEDIN_POPUP_SIZE}`)
                 emitLinkedInShare('feature_request')
               }}
               className="p-1 rounded hover:bg-secondary/50 text-muted-foreground hover:text-linkedin transition-colors"
@@ -133,7 +134,7 @@ export function GitHubContributionsSection({
             return (
               <a
                 key={`${contribution.repo}-${contribution.number}-${contribution.type}-${index}`}
-                href={sanitizeUrl(contribution.url)}
+                href={withOptionalBasePath(sanitizeUrl(contribution.url))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between p-2.5 border-b border-border/50 hover:bg-secondary/30 transition-colors group"
@@ -162,7 +163,7 @@ export function GitHubContributionsSection({
       {githubRewards && currentGitHubLogin && (
         <div className="p-2.5 border-t border-border/50 text-center">
           <a
-            href={`https://github.com/search?q=author:${encodeURIComponent(currentGitHubLogin)}+org:kubestellar+org:llm-d+org:clubanderson&type=issues&s=updated&o=desc`}
+            href={withOptionalBasePath(`https://github.com/search?q=author:${encodeURIComponent(currentGitHubLogin)}+org:kubestellar+org:llm-d+org:clubanderson&type=issues&s=updated&o=desc`)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-xs text-blue-400 hover:text-blue-300 transition-colors"

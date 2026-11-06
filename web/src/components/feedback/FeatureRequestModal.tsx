@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import { StatusBadge } from '../ui/StatusBadge'
@@ -78,7 +79,7 @@ export function FeatureRequestModal({ isOpen, onClose, initialTab, initialReques
       return
     }
     clearStoredAuthToken()
-    window.location.href = `${BACKEND_DEFAULT_URL}/auth/github`
+    window.location.href = withBasePath(`${BACKEND_DEFAULT_URL}/auth/github`)
   }
 
   return (

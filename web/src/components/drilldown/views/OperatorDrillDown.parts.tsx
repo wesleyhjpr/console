@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { Package, ExternalLink, Settings, RefreshCw, ChevronLeft, Server, Layers } from 'lucide-react'
 import { cn } from '../../../lib/cn'
 import { sanitizeUrl } from '../../../lib/utils/sanitizeUrl'
@@ -227,7 +228,7 @@ export function OperatorOverviewTab({
             {csvInfo.links.map((link, i) => (
               <a
                 key={i}
-                href={sanitizeUrl(link.url)}
+                href={withOptionalBasePath(sanitizeUrl(link.url))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-secondary/50 text-sm text-foreground hover:bg-secondary transition-colors"

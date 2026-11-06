@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 /**
  * Data-fetching / demo-data hook for the Weather card.
  *
@@ -110,7 +111,7 @@ export function useWeatherData(units: 'F' | 'C', forecastLength: 2 | 7 | 14) {
       const tempUnit = units === 'F' ? 'fahrenheit' : 'celsius'
       const windUnit = units === 'F' ? 'mph' : 'kmh'
 
-      const response = await fetch(
+      const response = await appFetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${currentLocation.latitude}&longitude=${currentLocation.longitude}` +
         `&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m` +
         `&hourly=temperature_2m,weather_code,precipitation_probability` +

@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import type { FeedItem, RSSItemRaw } from './types'
 import { CORS_PROXIES } from './constants'
 import {
@@ -11,7 +12,7 @@ async function fetchWithTimeout(url: string, timeoutMs: number): Promise<Respons
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
   try {
-    const response = await fetch(url, { signal: controller.signal })
+    const response = await appFetch(url, { signal: controller.signal })
     return response
   } finally {
     clearTimeout(timeoutId)

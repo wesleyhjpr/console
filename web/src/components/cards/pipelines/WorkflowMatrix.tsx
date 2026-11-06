@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 /**
  * WorkflowMatrix — heatmap of workflows × days. Surfaces the "which
  * workflows keep flaking" pattern that was invisible while we only saw
@@ -159,7 +160,7 @@ export function WorkflowMatrix() {
                     return cell.htmlUrl && cell.htmlUrl !== '#' ? (
                       <a
                         key={cell.date}
-                        href={sanitizeUrl(cell.htmlUrl)}
+                        href={withOptionalBasePath(sanitizeUrl(cell.htmlUrl))}
                         target="_blank"
                         rel="noreferrer noopener"
                         title={label}

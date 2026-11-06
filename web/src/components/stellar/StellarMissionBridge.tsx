@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 // ai-quality-ignore — side-effect bridge only; returns null with no visible UI, no async data loading
 import { useEffect, useRef } from 'react'
 import { useMissions } from '../../hooks/useMissions'
@@ -107,7 +108,7 @@ export function StellarMissionBridge() {
         }
       }
       completed.current.add(link.solveId)
-      fetch(`/api/stellar/solve/${encodeURIComponent(link.solveId)}/complete`, {
+      appFetch(`/api/stellar/solve/${encodeURIComponent(link.solveId)}/complete`, {
         method: 'POST',
         credentials: 'include',
         headers: {

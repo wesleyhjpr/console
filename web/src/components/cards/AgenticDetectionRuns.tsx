@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { AlertTriangle, CheckCircle, XCircle, AlertCircle, ExternalLink } from 'lucide-react'
 import { useAgenticDetectionRuns, type DetectionRun } from '../../hooks/useAgenticDetectionRuns'
 import { CardSearchInput, useCardData } from '../../lib/cards'
@@ -140,7 +141,7 @@ export function AgenticDetectionRuns({ config: _config }: AgenticDetectionRunsPr
         </p>
         {issueUrl && validateExternalUrl(issueUrl) && (
           <a
-            href={validateExternalUrl(issueUrl)!}
+            href={withOptionalBasePath(validateExternalUrl(issueUrl)!)}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 inline-flex items-center gap-2 text-sm text-primary hover:underline"
@@ -208,7 +209,7 @@ export function AgenticDetectionRuns({ config: _config }: AgenticDetectionRunsPr
               <div className="flex gap-2 shrink-0">
                 {run.workflowUrl && validateExternalUrl(run.workflowUrl) && (
                   <a
-                    href={validateExternalUrl(run.workflowUrl)!}
+                    href={withOptionalBasePath(validateExternalUrl(run.workflowUrl)!)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-primary hover:underline inline-flex items-center gap-1"
@@ -239,7 +240,7 @@ export function AgenticDetectionRuns({ config: _config }: AgenticDetectionRunsPr
       {issueUrl && validateExternalUrl(issueUrl) && (
         <div className="mt-3 pt-3 border-t border-border">
           <a
-            href={validateExternalUrl(issueUrl)!}
+            href={withOptionalBasePath(validateExternalUrl(issueUrl)!)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-1.5"

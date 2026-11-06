@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 // Footer (pricing attribution + methodology links) for the ClusterCosts card.
 // Extracted from ClusterCosts.tsx (issue #21615) — markup unchanged.
 import { ExternalLink, TrendingUp } from 'lucide-react'
@@ -41,7 +42,7 @@ export function ClusterCostsFooter({
               <span>{t('cards:clusterCosts.basedOnRates', { provider: pricing.name })}</span>
               {pricing.pricingUrl && (
                 <a
-                  href={sanitizeUrl(pricing.pricingUrl)}
+                  href={withOptionalBasePath(sanitizeUrl(pricing.pricingUrl))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-purple-400 hover:text-purple-300 transition-colors"
@@ -79,7 +80,7 @@ export function ClusterCostsFooter({
       {/* Estimation methodology links */}
       <div className="flex items-center justify-center gap-3 pt-1 text-2xs">
         <a
-          href={FINOPS_URL}
+          href={withOptionalBasePath(FINOPS_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground/70 hover:text-purple-400 transition-colors"
@@ -89,7 +90,7 @@ export function ClusterCostsFooter({
         </a>
         <span className="text-muted-foreground/30">•</span>
         <a
-          href={K8S_RESOURCES_URL}
+          href={withOptionalBasePath(K8S_RESOURCES_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground/70 hover:text-purple-400 transition-colors"
@@ -99,7 +100,7 @@ export function ClusterCostsFooter({
         </a>
         <span className="text-muted-foreground/30">•</span>
         <a
-          href={OPENCOST_SPEC_URL}
+          href={withOptionalBasePath(OPENCOST_SPEC_URL)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground/70 hover:text-purple-400 transition-colors"

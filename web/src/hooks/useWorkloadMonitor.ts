@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import type {
   WorkloadMonitorResponse,
@@ -99,7 +100,7 @@ export function useWorkloadMonitor(
     }
 
     try {
-      const res = await fetch(
+      const res = await appFetch(
         `/api/workloads/monitor/${encodeURIComponent(c)}/${encodeURIComponent(ns)}/${encodeURIComponent(w)}`,
         { headers: authHeaders(), signal: controller.signal },
       )

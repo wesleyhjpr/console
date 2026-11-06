@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { Bot, ChevronDown, ExternalLink } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -46,7 +47,7 @@ function KagentAgentPickerInner({ agents, selectedAgent, onSelect }: KagentAgent
           <span>{t('kagentAgentPicker.noAgentsAvailable', { ns: 'cards' })}</span>
           <span>{t('kagentAgentPicker.noAgentsGuidance', { ns: 'cards' })}</span>
           <a
-            href={KAGENT_DOCS_URL}
+            href={withOptionalBasePath(KAGENT_DOCS_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300"

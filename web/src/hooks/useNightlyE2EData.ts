@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Hook for fetching nightly E2E workflow run status.
  *
@@ -84,7 +85,7 @@ export function useNightlyE2EData() {
       const endpoints = ['/api/nightly-e2e/runs', '/api/public/nightly-e2e/runs']
       for (const endpoint of (endpoints || [])) {
         try {
-          const res = await fetch(endpoint, {
+          const res = await appFetch(endpoint, {
             headers: {
               ...(endpoint.includes('/public/') ? {} : getAuthHeaders()),
               Accept: 'application/json',

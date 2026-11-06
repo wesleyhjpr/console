@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useRef, useEffect } from 'react'
 import type { ProviderConnectionState } from '../types/agent'
 import { INITIAL_PROVIDER_CONNECTION_STATE, PROVIDER_PREREQUISITES } from '../types/agent'
@@ -54,7 +55,7 @@ async function checkProviderReady(providerName: string): Promise<ProviderCheckRe
   // Use plain fetch — /health does not require auth and avoids CORS
   // preflight failures from X-Requested-With header (#10459).
   try {
-    const response = await fetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
+    const response = await appFetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
       method: 'GET',
       headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(3_000) })

@@ -1,5 +1,6 @@
 import { setupWorker } from 'msw/browser'
 import { handlers, scenarios, createHandlers } from './handlers'
+import { withBasePath } from '../lib/basePath'
 
 /** Service worker URL — kept here (in the dynamically-imported MSW chunk)
  *  so the literal string never appears in the main index bundle. */
@@ -60,7 +61,7 @@ export async function startMocking(): Promise<void> {
       defaults.warn()
     },
     serviceWorker: {
-      url: MSW_SERVICE_WORKER_URL,
+      url: withBasePath(MSW_SERVICE_WORKER_URL),
     },
   })
 }

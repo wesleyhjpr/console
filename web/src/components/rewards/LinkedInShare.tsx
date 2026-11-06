@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * LinkedIn Share component for sharing KubeStellar and earning coins
  */
@@ -25,7 +26,7 @@ export function LinkedInShareButton() {
   const handleShare = () => {
     // Open LinkedIn share dialog
     const shareUrl = `${LINKEDIN_SHARE_URL}?url=${encodeURIComponent(KUBESTELLAR_URL)}`
-    window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=600')
+    window.open(withBasePath(shareUrl), '_blank', 'noopener,noreferrer,width=600,height=600')
     emitLinkedInShare('rewards_panel')
 
     // Show confirmation dialog

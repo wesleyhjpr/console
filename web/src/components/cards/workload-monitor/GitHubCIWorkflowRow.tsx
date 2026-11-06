@@ -1,3 +1,4 @@
+import { withBasePath, withOptionalBasePath } from '../../../lib/basePath'
 import {
   AlertTriangle, CheckCircle, XCircle, Clock, Loader2, ExternalLink, Stethoscope } from 'lucide-react'
 import { CardAIActions } from '../../../lib/cards/CardComponents'
@@ -45,7 +46,7 @@ export function GitHubCIWorkflowRow({ workflow: w, status }: GitHubCIWorkflowRow
               onClick={(event) => {
                 event.stopPropagation()
                 window.open(
-                  sanitizeUrl(w.prUrl || `https://github.com/${w.repo}/pull/${w.prNumber}`),
+                  withBasePath(sanitizeUrl(w.prUrl || `https://github.com/${w.repo}/pull/${w.prNumber}`)),
                   '_blank',
                   'noopener,noreferrer',
                 )
@@ -87,7 +88,7 @@ export function GitHubCIWorkflowRow({ workflow: w, status }: GitHubCIWorkflowRow
       )}
       {w.url !== '#' && (
         <a
-          href={sanitizeUrl(w.url)}
+          href={withOptionalBasePath(sanitizeUrl(w.url))}
           target="_blank"
           rel="noopener noreferrer"
           className="shrink-0 p-0.5 rounded hover:bg-secondary transition-colors"

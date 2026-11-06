@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * ServiceExport Data Hook with real backend API and demo data fallback
  *
@@ -172,7 +173,7 @@ export function useServiceExports(): UseServiceExportsResult {
     }
 
     try {
-      const res = await fetch('/api/service-exports', {
+      const res = await appFetch('/api/service-exports', {
         headers: authHeaders(),
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { getStoredAuthTokenSync } from '../authToken'
 import { useKeepAliveActive } from '../../hooks/useKeepAliveActive'
@@ -109,7 +110,7 @@ export function createCardFetchScope() {
       const proxyURL = `/api/card-proxy?url=${encodeURIComponent(url)}`
       const token = safeGetToken()
 
-      fetch(proxyURL, {
+      appFetch(proxyURL, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         signal: AbortSignal.any([controller.signal, AbortSignal.timeout(CARD_FETCH_TIMEOUT_MS)]),
       })

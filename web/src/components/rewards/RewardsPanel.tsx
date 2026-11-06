@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * Rewards Panel - shows user's coins, achievements, and ways to earn
  */
@@ -217,7 +218,7 @@ export function RewardsPanel() {
               {githubRewards.contributions.slice(0, 20).map((contrib: GitHubContribution, idx: number) => (
                 <a
                   key={`${contrib.repo}-${contrib.number}-${contrib.type}-${idx}`}
-                  href={sanitizeUrl(contrib.url)}
+                  href={withOptionalBasePath(sanitizeUrl(contrib.url))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-between p-2.5 rounded-lg bg-secondary/20 hover:bg-secondary/40 transition-colors group"

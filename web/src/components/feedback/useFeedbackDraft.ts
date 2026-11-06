@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRewards, REWARD_ACTIONS } from '../../hooks/useRewards'
@@ -121,7 +122,7 @@ export function useFeedbackDraft({ isOpen, onClose, initialType = 'feature' }: F
 
   const copyScreenshotToClipboard = async (preview: string, index: number) => {
     try {
-      const res = await fetch(preview, { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
+      const res = await appFetch(preview, { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       const blob = await res.blob()
       const ok = await copyBlobToClipboard(blob)
       if (!ok) {

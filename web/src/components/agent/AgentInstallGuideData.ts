@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import type { MissionExport } from "../../lib/missions/types";
 
 /** Timeout (ms) for fetching mission install guide files from the API */
@@ -21,7 +22,7 @@ export async function fetchMissionFile(
 
   for (const path of paths) {
     try {
-      const res = await fetch(
+      const res = await appFetch(
         `/api/missions/file?path=${encodeURIComponent(path)}`,
         { signal: AbortSignal.timeout(MISSION_FILE_FETCH_TIMEOUT_MS) },
       );

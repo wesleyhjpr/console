@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { AnchorHTMLAttributes, ReactNode } from 'react'
 import { cn } from '../../lib/cn'
 import { ExternalLink as ExternalLinkIcon } from 'lucide-react'
@@ -27,7 +28,7 @@ export function ExternalLink({
 }: ExternalLinkProps) {
   return (
     <a
-      href={href}
+      href={withOptionalBasePath(href)}
       target="_blank"
       rel="noopener noreferrer"
       className={cn('inline-flex items-center gap-1', className)}

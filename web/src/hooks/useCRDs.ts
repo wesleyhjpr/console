@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * CRD Data Hook with real backend API and demo data fallback.
  *
@@ -94,7 +95,7 @@ function getDemoCRDs(clusterNames: string[]): CRDData[] {
 // ============================================================================
 
 async function fetchCRDs(): Promise<CRDData[]> {
-  const res = await fetch('/api/crds', {
+  const res = await appFetch('/api/crds', {
     headers: authHeaders(),
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

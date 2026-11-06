@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useAuth } from '../lib/auth'
 import type { AllSettings } from '../lib/settingsTypes'
@@ -139,7 +140,7 @@ export function usePersistedSettings() {
       const blob = await response.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = url
+      a.href = withBasePath(url)
       a.download = 'kc-settings-backup.json'
       document.body.appendChild(a)
       a.click()

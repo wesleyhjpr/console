@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { AlertTriangle, Database, RefreshCw } from 'lucide-react'
 import { getStoredAuthToken } from '../../lib/authToken'
 import { FETCH_DEFAULT_TIMEOUT_MS } from '../../lib/constants/network'
@@ -91,7 +92,7 @@ export function Tier1CardRuntime({ cardDefinition }: Tier1Props) {
     enabled: isApiSource && !isInvalidConfig && !isMissingEndpoint && !!apiEndpoint && isSafeEndpoint,
     fetcher: async () => {
       const token = await getStoredAuthToken()
-      const res = await fetch(apiEndpoint, {
+      const res = await appFetch(apiEndpoint, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

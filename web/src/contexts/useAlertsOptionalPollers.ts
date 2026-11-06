@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useEffect, useRef } from 'react'
 import { settledWithConcurrency } from '../lib/utils/concurrency'
 import type { GPUHealthCheckResult } from '../hooks/mcp/types'
@@ -25,7 +26,7 @@ export function useAlertsOptionalPollers(clustersRef: { readonly current: Readon
       const settled = await settledWithConcurrency(
         currentClusters.map(cluster => async () => {
           try {
-            const resp = await fetch(
+            const resp = await appFetch(
               `${API_BASE}/api/mcp/gpu-nodes/health/cronjob/results?cluster=${encodeURIComponent(cluster.name)}`,
               { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) }
             )
@@ -71,7 +72,7 @@ export function useAlertsOptionalPollers(clustersRef: { readonly current: Readon
       if (unmounted) return
       try {
         const API_BASE = import.meta.env.VITE_API_BASE_URL || ''
-        const resp = await fetch(`${API_BASE}/api/public/nightly-e2e/runs`, {
+        const resp = await appFetch(`${API_BASE}/api/public/nightly-e2e/runs`, {
           signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
         })
         if (resp.ok && !unmounted) {

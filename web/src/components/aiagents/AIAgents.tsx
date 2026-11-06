@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import React, { useRef, useState } from 'react'
 import { useKagentiSummary } from '../../hooks/mcp/kagenti'
 import { StatBlockValue } from '../ui/StatsOverview'
@@ -109,7 +110,7 @@ function AIAgentsContent() {
         </Button>
         {tab.disabled && tab.installUrl && (
           <a
-            href={tab.installUrl}
+            href={withOptionalBasePath(tab.installUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-0.5 text-xs text-muted-foreground/60 hover:text-muted-foreground ml-1"

@@ -1,3 +1,4 @@
+import { withBasePath } from '../basePath'
 // Cross-tab auth sync listener extracted from AuthContext.tsx (#24058).
 // No behaviour change.
 
@@ -31,7 +32,7 @@ export function useAuthStorageSync(
         }
         document.getElementById('session-expiry-warning')?.remove()
         if (!window.location.pathname.startsWith(ROUTES.LOGIN)) {
-          window.location.href = ROUTES.LOGIN
+          window.location.href = withBasePath(ROUTES.LOGIN)
         }
         return
       }

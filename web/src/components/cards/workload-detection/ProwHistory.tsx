@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import {
   CheckCircle, XCircle, AlertTriangle, ExternalLink
 } from 'lucide-react'
@@ -130,7 +131,7 @@ export function ProwHistory({ config: _config }: ProwHistoryProps) {
                 <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
                   <span>{job.duration}</span>
                   {job.url && (
-                    <a href={sanitizeUrl(job.url)} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline flex items-center gap-2 min-h-11 min-w-11">
+                    <a href={withOptionalBasePath(sanitizeUrl(job.url))} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline flex items-center gap-2 min-h-11 min-w-11">
                       Logs <ExternalLink className="w-3 h-3" />
                     </a>
                   )}

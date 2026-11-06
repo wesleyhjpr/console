@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../basePath'
 /**
  * DashboardTabBar - tab strip for tab-mode UnifiedDashboard layouts.
  *
@@ -51,7 +52,7 @@ export function DashboardTabBar({ tabs, activeTabId, onSelectTab, onKeyDown }: D
           {tab.label}
           {tab.disabled && tab.installUrl && (
             <a
-              href={tab.installUrl}
+              href={withOptionalBasePath(tab.installUrl)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}

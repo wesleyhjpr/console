@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 import {
   pruneRegistry,
@@ -11,7 +12,7 @@ export function createComplianceErmHandlers() {
   // ── Epic 7: Enterprise Risk Management ─────────────────────────────────
 
   // Risk Matrix endpoints
-  http.get('/api/v1/compliance/erm/risk-matrix/risks', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-matrix/risks'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'RSK-001', name: 'Cloud provider outage', category: 'Technology', likelihood: 3, impact: 5, score: 15, owner: 'CTO', status: 'Open', last_review: '2025-01-10T00:00:00Z' },
@@ -35,7 +36,7 @@ export function createComplianceErmHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/erm/risk-matrix/heatmap', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-matrix/heatmap'), async () => {
     await delay(100)
     return HttpResponse.json([
       { likelihood: 4, impact: 5, count: 1, risks: ['RSK-002'] },
@@ -52,7 +53,7 @@ export function createComplianceErmHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/erm/risk-matrix/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-matrix/summary'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_risks: 18,
@@ -67,7 +68,7 @@ export function createComplianceErmHandlers() {
   }),
 
   // Risk Register endpoints
-  http.get('/api/v1/compliance/erm/risk-register/risks', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-register/risks'), async () => {
     await delay(120)
     return HttpResponse.json([
       { id: 'RSK-001', name: 'Cloud provider outage', description: 'Single cloud provider failure causes widespread service disruption across production clusters.', category: 'Technology', likelihood: 3, impact: 5, score: 15, owner: 'CTO', status: 'Open', last_review: '2025-01-10T00:00:00Z', next_review: '2025-04-10T00:00:00Z', mitigation_plan: 'Implement multi-cloud strategy with automatic failover. Deploy across AWS, GCP, and Azure with cross-region replication.', controls: ['Multi-region deployment', 'Auto-failover', 'DR playbook'], created_at: '2024-06-15T00:00:00Z' },
@@ -85,7 +86,7 @@ export function createComplianceErmHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/erm/risk-register/categories', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-register/categories'), async () => {
     await delay(80)
     return HttpResponse.json([
       { category: 'Operational', count: 4, avg_score: 8.8, open: 1 },
@@ -97,7 +98,7 @@ export function createComplianceErmHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/erm/risk-register/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-register/summary'), async () => {
     await delay(80)
     return HttpResponse.json({
       total_risks: 18,
@@ -109,7 +110,7 @@ export function createComplianceErmHandlers() {
   }),
 
   // Risk Appetite endpoints
-  http.get('/api/v1/compliance/erm/risk-appetite/thresholds', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-appetite/thresholds'), async () => {
     await delay(100)
     return HttpResponse.json([
       { category: 'Operational', appetite_level: 12, actual_exposure: 10, tolerance_max: 15, status: 'green', statement: 'We accept moderate operational disruption risk provided failover and DR plans are tested quarterly.', trend_quarters: [8, 9, 11, 10] },
@@ -121,7 +122,7 @@ export function createComplianceErmHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/erm/risk-appetite/kris', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-appetite/kris'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'KRI-001', name: 'System uptime SLA', category: 'Operational', threshold: 99.9, actual: 99.7, unit: '%', status: 'amber', last_updated: '2025-01-14T00:00:00Z' },
@@ -139,7 +140,7 @@ export function createComplianceErmHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/erm/risk-appetite/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/erm/risk-appetite/summary'), async () => {
     await delay(80)
     return HttpResponse.json({
       total_categories: 6,
@@ -152,7 +153,7 @@ export function createComplianceErmHandlers() {
     })
   }),
 
-  http.get('/api/cards/templates', async () => {
+  http.get(withBasePath('/api/cards/templates'), async () => {
     await delay(100)
     return HttpResponse.json({
       templates: [
@@ -169,7 +170,7 @@ export function createComplianceErmHandlers() {
   }),
 
   // Save card configuration (for sharing)
-  http.post('/api/cards/save', async ({ request }) => {
+  http.post(withBasePath('/api/cards/save'), async ({ request }) => {
     await delay(100)
     const body = (await request.json()) as { id: string; config: unknown }
     const shareId = `card-${Date.now()}`
@@ -183,7 +184,7 @@ export function createComplianceErmHandlers() {
   }),
 
   // Get shared card
-  http.get('/api/cards/shared/:shareId', async ({ params }) => {
+  http.get(withBasePath('/api/cards/shared/:shareId'), async ({ params }) => {
     await delay(100)
     const card = savedCards[params.shareId as string]
     if (card) {

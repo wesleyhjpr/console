@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { useRef, useEffect, useState, useCallback, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
 import { useModalState } from '../../../lib/modals'
@@ -203,14 +204,14 @@ export function LearnDropdown({ showLabel = false }: LearnDropdownProps) {
                 <a
                   role="menuitem"
                   key={video.id}
-                  href={getYouTubeWatchUrl(video.id)}
+                  href={withOptionalBasePath(getYouTubeWatchUrl(video.id))}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 px-2 py-2 rounded-md hover:bg-secondary/50 transition-colors group"
                 >
                   <div className="relative w-24 h-14 rounded overflow-hidden bg-muted shrink-0">
                     <img
-                      src={getYouTubeThumbnailUrl(video.id)}
+                      src={withOptionalBasePath(getYouTubeThumbnailUrl(video.id))}
                       alt={`${video.title || 'Learn resource'} thumbnail`}
                       className="w-full h-full object-cover"
                       loading="lazy"
@@ -233,7 +234,7 @@ export function LearnDropdown({ showLabel = false }: LearnDropdownProps) {
               <GraduationCap className="w-8 h-8 text-muted-foreground/40 mb-2" />
               <div className="text-xs text-muted-foreground">{t('layout.navbar.learn.comingSoon')}</div>
               <a
-                href={playlistUrl}
+                href={withOptionalBasePath(playlistUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-primary hover:underline mt-1"
@@ -254,7 +255,7 @@ export function LearnDropdown({ showLabel = false }: LearnDropdownProps) {
                     {t('layout.navbar.learn.latestBlogPosts')}
                   </div>
                   <a
-                    href={blogChannelUrl}
+                    href={withOptionalBasePath(blogChannelUrl)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[10px] text-primary hover:underline"
@@ -273,7 +274,7 @@ export function LearnDropdown({ showLabel = false }: LearnDropdownProps) {
                     <a
                       role="menuitem"
                       key={post.link}
-                      href={sanitizeUrl(post.link)}
+                      href={withOptionalBasePath(sanitizeUrl(post.link))}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => emitBlogPostClicked(post.title)}
@@ -307,7 +308,7 @@ export function LearnDropdown({ showLabel = false }: LearnDropdownProps) {
               <a
                 role="menuitem"
                 key={resource.label}
-                href={sanitizeUrl(resource.href)}
+                href={withOptionalBasePath(sanitizeUrl(resource.href))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between px-2 py-2 rounded-md hover:bg-secondary/50 transition-colors group"

@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useCardDemoState } from './CardDataContext'
 import {
@@ -90,7 +91,7 @@ export function useNetworkUtils() {
       abortControllerRef.current = new AbortController()
       const timeoutId = setTimeout(() => abortControllerRef.current?.abort(), PING_TIMEOUT)
 
-      const response = await fetch(
+      const response = await appFetch(
         `/api/ping?url=${encodeURIComponent(targetUrl)}`,
         {
           method: 'GET',

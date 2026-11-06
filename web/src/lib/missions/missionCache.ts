@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 /**
  * Module-level mission cache — survives dialog open/close and tab switches.
  * Also persisted to localStorage so data is instant on page reload.
@@ -163,7 +164,7 @@ export async function fetchMissionContent(
 
   const url = `/api/missions/file?path=${encodeURIComponent(sourcePath)}`
   try {
-    const response = await fetch(url, { signal: AbortSignal.timeout(MISSION_FILE_FETCH_TIMEOUT_MS) })
+    const response = await appFetch(url, { signal: AbortSignal.timeout(MISSION_FILE_FETCH_TIMEOUT_MS) })
     if (!response.ok) return { mission: indexMission, raw: JSON.stringify(indexMission, null, 2) }
 
     const text = await response.text()
@@ -235,7 +236,7 @@ async function fetchAllFromIndex() {
         await new Promise((r) => setTimeout(r, INDEX_FETCH_RETRY_BASE_DELAY_MS * (1 << (attempt - 1))))
       }
       try {
-        response = await fetch(url, { signal: AbortSignal.timeout(INDEX_FETCH_TIMEOUT_MS) })
+        response = await appFetch(url, { signal: AbortSignal.timeout(INDEX_FETCH_TIMEOUT_MS) })
         // Success or client error (4xx) — don't retry
         if (response.ok || response.status < 500) break
         // 5xx — retry if attempts remain

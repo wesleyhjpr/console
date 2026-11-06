@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 import { Lightbulb } from 'lucide-react'
 import { Linkedin } from '@/lib/icons'
 import { useTranslation } from 'react-i18next'
@@ -25,7 +26,7 @@ export function LinkedInShareButton({ onShare, compact = false }: { onShare?: ()
   const handleShare = () => {
     const shareTarget = websiteUrl || 'https://kubestellar.io'
     const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareTarget)}`
-    window.open(linkedInUrl, '_blank', 'noopener,noreferrer,width=600,height=600')
+    window.open(withBasePath(linkedInUrl), '_blank', 'noopener,noreferrer,width=600,height=600')
     emitLinkedInShare('feedback_modal')
     onShare?.()
   }

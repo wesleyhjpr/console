@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState } from 'react'
 import {
   Bug,
@@ -81,7 +82,7 @@ function RequestCard({ request, onFeedback }: RequestCardProps) {
         </span>
         {request.github_issue_url && (
           <a
-            href={sanitizeUrl(request.github_issue_url)}
+            href={withOptionalBasePath(sanitizeUrl(request.github_issue_url))}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 hover:text-purple-400 transition-colors"
@@ -92,7 +93,7 @@ function RequestCard({ request, onFeedback }: RequestCardProps) {
         )}
         {request.pr_url && (
           <a
-            href={sanitizeUrl(request.pr_url)}
+            href={withOptionalBasePath(sanitizeUrl(request.pr_url))}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 hover:text-purple-400 transition-colors"
@@ -112,7 +113,7 @@ function RequestCard({ request, onFeedback }: RequestCardProps) {
               <span className="text-sm text-green-400">Preview Available</span>
             </div>
             <a
-              href={sanitizeUrl(request.netlify_preview_url)}
+              href={withOptionalBasePath(sanitizeUrl(request.netlify_preview_url))}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-1 text-xs rounded bg-green-500 hover:bg-green-600 text-white transition-colors flex items-center gap-1"

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { AlertTriangle, CheckCircle2, ExternalLink, Info, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { MissionToolCheckResult } from '../../hooks/useMissionToolCheck'
@@ -105,7 +106,7 @@ export function MissionToolPrerequisiteNotice({
           return (
             <a
               key={tool}
-              href={href}
+              href={withOptionalBasePath(href)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-yellow-300 hover:text-yellow-200 hover:underline"

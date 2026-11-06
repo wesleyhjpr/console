@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState } from 'react'
 import { Download, Check, Trash2, Loader2, Sparkles } from 'lucide-react'
 import type { MarketplaceItem } from '../../hooks/useMarketplace'
@@ -75,7 +76,7 @@ export function MarketplaceRow({ item, onInstall, onRemove, isInstalled }: {
       <div className="shrink-0">
         {isHelpWanted ? (
           <a
-            href={validateExternalUrl(item.issueUrl) || ISSUES_URL}
+            href={withOptionalBasePath(validateExternalUrl(item.issueUrl) || ISSUES_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 px-2.5 py-1 text-xs font-medium bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 rounded transition-colors"

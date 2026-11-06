@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { getDemoMode } from './useDemoMode'
 import {
   getUserTokenUsage,
@@ -313,7 +314,7 @@ function flushPendingDeltasOnPagehide(): void {
       { type: 'application/json' }
     )
     try {
-      navigator.sendBeacon('/api/token-usage/delta', body)
+      navigator.sendBeacon(withBasePath('/api/token-usage/delta'), body)
     } catch {
       // Ignore — best effort only.
     }

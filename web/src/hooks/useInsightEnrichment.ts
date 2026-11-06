@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 /**
  * AI enrichment hook for multi-cluster insights.
  *
@@ -163,7 +164,7 @@ async function connectWebSocket(): Promise<void> {
   try {
     // LOCAL_AGENT_WS_URL already includes /ws — don't append it again
     const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-    wsConnection = new WebSocket(url, protocols)
+    wsConnection = new WebSocket(withBasePath(url), protocols)
 
     wsConnection.onopen = () => {
       // Reset backoff on successful connection

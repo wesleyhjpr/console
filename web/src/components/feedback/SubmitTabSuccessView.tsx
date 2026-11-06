@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { Bell, ExternalLink, Sparkles } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { sanitizeUrl } from '@/lib/utils/sanitizeUrl'
@@ -28,7 +29,7 @@ export function SuccessView({ success, screenshots, onViewUpdates }: SuccessView
       <div className="flex items-center justify-center gap-3">
         {success.issueUrl && (
           <a
-            href={sanitizeUrl(success.issueUrl)}
+            href={withOptionalBasePath(sanitizeUrl(success.issueUrl))}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-sm text-purple-400 hover:text-purple-300"

@@ -1,3 +1,4 @@
+import { appFetch } from '../../../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../../lib/auth'
@@ -168,7 +169,7 @@ export function useQuantumControls() {
         throw new Error(t('quantumControlPanel.credentialFieldsRequired'))
       }
 
-      const res = await fetch('/api/quantum/auth/save', {
+      const res = await appFetch('/api/quantum/auth/save', {
         method: 'POST',
         headers: buildQuantumMutationHeaders(token),
         credentials: 'include',
@@ -203,7 +204,7 @@ export function useQuantumControls() {
   const handleClearCredentials = useCallback(async () => {
     setIsClearing(true)
     try {
-      const res = await fetch('/api/quantum/auth/clear', {
+      const res = await appFetch('/api/quantum/auth/clear', {
         method: 'DELETE',
         headers: buildQuantumMutationHeaders(token),
         credentials: 'include',
@@ -250,7 +251,7 @@ export function useQuantumControls() {
         const timestamp = Date.now()
         qasmFilename = `custom_${timestamp}.qasm`
 
-        const uploadRes = await fetch('/api/quantum/qasm/file', {
+        const uploadRes = await appFetch('/api/quantum/qasm/file', {
           method: 'POST',
           headers: buildQuantumMutationHeaders(token),
           credentials: 'include',
@@ -270,7 +271,7 @@ export function useQuantumControls() {
         qasm_file: qasmFilename,
       }
 
-      const response = await fetch('/api/quantum/execute', {
+      const response = await appFetch('/api/quantum/execute', {
         method: 'POST',
         headers: buildQuantumMutationHeaders(token),
         credentials: 'include',
@@ -325,7 +326,7 @@ export function useQuantumControls() {
     const shouldStartLoopMode = !control.loop_mode
     try {
       const endpoint = shouldStartLoopMode ? '/api/quantum/loop/start' : '/api/quantum/loop/stop'
-      const response = await fetch(endpoint, {
+      const response = await appFetch(endpoint, {
         method: 'POST',
         headers: buildQuantumMutationHeaders(token),
         credentials: 'include',

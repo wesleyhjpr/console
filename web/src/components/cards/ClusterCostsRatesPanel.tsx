@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 // Pricing-rates info panel for the ClusterCosts card.
 // Extracted from ClusterCosts.tsx (issue #21615) — markup unchanged.
 // Pure UI sub-component — renders props (pricing/costs) provided by the parent;
@@ -63,7 +64,7 @@ export function ClusterCostsRatesPanel({
           <div className="flex flex-wrap items-center justify-end gap-y-2 mb-2">
             {pricing.pricingUrl && (
               <a
-                href={sanitizeUrl(pricing.pricingUrl)}
+                href={withOptionalBasePath(sanitizeUrl(pricing.pricingUrl))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition-colors"
@@ -120,7 +121,7 @@ export function ClusterCostsRatesPanel({
                   )}
                   {p.pricingUrl && (
                     <a
-                      href={sanitizeUrl(p.pricingUrl)}
+                      href={withOptionalBasePath(sanitizeUrl(p.pricingUrl))}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-purple-400 hover:text-purple-300"

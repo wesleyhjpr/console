@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { memo, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -47,7 +48,7 @@ export const MemoizedMessage = memo(function MemoizedMessage({ msg, missionAgent
       if (!safeHref) {
         return <span className="text-muted-foreground">{children}</span>
       }
-      return <a href={safeHref} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300">{children}</a>
+      return <a href={withOptionalBasePath(safeHref)} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300">{children}</a>
     },
   }), [fontSize])
 
@@ -83,7 +84,7 @@ export const MemoizedMessage = memo(function MemoizedMessage({ msg, missionAgent
       )}>
         {msg.role === 'user' ? (
           userAvatarUrl ? (
-            <img src={userAvatarUrl} alt="User avatar" className="w-8 h-8 rounded-full" loading="lazy" width={32} height={32} />
+            <img src={withOptionalBasePath(userAvatarUrl)} alt="User avatar" className="w-8 h-8 rounded-full" loading="lazy" width={32} height={32} />
           ) : (
             <User className="w-4 h-4 text-primary" />
           )

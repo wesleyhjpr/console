@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect } from 'react'
 import { MS_PER_HOUR } from '../lib/constants/time'
 
@@ -96,7 +97,7 @@ export function useMediumBlog() {
     let cancelled = false
 
     async function fetchFrom(url: string): Promise<BlogResponse> {
-      const resp = await fetch(url, {
+      const resp = await appFetch(url, {
         signal: AbortSignal.timeout(BLOG_FETCH_TIMEOUT_MS),
       })
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`)

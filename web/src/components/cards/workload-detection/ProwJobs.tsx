@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { useState } from 'react'
 import {
   CheckCircle, XCircle, Clock, AlertTriangle, ExternalLink,
@@ -208,7 +209,7 @@ export function ProwJobs({ config: _config }: ProwJobsProps) {
               {job.pr && <span>PR: #{job.pr}</span>}
               <span>Duration: {job.duration}</span>
               {job.url && (
-                <a href={sanitizeUrl(job.url)} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline flex items-center gap-2 min-h-11 min-w-11">
+                <a href={withOptionalBasePath(sanitizeUrl(job.url))} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:underline flex items-center gap-2 min-h-11 min-w-11">
                   Logs <ExternalLink className="w-3 h-3" />
                 </a>
               )}

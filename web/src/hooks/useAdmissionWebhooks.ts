@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Admission Webhooks Hook with real backend API and demo data fallback
  *
@@ -171,7 +172,7 @@ export function useAdmissionWebhooks(): UseAdmissionWebhooksResult {
     }
 
     try {
-      const res = await fetch('/api/admission-webhooks', {
+      const res = await appFetch('/api/admission-webhooks', {
         headers: authHeaders(),
         signal: signal ?? AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

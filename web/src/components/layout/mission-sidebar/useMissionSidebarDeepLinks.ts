@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useEffect, type MutableRefObject } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import type { Mission } from '../../../hooks/useMissions'
@@ -259,7 +260,7 @@ export function useDirectImport(
       let found: MissionExport | null = null
       try {
         found = await Promise.any(paths.map(async (path) => {
-          const response = await fetch(`/api/missions/file?path=${encodeURIComponent(path)}`, {
+          const response = await appFetch(`/api/missions/file?path=${encodeURIComponent(path)}`, {
             signal: combinedSignal,
           })
           if (!response.ok) {
@@ -284,7 +285,7 @@ export function useDirectImport(
       }
 
       try {
-        const response = await fetch('/api/missions/file?path=fixes/index.json', {
+        const response = await appFetch('/api/missions/file?path=fixes/index.json', {
           signal: AbortSignal.timeout(MISSION_FILE_FETCH_TIMEOUT_MS),
         })
         if (response.ok) {
@@ -294,7 +295,7 @@ export function useDirectImport(
             return filename.replace('.json', '') === directImportSlug
           })
           if (match) {
-            const fileResponse = await fetch(`/api/missions/file?path=${encodeURIComponent(match.path)}`, {
+            const fileResponse = await appFetch(`/api/missions/file?path=${encodeURIComponent(match.path)}`, {
               signal: AbortSignal.timeout(MISSION_FILE_FETCH_TIMEOUT_MS),
             })
             if (fileResponse.ok) {

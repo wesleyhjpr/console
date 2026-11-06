@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Save, User, Loader2, AlertCircle, RefreshCw, Check, Copy, Share2 } from 'lucide-react'
@@ -119,7 +120,7 @@ export function ProfileSection({ initialEmail, initialSlackId, githubLogin, refr
     setError(null)
     try {
       const token = await getStoredAuthToken()
-      const response = await fetch('/api/me', {
+      const response = await appFetch('/api/me', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

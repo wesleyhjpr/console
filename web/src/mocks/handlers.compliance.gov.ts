@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 import {
   DEMO_10_MIN_MS,
@@ -31,7 +32,7 @@ import {
 export function createComplianceGovHandlers() {
   return [
   // ── NIST 800-53 mock handlers (demo mode) ─────────────────────────
-  http.get('/api/compliance/nist/families', async () => {
+  http.get(withBasePath('/api/compliance/nist/families'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'AC', name: 'Access Control', description: 'Manage system access and privileges.', pass_rate: 83, controls: [
@@ -66,7 +67,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/nist/mappings', async () => {
+  http.get(withBasePath('/api/compliance/nist/mappings'), async () => {
     await delay(150)
     return HttpResponse.json([
       { control_id: 'AC-2', resources: ['ServiceAccount', 'ClusterRoleBinding'], namespaces: ['kube-system', 'production'], clusters: ['prod-east', 'prod-west'], automated: true, last_assessed: new Date().toISOString() },
@@ -77,7 +78,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/nist/summary', async () => {
+  http.get(withBasePath('/api/compliance/nist/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_controls: 19, implemented_controls: 13, partial_controls: 4,
@@ -87,14 +88,14 @@ export function createComplianceGovHandlers() {
   }),
 
   // ── DISA STIG mock handlers (demo mode) ───────────────────────────
-  http.get('/api/compliance/stig/benchmarks', async () => {
+  http.get(withBasePath('/api/compliance/stig/benchmarks'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'kubernetes-stig-v2r1', title: 'Kubernetes STIG', version: 'V2R1', release: 'Release 1', status: 'compliant', profile: 'MAC-I Classified', total_rules: 95, findings_count: 12 },
     ])
   }),
 
-  http.get('/api/compliance/stig/findings', async () => {
+  http.get(withBasePath('/api/compliance/stig/findings'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'V-242381', rule_id: 'SV-242381r879578', title: 'API Server must have anonymous auth disabled', severity: 'CAT I', status: 'not_a_finding', benchmark_id: 'kubernetes-stig-v2r1', host: 'k8s-master-01', comments: 'anonymous-auth=false verified on all API servers' },
@@ -112,7 +113,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/stig/summary', async () => {
+  http.get(withBasePath('/api/compliance/stig/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       compliance_score: 75, total_findings: 12, open: 3,
@@ -122,7 +123,7 @@ export function createComplianceGovHandlers() {
   }),
 
   // ── Air-Gap Readiness mock handlers (demo mode) ───────────────────
-  http.get('/api/compliance/airgap/requirements', async () => {
+  http.get(withBasePath('/api/compliance/airgap/requirements'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'ag-01', category: 'registry', name: 'Private Container Registry', description: 'All images from internal registry.', status: 'ready', details: 'Harbor v2.9 deployed in-cluster at registry.internal:5000' },
@@ -138,7 +139,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/airgap/clusters', async () => {
+  http.get(withBasePath('/api/compliance/airgap/clusters'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'ag-cluster-1', name: 'airgap-prod-east', readiness_score: 100, status: 'ready', requirements_met: 10, requirements_total: 10, last_checked: '2026-04-23T06:00:00Z' },
@@ -148,7 +149,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/airgap/summary', async () => {
+  http.get(withBasePath('/api/compliance/airgap/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_requirements: 10, ready: 8, not_ready: 1, partial: 1,
@@ -158,7 +159,7 @@ export function createComplianceGovHandlers() {
   }),
 
   // ── FedRAMP Readiness mock handlers (demo mode) ───────────────────
-  http.get('/api/compliance/fedramp/controls', async () => {
+  http.get(withBasePath('/api/compliance/fedramp/controls'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'AC-1', name: 'Access Control Policy', description: 'Develop and maintain access control policy and procedures', family: 'AC', status: 'satisfied', responsible: 'CISO Office', implementation: 'Documented in security plan v3.2, reviewed quarterly' },
@@ -172,7 +173,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/fedramp/poams', async () => {
+  http.get(withBasePath('/api/compliance/fedramp/poams'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'POAM-001', control_id: 'AC-6', title: 'Legacy service account privilege reduction', description: '3 legacy service accounts have overly broad ClusterRole bindings that need scoping down', milestone_status: 'open', scheduled_completion: '2026-06-30', risk_level: 'moderate', vendor_dependency: false },
@@ -182,7 +183,7 @@ export function createComplianceGovHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/fedramp/score', async () => {
+  http.get(withBasePath('/api/compliance/fedramp/score'), async () => {
     await delay(150)
     return HttpResponse.json({
       overall_score: 85, authorization_status: 'in_progress', impact_level: 'moderate',
@@ -193,7 +194,7 @@ export function createComplianceGovHandlers() {
   }),
 
   // ── Identity & Access mock handlers (demo mode) ────────────
-  http.get('/api/identity/oidc/summary', async () => {
+  http.get(withBasePath('/api/identity/oidc/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_providers: 5, active_providers: 4, total_users: 1247,
@@ -201,7 +202,7 @@ export function createComplianceGovHandlers() {
       evaluated_at: new Date().toISOString(),
     })
   }),
-  http.get('/api/identity/oidc/providers', async () => {
+  http.get(withBasePath('/api/identity/oidc/providers'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'oidc-1', name: 'Okta Production', issuer_url: 'https://company.okta.com', status: 'connected', protocol: 'OIDC', client_id: 'okta-prod-001', users_synced: 485, last_sync: new Date(Date.now() - DEMO_5_MIN_MS).toISOString(), groups_mapped: 12 },
@@ -211,7 +212,7 @@ export function createComplianceGovHandlers() {
       { id: 'oidc-5', name: 'Keycloak Staging', issuer_url: 'https://keycloak.staging.internal', status: 'degraded', protocol: 'OIDC', client_id: 'kc-staging-001', users_synced: 0, last_sync: new Date(Date.now() - DEMO_1_DAY_MS).toISOString(), groups_mapped: 3 },
     ])
   }),
-  http.get('/api/identity/oidc/sessions', async () => {
+  http.get(withBasePath('/api/identity/oidc/sessions'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'sess-1', user: 'alice@company.com', provider_id: 'oidc-1', provider_name: 'Okta Production', login_time: new Date(Date.now() - DEMO_1_HOUR_MS).toISOString(), expires_at: new Date(Date.now() + DEMO_2_HOUR_MS).toISOString(), ip_address: '10.0.1.42', active: true },
@@ -224,7 +225,7 @@ export function createComplianceGovHandlers() {
       { id: 'sess-8', user: 'hank@company.com', provider_id: 'oidc-3', provider_name: 'GitHub Enterprise', login_time: new Date(Date.now() - DEMO_45_MIN_MS).toISOString(), expires_at: new Date(Date.now() + DEMO_75_MIN_MS).toISOString(), ip_address: '10.0.2.33', active: true },
     ])
   }),
-  http.get('/api/identity/rbac/summary', async () => {
+  http.get(withBasePath('/api/identity/rbac/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_bindings: 147, cluster_role_bindings: 34,
@@ -233,7 +234,7 @@ export function createComplianceGovHandlers() {
       evaluated_at: new Date().toISOString(),
     })
   }),
-  http.get('/api/identity/rbac/bindings', async () => {
+  http.get(withBasePath('/api/identity/rbac/bindings'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'rb-1', name: 'admin-binding', kind: 'ClusterRoleBinding', subject_kind: 'User', subject_name: 'alice@company.com', role_name: 'cluster-admin', namespace: '', cluster: 'prod-east', risk_level: 'critical', last_used: new Date(Date.now() - DEMO_1_DAY_MS).toISOString() },
@@ -250,7 +251,7 @@ export function createComplianceGovHandlers() {
       { id: 'rb-12', name: 'log-collector', kind: 'ClusterRoleBinding', subject_kind: 'ServiceAccount', subject_name: 'fluentd', role_name: 'log-reader', namespace: '', cluster: 'prod-east', risk_level: 'low', last_used: new Date(Date.now() - DEMO_2_MIN_MS).toISOString() },
     ])
   }),
-  http.get('/api/identity/rbac/findings', async () => {
+  http.get(withBasePath('/api/identity/rbac/findings'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'find-1', finding_type: 'cluster_admin_user', severity: 'critical', subject: 'alice@company.com', description: 'User has cluster-admin role bound directly. This grants unrestricted access to all resources.', cluster: 'prod-east', namespace: '*', recommendation: 'Replace with scoped roles targeting specific namespaces and resources.' },
@@ -261,7 +262,7 @@ export function createComplianceGovHandlers() {
       { id: 'find-6', finding_type: 'broad_namespace_admin', severity: 'high', subject: 'sre-team', description: 'Group has admin role in production namespace, granting full control including RBAC modification.', cluster: 'prod-east', namespace: 'production', recommendation: 'Use edit role instead and manage RBAC separately through policy.' },
     ])
   }),
-  http.get('/api/identity/sessions/summary', async () => {
+  http.get(withBasePath('/api/identity/sessions/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       active_sessions: 42, unique_users: 31, avg_duration_minutes: 47,
@@ -269,7 +270,7 @@ export function createComplianceGovHandlers() {
       mfa_sessions_pct: 88, evaluated_at: new Date().toISOString(),
     })
   }),
-  http.get('/api/identity/sessions/active', async () => {
+  http.get(withBasePath('/api/identity/sessions/active'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'as-1', user: 'alice@company.com', login_time: new Date(Date.now() - DEMO_1_HOUR_MS).toISOString(), last_activity: new Date(Date.now() - DEMO_2_MIN_MS).toISOString(), ip_address: '10.0.1.42', user_agent: 'Chrome/125 (macOS)', provider: 'Okta', status: 'active', expires_at: new Date(Date.now() + DEMO_2_HOUR_MS).toISOString() },
@@ -282,7 +283,7 @@ export function createComplianceGovHandlers() {
       { id: 'as-8', user: 'hank@company.com', login_time: new Date(Date.now() - DEMO_45_MIN_MS).toISOString(), last_activity: new Date(Date.now() - DEMO_10_MIN_MS).toISOString(), ip_address: '10.0.2.33', user_agent: 'kubectl/v1.31 (darwin/arm64)', provider: 'GitHub', status: 'active', expires_at: new Date(Date.now() + DEMO_75_MIN_MS).toISOString() },
     ])
   }),
-  http.get('/api/identity/sessions/policies', async () => {
+  http.get(withBasePath('/api/identity/sessions/policies'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'pol-1', name: 'Default Session Policy', description: 'Standard session timeouts for all users', idle_timeout_minutes: 30, absolute_timeout_hours: 8, max_concurrent: 3, enforce_mfa: true, scope: 'global' },

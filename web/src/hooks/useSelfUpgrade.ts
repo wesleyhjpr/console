@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import type { SelfUpgradeStatus } from '../types/updates'
 import { STORAGE_KEY_TOKEN } from '../lib/constants'
@@ -58,7 +59,7 @@ export function useSelfUpgrade() {
     setIsLoading(true)
     try {
       const token = getToken()
-      const resp = await fetch('/api/self-upgrade/status', {
+      const resp = await appFetch('/api/self-upgrade/status', {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         signal: AbortSignal.timeout(SELF_UPGRADE_TIMEOUT_MS) })
       if (resp.ok) {
@@ -119,7 +120,7 @@ export function useSelfUpgrade() {
 
       void (async () => {
         try {
-          const resp = await fetch('/health', {
+          const resp = await appFetch('/health', {
             signal: AbortSignal.timeout(RESTART_HEALTH_TIMEOUT_MS) })
           if (resp.ok) {
             if (pollIntervalRef.current) { clearInterval(pollIntervalRef.current); pollIntervalRef.current = null }
@@ -151,7 +152,7 @@ export function useSelfUpgrade() {
     setUpgradeState({ phase: 'triggering' })
     try {
       const token = getToken()
-      const resp = await fetch('/api/self-upgrade/trigger', {
+      const resp = await appFetch('/api/self-upgrade/trigger', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

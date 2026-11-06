@@ -1,3 +1,4 @@
+import { appFetch, withOptionalBasePath } from '../../lib/basePath'
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { ImagePlus, Trash2, Copy, Eye, Check, Film } from 'lucide-react'
 import { FETCH_DEFAULT_TIMEOUT_MS, COPY_FEEDBACK_TIMEOUT_MS } from '../../lib/constants'
@@ -82,7 +83,7 @@ export function SubmitTabAttachments({
 
   const copyScreenshotToClipboard = async (preview: string, index: number) => {
     try {
-      const res = await fetch(preview, { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
+      const res = await appFetch(preview, { signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       const blob = await res.blob()
       const ok = await copyBlobToClipboard(blob)
       if (!ok) {
@@ -144,7 +145,7 @@ export function SubmitTabAttachments({
               {s.mediaType === 'video' ? (
                 <div className="w-20 h-20 rounded-lg border border-border bg-black flex items-center justify-center overflow-hidden">
                   <video
-                    src={s.preview}
+                    src={withOptionalBasePath(s.preview)}
                     className="w-full h-full object-cover"
                     muted
                     playsInline
@@ -153,7 +154,7 @@ export function SubmitTabAttachments({
                 </div>
               ) : (
                 <img
-                  src={s.preview}
+                  src={withOptionalBasePath(s.preview)}
                   alt={`Attachment ${i + 1}`}
                   className="w-20 h-20 object-cover rounded-lg border border-border"
                   loading="lazy"

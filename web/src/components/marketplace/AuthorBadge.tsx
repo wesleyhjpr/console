@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -40,7 +41,7 @@ export function AuthorBadge({ author, github, compact }: { author: string; githu
   const link = (
     <a
       ref={triggerRef as React.RefObject<HTMLAnchorElement | null>}
-      href={`https://github.com/${github}`}
+      href={withOptionalBasePath(`https://github.com/${github}`)}
       target="_blank"
       rel="noopener noreferrer"
       className="text-primary/80 hover:text-primary transition-colors hover:underline"
@@ -73,7 +74,7 @@ export function AuthorBadge({ author, github, compact }: { author: string; githu
               <div className="px-4 py-3 bg-background border border-border rounded-lg shadow-xl backdrop-blur-xs min-w-[200px]">
                 <div className="flex items-center gap-3 mb-2">
                   <img
-                    src={`https://github.com/${github}.png?size=80`}
+                    src={withOptionalBasePath(`https://github.com/${github}.png?size=80`)}
                     alt={github}
                     className="w-10 h-10 rounded-full border border-border"
                     loading="lazy"

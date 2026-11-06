@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, Bug, ExternalLink, Loader2, RefreshCw, Search, Trophy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -112,7 +113,7 @@ export function UpdatesTab({
         headers.Authorization = `Bearer ${token}`
       }
 
-      const response = await fetch(`${BACKEND_DEFAULT_URL}/api/feedback/preview/${prNumber}`, {
+      const response = await appFetch(`${BACKEND_DEFAULT_URL}/api/feedback/preview/${prNumber}`, {
         headers,
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
       })

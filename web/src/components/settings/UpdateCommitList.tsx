@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { GitCommitHorizontal, ChevronUp, ChevronDown } from 'lucide-react'
@@ -52,7 +53,7 @@ export function UpdateCommitList({ commits }: { commits: Commit[] }) {
             return (
               <a
                 key={commit.sha}
-                href={sanitizeUrl(url)}
+                href={withOptionalBasePath(sanitizeUrl(url))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 px-4 py-2 border-b border-border/50 last:border-b-0 hover:bg-secondary/30 cursor-pointer no-underline"

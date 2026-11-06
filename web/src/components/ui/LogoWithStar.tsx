@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { cn } from '../../lib/cn'
 import { useBranding } from '../../hooks/useBranding'
 
@@ -24,7 +25,7 @@ export function LogoWithStar({ className, logoClassName, alt, showStar }: LogoWi
   return (
     <div className={cn('relative inline-flex items-center justify-center', className)}>
       <img
-        src={logoUrl}
+        src={withOptionalBasePath(logoUrl)}
         alt={alt || 'KubeStellar logo'}
         className={cn('w-full h-full', logoClassName)}
         loading="lazy"

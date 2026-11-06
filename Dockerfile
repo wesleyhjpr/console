@@ -65,10 +65,8 @@ ARG APP_VERSION=0.0.0
 ARG COMMIT_HASH=unknown
 
 # Copy all frontend source first so we can detect a pre-built dist/.
-# WARNING (local builds): if web/dist/ is present in your working tree from a
-# previous build it will be copied here and the conditional below will skip
-# npm ci + Vite, silently shipping stale assets. Remove web/dist/ before
-# building locally if you want a fresh frontend build.
+# WARNING (local builds): a runtime-base-compatible web/dist/ is reused.
+# Remove web/dist/ before building locally if you want a fresh frontend build.
 # In CI this is intentional: the build-frontend job pre-builds on amd64 and
 # uploads the artifact; the docker-build job downloads it into web/dist/ so
 # that QEMU arm64 never needs to run Node at all, avoiding the
@@ -79,7 +77,7 @@ COPY web/ ./
 # If dist/ is already present (CI pre-built path), skip npm ci and Vite
 # entirely — no Node execution under QEMU arm64. Otherwise install
 # dependencies and build from source (local / amd64 scratch builds).
-RUN if [ -d dist ] && [ -n "$(ls -A dist 2>/dev/null)" ]; then \
+RUN if [ -f dist/index.html ] && grep -q 'name="console-base-path"' dist/index.html; then \
       echo "Using pre-built frontend dist/ — skipping npm ci and build"; \
     else \
       for attempt in 1 2 3; do \
@@ -132,7 +130,8 @@ RUN mkdir -p /app/data /app/.kc && chown -R appuser:appgroup /app/data /app/.kc
 
 # Copy entrypoint script for watchdog + backend
 COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
+# Windows checkouts may use CRLF, which breaks the Linux shebang.
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 
 # Environment variables
 ENV PORT=8080

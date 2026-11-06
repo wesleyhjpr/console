@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { memo } from 'react'
 import { AlertCircle, ChevronRight, ExternalLink, Globe, KeyRound, Pencil, RefreshCw, ShieldAlert, Star, User, WifiOff } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -211,7 +212,7 @@ aka: ${(cluster.aliases || []).join(', ')}` : cluster.context || cluster.name}
           {consoleUrl && (
             <div className="flex justify-center mb-3">
               <a
-                href={sanitizeUrl(consoleUrl)}
+                href={withOptionalBasePath(sanitizeUrl(consoleUrl))}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(event) => event.stopPropagation()}

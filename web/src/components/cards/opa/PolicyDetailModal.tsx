@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { CheckCircle, ExternalLink, Shield } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { BaseModal } from '../../../lib/modals'
@@ -88,7 +89,7 @@ export function PolicyDetailModal({
 
       <BaseModal.Footer>
         <a
-          href={`https://open-policy-agent.github.io/gatekeeper-library/website/${policy.kind.toLowerCase()}/`}
+          href={withOptionalBasePath(`https://open-policy-agent.github.io/gatekeeper-library/website/${policy.kind.toLowerCase()}/`)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm text-purple-400 hover:text-purple-300 flex items-center gap-1"

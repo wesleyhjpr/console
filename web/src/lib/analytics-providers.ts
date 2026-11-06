@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from './basePath'
 import {
   getAndResetEngagementMs,
   getClientId,
@@ -43,7 +44,7 @@ let pendingEvents: PendingAnalyticsEvent[] = []
 
 function loadUmamiScript() {
   const script = document.createElement('script')
-  script.src = UMAMI_SCRIPT_PATH
+  script.src = withBasePath(UMAMI_SCRIPT_PATH)
   script.defer = true
   script.dataset.websiteId = umamiWebsiteId
   script.dataset.hostUrl = window.location.origin
@@ -103,7 +104,7 @@ function loadGtagScript() {
   const loadCdnFallback = () => {
     const cdnScript = document.createElement('script')
     cdnScript.async = true
-    cdnScript.src = `${GTAG_CDN_URL}?id=${mid}`
+    cdnScript.src = withBasePath(`${GTAG_CDN_URL}?id=${mid}`)
     cdnScript.onload = () => {
       setTimeout(() => markGtagDecided(isGtagInitialized()), GTAG_INIT_CHECK_MS)
     }
@@ -113,7 +114,7 @@ function loadGtagScript() {
 
   const script = document.createElement('script')
   script.async = true
-  script.src = `${GTAG_SCRIPT_PATH}?id=${mid}`
+  script.src = withBasePath(`${GTAG_SCRIPT_PATH}?id=${mid}`)
   script.onload = () => {
     setTimeout(() => {
       if (isGtagInitialized()) {
@@ -236,9 +237,9 @@ function sendViaProxy(eventName: string, params?: AnalyticsEventParams) {
   const url = `${PROXY_PATH}?d=${encodeURIComponent(encoded)}`
 
   if (navigator.sendBeacon) {
-    navigator.sendBeacon(url)
+    navigator.sendBeacon(withBasePath(url))
   } else {
-    fetch(url, { method: 'POST', keepalive: true, signal: AbortSignal.timeout(5_000) }).catch((err) => {
+    appFetch(url, { method: 'POST', keepalive: true, signal: AbortSignal.timeout(5_000) }).catch((err) => {
       logger.error('[analytics] beacon delivery failed:', err)
     })
   }

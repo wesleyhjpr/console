@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect } from 'react'
 import { LOCAL_AGENT_HTTP_URL } from '../lib/constants'
 import { isLocalAgentSuppressed } from '../lib/constants/network'
@@ -171,7 +172,7 @@ class BackendHealthManager {
 
     try {
       // Use /health (not /api/health) - the root health endpoint doesn't require auth
-      const response = await fetch('/health', {
+      const response = await appFetch('/health', {
         method: 'GET',
         headers: { Accept: 'application/json' },
         signal: AbortSignal.timeout(HEALTH_CHECK_TIMEOUT_MS),
@@ -267,7 +268,7 @@ class BackendHealthManager {
     if (isLocalAgentSuppressed()) return false
 
     try {
-      const res = await fetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
+      const res = await appFetch(`${LOCAL_AGENT_HTTP_URL}/health`, {
         method: 'GET',
         headers: { Accept: 'application/json' },
         signal: AbortSignal.timeout(HEALTH_CHECK_TIMEOUT_MS),

@@ -41,7 +41,7 @@ func TestLoadingServer_HealthReturns503(t *testing.T) {
 	ln.Close()
 
 	addr := fmt.Sprintf("127.0.0.1:%d", port)
-	srv := startLoadingServer(addr)
+	srv := startLoadingServer(addr, "/")
 	t.Cleanup(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), loadingServerShutdownTimeout)
 		defer cancel()

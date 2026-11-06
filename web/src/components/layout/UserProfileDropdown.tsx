@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useRef, useEffect, type RefObject } from 'react'
 import { useModalState } from '../../lib/modals'
 import { useKeyboardNav } from '../../hooks/useKeyboardNav'
@@ -73,7 +74,7 @@ export function UserProfileDropdown({ user, onLogout, onPreferences }: UserProfi
       >
         {user.avatar_url ? (
           <img
-            src={user.avatar_url}
+            src={withOptionalBasePath(user.avatar_url)}
             alt={user?.github_login || 'User avatar'}
             className="w-6 h-6 rounded-full"
             loading="lazy"

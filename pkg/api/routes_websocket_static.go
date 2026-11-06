@@ -27,20 +27,18 @@ func (s *Server) setupWebSocketStaticRoutes(routes *routeSetupContext) {
 	}))
 
 	if !s.config.DevMode || fileExists("./web/dist/index.html") {
-		s.app.Use(preCompressedStatic("./web/dist"))
+		s.app.Use(preCompressedStatic("./web/dist", s.frontendBasePath))
 		s.app.Get("/*", func(c *fiber.Ctx) error {
-			c.Set("Cache-Control", "public, max-age=0, must-revalidate")
-			return c.SendFile("./web/dist/index.html")
+			return sendFrontendHTML(c, "./web/dist/index.html", s.frontendBasePath)
 		})
 		return
 	}
 
 	if _, err := os.Stat("./web/dist/index.html"); err == nil {
 		slog.Info("[Server] dev mode active but web/dist found — serving static files instead of redirecting to Vite")
-		s.app.Use(preCompressedStatic("./web/dist"))
+		s.app.Use(preCompressedStatic("./web/dist", s.frontendBasePath))
 		s.app.Get("/*", func(c *fiber.Ctx) error {
-			c.Set("Cache-Control", "public, max-age=0, must-revalidate")
-			return c.SendFile("./web/dist/index.html")
+			return sendFrontendHTML(c, "./web/dist/index.html", s.frontendBasePath)
 		})
 		return
 	}

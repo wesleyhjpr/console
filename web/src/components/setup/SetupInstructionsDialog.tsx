@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 'use client'
 
 import { useState } from 'react'
@@ -105,7 +106,7 @@ export function SetupInstructionsDialog({ isOpen, onClose }: SetupInstructionsDi
 
         <div className="mt-4 flex items-center justify-center gap-4">
           <a
-            href={DOCS_URL}
+            href={withOptionalBasePath(DOCS_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-300 transition-colors"
@@ -115,7 +116,7 @@ export function SetupInstructionsDialog({ isOpen, onClose }: SetupInstructionsDi
           </a>
           <span className="text-muted-foreground/30">|</span>
           <a
-            href={REPO_URL}
+            href={withOptionalBasePath(REPO_URL)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-sm text-purple-400 hover:text-purple-300 transition-colors"

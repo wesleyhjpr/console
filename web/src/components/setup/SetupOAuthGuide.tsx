@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useTranslation } from 'react-i18next'
 import { emitInstallCommandCopied } from '../../lib/analytics'
 import { CopyableCommand } from './SetupInstructionsParts'
@@ -24,7 +25,7 @@ export function SetupOAuthGuide({
             <span className="text-muted-foreground">
               {idx + 1}. {oStep.label}{' '}
               <a
-                href={oStep.link}
+                href={withOptionalBasePath(oStep.link)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:text-purple-300 underline"

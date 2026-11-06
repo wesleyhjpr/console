@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from '../basePath'
 // Auth context + provider extracted from ../auth.tsx as part of the
 // auth.tsx file split (#22976, part of #22962). No behaviour change —
 // this is the same AuthContext/AuthProvider implementation that
@@ -181,7 +182,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Use fetch directly instead of api.get to bypass the backend availability
       // cache. refreshUser is the auth bootstrapping function — it must always
       // attempt the request, even if a stale cache says the backend is down.
-      const meResponse = await fetch('/api/me', {
+      const meResponse = await appFetch('/api/me', {
         headers: { Authorization: `Bearer ${effectiveToken}` },
         signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       if (meResponse.status === 429) {
@@ -324,7 +325,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     emitLogin('github-oauth')
     emitConversionStep(2, 'login', { method: 'github-oauth' })
-    window.location.href = '/auth/github'
+    window.location.href = withBasePath('/auth/github')
   }, [setDemoMode])
 
   const setToken = useCallback((newToken: string, onboarded: boolean) => {

@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { TFunction } from 'i18next'
 import { isAgentUnavailable } from './useLocalAgent'
@@ -214,7 +215,7 @@ async function fetchResolveDepsResponse(
   const { signal: attemptSignal, cleanup } = createAttemptController(signal, REST_RESOLVE_TIMEOUT_MS)
 
   try {
-    return await fetch(
+    return await appFetch(
       `/api/workloads/resolve-deps/${encodeURIComponent(cluster)}/${encodeURIComponent(namespace)}/${encodeURIComponent(name)}`,
       {
         headers: authHeaders(),

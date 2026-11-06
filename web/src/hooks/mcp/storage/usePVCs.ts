@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { reportAgentDataSuccess, isAgentUnavailable } from '../../useLocalAgent'
 import { isDemoMode } from '../../../lib/demoMode'
@@ -277,7 +278,7 @@ export function usePVCs(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/pvcs?${params}`, {
+          const response = await appFetch(`/api/mcp/pvcs?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {

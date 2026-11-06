@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { useState } from 'react'
 import { Loader2, Sparkles, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -65,7 +66,7 @@ export function InstallCTAFlow({ cardType, title }: InstallCTAFlowProps) {
     } else if (installInfo) {
       setIsPreparingInstall(true)
       try {
-        const resp = await fetch(`/console-kb/${installInfo.kbPaths[0]}`, { signal: AbortSignal.timeout(KB_FETCH_TIMEOUT_MS) })
+        const resp = await appFetch(`/console-kb/${installInfo.kbPaths[0]}`, { signal: AbortSignal.timeout(KB_FETCH_TIMEOUT_MS) })
         if (!resp.ok) throw new Error('Failed to load install guide')
         setShowInstallGuide({ mission: await resp.json() })
       } catch {

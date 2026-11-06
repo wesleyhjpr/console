@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * ComplianceReports — Generate and download compliance audit reports.
  *
@@ -79,7 +80,7 @@ export const ComplianceReportsContent = memo(function ComplianceReportsContent()
 
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = url
+      a.href = withBasePath(url)
       a.download = filename
       document.body.appendChild(a)
       a.click()

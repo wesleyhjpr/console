@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useMemo, useState, useRef } from 'react'
 import type { ClusterInfo } from '../../hooks/useMCP'
 import { useGlobalFilters } from '../../hooks/useGlobalFilters'
@@ -28,7 +29,7 @@ export function useClusterLocations(allClusters: ClusterInfo[]) {
     initialData: '',
     persist: true,
     fetcher: async () => {
-      const res = await fetch(WorldMapSvgUrl, { signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) })
+      const res = await appFetch(WorldMapSvgUrl, { signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) })
       if (!res.ok) throw new Error('Failed to load map')
       const svg = await res.text()
       // Sanitize SVG to prevent XSS from embedded scripts or event handlers

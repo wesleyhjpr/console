@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { Component, type ReactNode, type ErrorInfo } from 'react'
 import { AlertTriangle, RefreshCw, ArrowLeft } from 'lucide-react'
 import i18next from 'i18next'
@@ -61,7 +62,7 @@ export class PageErrorBoundary extends Component<Props, State> {
   }
 
   handleGoHome = () => {
-    window.location.href = ROUTES.HOME
+    window.location.href = withBasePath(ROUTES.HOME)
   }
 
   handleReload = () => {

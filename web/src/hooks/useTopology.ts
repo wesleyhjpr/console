@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Topology Data Hook with localStorage caching and failure tracking
  *
@@ -179,7 +180,7 @@ function normalizeTopologyData(data: TopologyResponse, isDemoData = false): Topo
 }
 
 async function fetchTopology(): Promise<TopologyData> {
-  const res = await fetch('/api/topology', {
+  const res = await appFetch('/api/topology', {
     headers: authHeaders(),
     signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS),
   })

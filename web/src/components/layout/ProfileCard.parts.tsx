@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { User, MessageSquare, Shield, ChevronDown, Coins } from 'lucide-react'
@@ -87,7 +88,7 @@ export function ProfileAvatarBlock({ user }: ProfileAvatarBlockProps) {
       <div className="flex items-center gap-3">
         {user.avatar_url ? (
           <img
-            src={user.avatar_url}
+            src={withOptionalBasePath(user.avatar_url)}
             alt={user?.github_login || 'User avatar'}
             className="w-12 h-12 rounded-full"
             loading="lazy"

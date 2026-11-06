@@ -1,3 +1,4 @@
+import { appFetch, withBasePath } from '../basePath'
 /**
  * Session and auth-error handling: 401/429 handling, session expiry banner,
  * and logout flow.
@@ -74,7 +75,7 @@ export function handle401(): void {
   // Verify the cookie-based session before treating this as an expiry. If
   // /api/me comes back 200, the session is still valid — abort the
   // session-expired flow entirely (#8372).
-  fetch(`${API_BASE}${AUTH_VERIFY_ENDPOINT}`, {
+  appFetch(`${API_BASE}${AUTH_VERIFY_ENDPOINT}`, {
     credentials: 'include',
     signal: AbortSignal.timeout(SESSION_VERIFY_TIMEOUT_MS),
   }).then(verifyResponse => {
@@ -130,7 +131,7 @@ export function performSessionExpiry(): void {
     if (expiredToken && expiredToken !== DEMO_TOKEN_VALUE) {
       headers['Authorization'] = `Bearer ${expiredToken}`
     }
-    fetch(`${API_BASE}${AUTH_LOGOUT_ENDPOINT}`, {
+    appFetch(`${API_BASE}${AUTH_LOGOUT_ENDPOINT}`, {
       method: 'POST',
       headers,
       credentials: 'include',
@@ -159,7 +160,7 @@ export function performSessionExpiry(): void {
 
   // Redirect to login after a delay so the user sees the banner
   setTimeout(() => {
-    window.location.href = `${ROUTES.LOGIN}?reason=session_expired`
+    window.location.href = withBasePath(`${ROUTES.LOGIN}?reason=session_expired`)
   }, SESSION_EXPIRY_REDIRECT_MS)
 }
 

@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState } from 'react'
 import { Alert, AlertChannel } from '../types/alerts'
 import { BACKEND_DEFAULT_URL, STORAGE_KEY_AUTH_TOKEN } from '../lib/constants'
@@ -37,7 +38,7 @@ export function useNotificationAPI() {
       setError(null)
 
       try {
-        const response = await fetch(`${API_BASE}/api/notifications/test`, {
+        const response = await appFetch(`${API_BASE}/api/notifications/test`, {
           method: 'POST',
           headers: getAuthHeaders(),
           body: JSON.stringify({ type, config } as TestNotificationRequest),
@@ -64,7 +65,7 @@ export function useNotificationAPI() {
       setError(null)
 
       try {
-        const response = await fetch(`${API_BASE}/api/notifications/send`, {
+        const response = await appFetch(`${API_BASE}/api/notifications/send`, {
           method: 'POST',
           headers: getAuthHeaders(),
           body: JSON.stringify({ alert, channels } as SendAlertNotificationRequest),

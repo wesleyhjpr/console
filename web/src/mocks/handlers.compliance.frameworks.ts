@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 
 // Compliance Frameworks, HIPAA, GxP, BAA, Segregation of Duties,
@@ -5,7 +6,7 @@ import { http, HttpResponse, delay } from 'msw'
 export function createComplianceFrameworkHandlers() {
   return [
   // ── Compliance Frameworks ──────────────────────────────────────────
-  http.get('/api/compliance/frameworks/', async () => {
+  http.get(withBasePath('/api/compliance/frameworks/'), async () => {
     await delay(150)
     return HttpResponse.json([
       {
@@ -47,7 +48,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.post('/api/compliance/frameworks/:id/evaluate', async ({ params }) => {
+  http.post(withBasePath('/api/compliance/frameworks/:id/evaluate'), async ({ params }) => {
     await delay(300)
     const fwId = params.id as string
     const fwNames: Record<string, string> = {
@@ -100,7 +101,7 @@ export function createComplianceFrameworkHandlers() {
     })
   }),
 
-  http.post('/api/compliance/frameworks/:id/report', async () => {
+  http.post(withBasePath('/api/compliance/frameworks/:id/report'), async () => {
     await delay(500)
     const reportContent = JSON.stringify({
       report: 'demo-compliance-report',
@@ -116,7 +117,7 @@ export function createComplianceFrameworkHandlers() {
   }),
 
   // HIPAA compliance mock handlers (demo mode)
-  http.get('/api/compliance/hipaa/safeguards', async () => {
+  http.get(withBasePath('/api/compliance/hipaa/safeguards'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: '164.312(a)', section: '§164.312(a)(1)', name: 'Access Control', description: 'Implement technical policies to allow access only to authorized persons.', status: 'pass', checks: [
@@ -145,7 +146,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/hipaa/phi-namespaces', async () => {
+  http.get(withBasePath('/api/compliance/hipaa/phi-namespaces'), async () => {
     await delay(150)
     return HttpResponse.json([
       { name: 'ehr-api', cluster: 'prod-east', labels: ['hipaa-phi=true', 'data-class=restricted'], encrypted: true, audit_enabled: true, rbac_restricted: true, compliant: true },
@@ -155,7 +156,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/hipaa/data-flows', async () => {
+  http.get(withBasePath('/api/compliance/hipaa/data-flows'), async () => {
     await delay(150)
     return HttpResponse.json([
       { source: 'ehr-api', destination: 'patient-records', protocol: 'gRPC', encrypted: true, mutual_tls: true },
@@ -167,7 +168,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/hipaa/summary', async () => {
+  http.get(withBasePath('/api/compliance/hipaa/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       overall_score: 60, safeguards_passed: 2, safeguards_failed: 1,
@@ -178,7 +179,7 @@ export function createComplianceFrameworkHandlers() {
   }),
 
   // GxP / 21 CFR Part 11 mock handlers (demo mode)
-  http.get('/api/compliance/gxp/config', async () => {
+  http.get(withBasePath('/api/compliance/gxp/config'), async () => {
     await delay(150)
     return HttpResponse.json({
       enabled: true, enabled_at: '2026-04-20T08:00:00Z', enabled_by: 'admin@pharma.example.com',
@@ -186,7 +187,7 @@ export function createComplianceFrameworkHandlers() {
     })
   }),
 
-  http.get('/api/compliance/gxp/records', async () => {
+  http.get(withBasePath('/api/compliance/gxp/records'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'gxp-001', timestamp: '2026-04-20T08:01:00Z', user_id: 'admin@pharma.example.com', action: 'config_change', resource: 'gxp-mode', detail: 'GxP validation mode enabled', previous_hash: '', record_hash: 'a1b2c3d4e5f6a7b8' },
@@ -200,7 +201,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/gxp/signatures', async () => {
+  http.get(withBasePath('/api/compliance/gxp/signatures'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'sig-001', record_id: 'gxp-001', user_id: 'admin@pharma.example.com', meaning: 'approved', auth_method: 'mfa', timestamp: '2026-04-20T08:02:00Z' },
@@ -213,7 +214,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/gxp/chain/verify', async () => {
+  http.get(withBasePath('/api/compliance/gxp/chain/verify'), async () => {
     await delay(200)
     return HttpResponse.json({
       valid: true, total_records: 8, verified_records: 8, broken_at_index: -1,
@@ -221,7 +222,7 @@ export function createComplianceFrameworkHandlers() {
     })
   }),
 
-  http.get('/api/compliance/gxp/summary', async () => {
+  http.get(withBasePath('/api/compliance/gxp/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       config: { enabled: true, enabled_at: '2026-04-20T08:00:00Z', enabled_by: 'admin@pharma.example.com', append_only: true, require_signature: true, hash_algorithm: 'SHA-256' },
@@ -232,7 +233,7 @@ export function createComplianceFrameworkHandlers() {
   }),
 
   // BAA Tracker mock handlers (demo mode)
-  http.get('/api/compliance/baa/agreements', async () => {
+  http.get(withBasePath('/api/compliance/baa/agreements'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'baa-001', provider: 'Amazon Web Services', provider_type: 'cloud', baa_signed_date: '2025-06-15', baa_expiry_date: '2027-06-15', covered_clusters: ['prod-east', 'staging-east'], contact_name: 'AWS Enterprise Support', contact_email: 'aws-baa@example.com', status: 'active', notes: 'Covers all HIPAA-eligible services in us-east-1' },
@@ -244,7 +245,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/baa/alerts', async () => {
+  http.get(withBasePath('/api/compliance/baa/alerts'), async () => {
     await delay(150)
     return HttpResponse.json([
       { agreement_id: 'baa-003', provider: 'Datadog', expiry_date: '2026-05-15', days_left: 22, severity: 'critical' },
@@ -252,7 +253,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/baa/summary', async () => {
+  http.get(withBasePath('/api/compliance/baa/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_agreements: 6, active_agreements: 3, expiring_soon: 1,
@@ -262,7 +263,7 @@ export function createComplianceFrameworkHandlers() {
   }),
 
   // ── Segregation of Duties mock handlers (demo mode) ──────────────────
-  http.get('/api/compliance/sod/summary', async () => {
+  http.get(withBasePath('/api/compliance/sod/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_rules: 8, total_principals: 12, total_violations: 2,
@@ -272,7 +273,7 @@ export function createComplianceFrameworkHandlers() {
     })
   }),
 
-  http.get('/api/compliance/sod/rules', async () => {
+  http.get(withBasePath('/api/compliance/sod/rules'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'sod-1', name: 'Deployment ≠ Approval', description: 'Users who deploy cannot approve their own deployments', role_a: 'deployer', role_b: 'approver', conflict_type: 'deployment', severity: 'high', regulation: 'SOX §404' },
@@ -286,7 +287,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/sod/principals', async () => {
+  http.get(withBasePath('/api/compliance/sod/principals'), async () => {
     await delay(150)
     return HttpResponse.json([
       { name: 'alice@example.com', type: 'user', roles: ['deployer', 'developer'], clusters: ['prod-east', 'staging'] },
@@ -298,7 +299,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/sod/violations', async () => {
+  http.get(withBasePath('/api/compliance/sod/violations'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'sv-1', rule_id: 'sod-1', principal: 'frank@example.com', principal_type: 'user', role_a: 'deployer', role_b: 'approver', clusters: ['prod-east'], severity: 'high', description: 'User frank@ holds both deployer and approver roles in prod-east' },
@@ -307,7 +308,7 @@ export function createComplianceFrameworkHandlers() {
   }),
 
   // ── Change Control mock handlers (demo mode) ───────────────────────
-  http.get('/api/compliance/change-control/summary', async () => {
+  http.get(withBasePath('/api/compliance/change-control/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_changes: 47, approved_changes: 32, unapproved_changes: 3,
@@ -318,7 +319,7 @@ export function createComplianceFrameworkHandlers() {
     })
   }),
 
-  http.get('/api/compliance/change-control/changes', async () => {
+  http.get(withBasePath('/api/compliance/change-control/changes'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'cc-001', timestamp: '2026-04-21T08:30:00Z', cluster: 'prod-east', namespace: 'ingress-system', resource_kind: 'Deployment', resource_name: 'ingress-nginx', change_type: 'update', actor: 'alice@example.com', approval_status: 'approved', approved_by: 'bob@example.com', ticket_ref: 'CHG-2041', description: 'Upgrade ingress-nginx to v1.10.0 — security patch for CVE-2026-1188', diff_summary: '+12 -8 lines', risk_score: 35 },
@@ -330,14 +331,14 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/change-control/violations', async () => {
+  http.get(withBasePath('/api/compliance/change-control/violations'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'cv-001', change_id: 'cc-untracked-01', policy: 'require-approval-production', severity: 'high', description: 'ConfigMap "checkout-config" updated in production without a change request or approval', detected_at: '2026-04-19T03:22:00Z', acknowledged: false },
     ])
   }),
 
-  http.get('/api/compliance/change-control/policies', async () => {
+  http.get(withBasePath('/api/compliance/change-control/policies'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'cp-1', name: 'Require Approval for Production', description: 'All production changes must be approved by a reviewer before implementation', scope: 'production', requires_approval: true, requires_ticket: true, severity: 'high' },
@@ -347,7 +348,7 @@ export function createComplianceFrameworkHandlers() {
   }),
 
   // ── Data Residency mock handlers (demo mode) ──────────────────────
-  http.get('/api/compliance/residency/summary', async () => {
+  http.get(withBasePath('/api/compliance/residency/summary'), async () => {
     await delay(150)
     return HttpResponse.json({
       total_rules: 4, total_clusters: 6, total_violations: 1,
@@ -357,7 +358,7 @@ export function createComplianceFrameworkHandlers() {
     })
   }),
 
-  http.get('/api/compliance/residency/clusters', async () => {
+  http.get(withBasePath('/api/compliance/residency/clusters'), async () => {
     await delay(150)
     return HttpResponse.json([
       { cluster: 'prod-east', region: 'us', jurisdiction: 'United States' },
@@ -369,7 +370,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/residency/rules', async () => {
+  http.get(withBasePath('/api/compliance/residency/rules'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'dr-1', classification: 'GDPR', allowed_regions: ['eu'], description: 'GDPR-classified data must reside in EU regions only', enforcement: 'deny' },
@@ -379,7 +380,7 @@ export function createComplianceFrameworkHandlers() {
     ])
   }),
 
-  http.get('/api/compliance/residency/violations', async () => {
+  http.get(withBasePath('/api/compliance/residency/violations'), async () => {
     await delay(150)
     return HttpResponse.json([
       { id: 'dv-1', cluster: 'staging', cluster_region: 'us', namespace: 'qa-data', workload_name: 'data-generator', workload_kind: 'CronJob', classification: 'test', allowed_regions: ['us'], severity: 'medium', detected_at: '2026-04-22T08:00:00Z', message: 'Test data found in staging cluster co-located with production workloads' },

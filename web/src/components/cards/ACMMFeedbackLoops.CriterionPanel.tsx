@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 // demoData-exempt: presentational piece; demo data is supplied by the parent ACMMFeedbackLoops card.
 /**
  * Single criterion row (with optional dimension header / level-break
@@ -282,7 +283,7 @@ export function CriterionRowPanel({
             <div>
               <span className="text-muted-foreground">Cited from:</span>{' '}
               <a
-                href={sanitizeUrl(SOURCES_BY_ID[c.source].url)}
+                href={withOptionalBasePath(sanitizeUrl(SOURCES_BY_ID[c.source].url))}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
@@ -307,7 +308,7 @@ export function CriterionRowPanel({
             <div>
               <span className="text-muted-foreground">Reference:</span>{' '}
               <a
-                href={`https://github.com/${CONSOLE_REPO}/blob/main/${c.referencePath}`}
+                href={withOptionalBasePath(`https://github.com/${CONSOLE_REPO}/blob/main/${c.referencePath}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-mono text-primary hover:underline"
@@ -318,7 +319,7 @@ export function CriterionRowPanel({
           )}
           <div className="flex items-center gap-3 flex-wrap">
             <a
-              href={`https://github.com/${CONSOLE_REPO}/blob/main/${SOURCE_FILES[c.source]}`}
+              href={withOptionalBasePath(`https://github.com/${CONSOLE_REPO}/blob/main/${SOURCE_FILES[c.source]}`)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground underline"
@@ -326,7 +327,7 @@ export function CriterionRowPanel({
               View source
             </a>
             <a
-              href={proposeChangeUrl(c)}
+              href={withOptionalBasePath(proposeChangeUrl(c))}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-yellow-400 hover:text-yellow-300"

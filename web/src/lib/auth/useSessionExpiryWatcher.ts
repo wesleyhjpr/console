@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 // JWT expiry watcher extracted from AuthContext.tsx (#24058).
 // No behaviour change.
 
@@ -53,7 +54,7 @@ export function useSessionExpiryWatcher(token: string | null, logout: () => Prom
           // minting the replacement; sending `freshToken` would invalidate
           // the token the rest of this page is still using. Cookie-only
           // flow: rely on the HttpOnly kc_auth cookie + CSRF header.
-          const response = await fetch('/auth/refresh', {
+          const response = await appFetch('/auth/refresh', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {

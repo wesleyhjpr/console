@@ -1,3 +1,4 @@
+import { withBasePath } from './basePath'
 /**
  * Compress an image data URI to fit within GitHub's issue body limit.
  *
@@ -102,6 +103,6 @@ function resizeAndCompress(dataUri: string, maxDim: number, quality: number): Pr
       resolve(canvas.toDataURL('image/jpeg', quality))
     }
     img.onerror = () => resolve(null)
-    img.src = dataUri
+    img.src = withBasePath(dataUri)
   })
 }

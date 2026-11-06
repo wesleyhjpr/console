@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 /**
  * Hook for fetching Drasi resources (Sources, Continuous Queries, Reactions)
  * from a real Drasi installation. Falls back to null so the card uses demo
@@ -169,7 +170,7 @@ async function serverGet<T>(
   const proxyUrl =
     `/api/drasi/proxy${upstreamPath}` +
     `?target=server&url=${encodeURIComponent(drasiServerUrl)}`
-  const r = await fetch(proxyUrl, { signal })
+  const r = await appFetch(proxyUrl, { signal })
   if (!r.ok) throw new Error(`drasi-server ${upstreamPath}: HTTP ${r.status}`)
   const wrapped = (await r.json()) as ServerWrap<T>
   if (wrapped.error || wrapped.success === false) {
@@ -274,7 +275,7 @@ async function platformGet<T>(
   const proxyUrl =
     `/api/drasi/proxy${upstreamPath}` +
     `?target=platform&cluster=${encodeURIComponent(cluster)}`
-  const r = await fetch(proxyUrl, { signal })
+  const r = await appFetch(proxyUrl, { signal })
   if (!r.ok) throw new Error(`drasi-platform ${upstreamPath}: HTTP ${r.status}`)
   return (await r.json()) as T
 }

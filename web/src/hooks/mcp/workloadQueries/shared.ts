@@ -1,3 +1,4 @@
+import { appFetch } from '../../../lib/basePath'
 import { MCP_HOOK_TIMEOUT_MS } from '../../../lib/constants/network'
 import type { ClusterErrorType } from '../../../lib/errorClassifier'
 import type {
@@ -155,7 +156,7 @@ export async function fetchInClusterCollection<T>(
   collectionKey: string,
 ): Promise<T[] | null> {
   try {
-    const response = await fetch(`/api/mcp/${resource}?${params.toString()}`, {
+    const response = await appFetch(`/api/mcp/${resource}?${params.toString()}`, {
       signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
     })
     if (!response.ok) {

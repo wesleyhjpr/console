@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay } from 'msw'
 import {
   DEMO_30_SEC_MS,
@@ -31,7 +32,7 @@ export function createComplianceSecurityHandlers() {
   return [
   // ── SIEM mock handlers ──────────────────────────────────────────────
 
-  http.get('/api/v1/compliance/siem/events', async () => {
+  http.get(withBasePath('/api/v1/compliance/siem/events'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'evt-001', timestamp: new Date(Date.now() - DEMO_1_MIN_MS).toISOString(), source: 'falco', severity: 'critical', category: 'runtime', message: 'Unexpected process spawned in container nginx-proxy', cluster: 'prod-east-1' },
@@ -45,7 +46,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/siem/alerts', async () => {
+  http.get(withBasePath('/api/v1/compliance/siem/alerts'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'alrt-001', name: 'Suspicious Process Execution', severity: 'critical', status: 'active', source: 'falco', triggered_at: new Date(Date.now() - DEMO_30_SEC_MS).toISOString(), correlated_events: 5 },
@@ -57,7 +58,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/siem/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/siem/summary'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_events: 14832,
@@ -81,7 +82,7 @@ export function createComplianceSecurityHandlers() {
 
   // ── Incident Response mock handlers ─────────────────────────────────
 
-  http.get('/api/v1/compliance/incidents', async () => {
+  http.get(withBasePath('/api/v1/compliance/incidents'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'INC-001', title: 'Unauthorized container escape in prod-east-1', severity: 'critical', status: 'investigating', assignee: 'alice@acme.com', created_at: new Date(Date.now() - DEMO_1_HOUR_MS).toISOString(), updated_at: new Date(Date.now() - DEMO_30_MIN_MS).toISOString(), escalation_level: 2, cluster: 'prod-east-1', playbook_id: 'pb-container-escape' },
@@ -92,7 +93,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/incidents/metrics', async () => {
+  http.get(withBasePath('/api/v1/compliance/incidents/metrics'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_incidents: 47,
@@ -106,7 +107,7 @@ export function createComplianceSecurityHandlers() {
     })
   }),
 
-  http.get('/api/v1/compliance/incidents/playbooks', async () => {
+  http.get(withBasePath('/api/v1/compliance/incidents/playbooks'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'pb-container-escape', name: 'Container Escape Response', description: 'Isolate compromised pod, capture forensic data, rotate secrets', last_executed: new Date(Date.now() - DEMO_1_HOUR_MS).toISOString(), execution_count: 7, avg_resolution_min: 45, status: 'active', steps: 12 },
@@ -119,7 +120,7 @@ export function createComplianceSecurityHandlers() {
 
   // ── Threat Intelligence mock handlers ───────────────────────────────
 
-  http.get('/api/v1/compliance/threat-intel/feeds', async () => {
+  http.get(withBasePath('/api/v1/compliance/threat-intel/feeds'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'feed-001', name: 'MITRE ATT&CK', provider: 'MITRE Corporation', status: 'active', last_updated: new Date(Date.now() - DEMO_1_HOUR_MS).toISOString(), indicators_count: 14500, category: 'TTPs' },
@@ -131,7 +132,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/threat-intel/iocs', async () => {
+  http.get(withBasePath('/api/v1/compliance/threat-intel/iocs'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'ioc-001', ioc_type: 'ip', indicator: '198.51.100.42', feed_name: 'AlienVault OTX', severity: 'critical', matched_resource: 'pod/api-gateway', cluster: 'prod-east-1', detected_at: new Date(Date.now() - DEMO_1_HOUR_MS).toISOString(), status: 'active' },
@@ -143,7 +144,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/threat-intel/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/threat-intel/summary'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_feeds: 6,
@@ -171,7 +172,7 @@ export function createComplianceSecurityHandlers() {
   // ── Epic 6: Supply Chain Security ─────────────────────────────────────
 
   // SBOM endpoints
-  http.get('/api/v1/compliance/sbom/packages', async () => {
+  http.get(withBasePath('/api/v1/compliance/sbom/packages'), async () => {
     await delay(100)
     return HttpResponse.json([
       { name: '@kubernetes/client-node', version: '0.20.0', license: 'Apache-2.0', ecosystem: 'npm', vulnerabilities: 0, risk: 'none' },
@@ -187,7 +188,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/sbom/vulnerabilities', async () => {
+  http.get(withBasePath('/api/v1/compliance/sbom/vulnerabilities'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'vuln-1', package_name: 'golang.org/x/net', severity: 'critical', cve: 'CVE-2023-44487', fixed_version: '0.20.0', status: 'open' },
@@ -202,7 +203,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/sbom/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/sbom/summary'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_packages: 342,
@@ -226,7 +227,7 @@ export function createComplianceSecurityHandlers() {
   }),
 
   // Sigstore endpoints
-  http.get('/api/v1/compliance/sigstore/signatures', async () => {
+  http.get(withBasePath('/api/v1/compliance/sigstore/signatures'), async () => {
     await delay(100)
     return HttpResponse.json([
       { image: 'ghcr.io/kubestellar/console:v0.28.0', digest: 'sha256:a1b2c3d4', signed: true, signer: 'release-bot@kubestellar.io', issuer: 'https://accounts.google.com', timestamp: '2025-01-15T08:00:00Z', transparency_log: true, status: 'verified' },
@@ -239,7 +240,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/sigstore/verifications', async () => {
+  http.get(withBasePath('/api/v1/compliance/sigstore/verifications'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'ver-1', image: 'ghcr.io/kubestellar/console:v0.28.0', policy: 'require-keyless-signing', result: 'pass', checked_at: '2025-01-15T10:00:00Z', cosign_version: '2.2.3', certificate_chain: 3, rekor_entry: true },
@@ -251,7 +252,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/sigstore/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/sigstore/summary'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_images: 42,
@@ -268,7 +269,7 @@ export function createComplianceSecurityHandlers() {
   }),
 
   // SLSA endpoints
-  http.get('/api/v1/compliance/slsa/attestations', async () => {
+  http.get(withBasePath('/api/v1/compliance/slsa/attestations'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'att-1', artifact: 'ghcr.io/kubestellar/console:v0.28.0', builder: 'GitHub Actions', slsa_level: 3, verified: true, build_type: 'https://slsa.dev/container-based-build/v0.1', source_repo: 'github.com/kubestellar/console', timestamp: '2025-01-15T08:00:00Z', status: 'pass' },
@@ -281,7 +282,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/slsa/provenance', async () => {
+  http.get(withBasePath('/api/v1/compliance/slsa/provenance'), async () => {
     await delay(100)
     return HttpResponse.json([
       { id: 'prov-1', artifact: 'ghcr.io/kubestellar/console:v0.28.0', builder_id: 'https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml', build_level: 3, source_uri: 'git+https://github.com/kubestellar/console@refs/tags/v0.28.0', source_digest: 'sha1:abc1234', reproducible: true, hermetic: true, parameterless: true, timestamp: '2025-01-15T08:00:00Z' },
@@ -292,7 +293,7 @@ export function createComplianceSecurityHandlers() {
     ])
   }),
 
-  http.get('/api/v1/compliance/slsa/summary', async () => {
+  http.get(withBasePath('/api/v1/compliance/slsa/summary'), async () => {
     await delay(100)
     return HttpResponse.json({
       total_artifacts: 42,

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../../lib/basePath'
 import { AlertTriangle, CheckCircle, FolderGit, GitBranch, GitCommit, ExternalLink, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '../../../../lib/cn'
@@ -47,7 +48,7 @@ export function ArgoOverviewTab({
               <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
                 <ExternalLink className="w-3 h-3" />
                 <a
-                  href={validateExternalUrl(repoURL)!}
+                  href={withOptionalBasePath(validateExternalUrl(repoURL)!)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-foreground truncate max-w-md"

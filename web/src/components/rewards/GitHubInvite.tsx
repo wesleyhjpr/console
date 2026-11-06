@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * GitHub Invite component for inviting users and earning coins
  */
@@ -120,7 +121,7 @@ export function GitHubInviteModal({ isOpen, onClose }: GitHubInviteProps) {
               )}
             </p>
             <a
-              href={`https://github.com/${encodeURIComponent(invitedUsername)}`}
+              href={withOptionalBasePath(`https://github.com/${encodeURIComponent(invitedUsername)}`)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary/80 text-foreground text-sm transition-colors"

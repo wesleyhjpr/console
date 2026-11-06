@@ -174,6 +174,11 @@ spec:
             timeoutSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.frontendConfigMap }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.frontendConfigMap | quote }}
+          {{- end }}
           env:
             - name: PORT
               value: "8080"
@@ -187,10 +192,10 @@ spec:
               value: {{ .Values.kubestellar.opsPath | quote }}
             - name: KUBESTELLAR_DEPLOY_PATH
               value: {{ .Values.kubestellar.deployPath | quote }}
-            {{- if and .Values.route.enabled .Values.route.host }}
+            {{- if and (not .Values.frontendConfigMap) .Values.route.enabled .Values.route.host }}
             - name: FRONTEND_URL
               value: "https://{{ .Values.route.host }}"
-            {{- else if and .Values.ingress.enabled .Values.ingress.hosts }}
+            {{- else if and (not .Values.frontendConfigMap) .Values.ingress.enabled .Values.ingress.hosts }}
             - name: FRONTEND_URL
               value: "https://{{ (index .Values.ingress.hosts 0).host }}"
             {{- end }}

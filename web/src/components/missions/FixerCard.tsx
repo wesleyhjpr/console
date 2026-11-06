@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 /**
  * FixerCard — Card for browsing fixer missions (troubleshoot, repair, analyze, etc.).
  * Shows type badge, category, tags, description, and import button.
@@ -172,7 +173,7 @@ export function FixerCard({ mission, onImport, onSelect, onCopyLink, compact }: 
         <div className="flex items-center gap-2 text-muted-foreground min-w-0">
           {mission.authorGithub ? (
             <a
-              href={`https://github.com/${mission.authorGithub}`}
+              href={withOptionalBasePath(`https://github.com/${mission.authorGithub}`)}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}
@@ -180,7 +181,7 @@ export function FixerCard({ mission, onImport, onSelect, onCopyLink, compact }: 
               title={mission.author ?? mission.authorGithub}
             >
               <img
-                src={`https://github.com/${mission.authorGithub}.png?size=32`}
+                src={withOptionalBasePath(`https://github.com/${mission.authorGithub}.png?size=32`)}
                 alt={mission.authorGithub}
                 className="w-4 h-4 rounded-full"
                 loading="lazy"

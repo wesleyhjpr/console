@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubestellar-console-subpath
+data:
+  FRONTEND_URL: "https://domain.com/kubestellar"
+  BACKEND_URL: "https://domain.com/kubestellar"

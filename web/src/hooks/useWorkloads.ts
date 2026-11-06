@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { mapSettledWithConcurrency } from '../lib/utils/concurrency'
 import { isAgentUnavailable } from './useLocalAgent'
@@ -295,7 +296,7 @@ export function useWorkloads(options?: {
       const queryString = params.toString()
       const url = `/api/workloads${queryString ? `?${queryString}` : ''}`
 
-      const res = await fetch(url, {
+      const res = await appFetch(url, {
         headers: authHeaders(),
         signal: getFetchSignal(signal),
       })
@@ -375,7 +376,7 @@ export function useClusterCapabilities(enabled = true) {
     setError(null)
 
     try {
-      const res = await fetch('/api/workloads/capabilities', { headers: authHeaders(), signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
+      const res = await appFetch('/api/workloads/capabilities', { headers: authHeaders(), signal: AbortSignal.timeout(FETCH_DEFAULT_TIMEOUT_MS) })
       if (!res.ok) {
         throw new Error(`Failed to fetch capabilities: ${res.statusText}`)
       }

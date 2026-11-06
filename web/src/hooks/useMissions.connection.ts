@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { getDemoMode } from './useDemoMode'
 import { LOCAL_AGENT_WS_URL } from '../lib/constants'
 import { isLocalAgentSuppressed, areOptionalPollersSuppressed } from '../lib/constants/network'
@@ -101,7 +102,7 @@ export function createMissionConnectionApi(
       try {
         state.connectionEstablished.current = false
         const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-        state.wsRef.current = new WebSocket(url, protocols)
+        state.wsRef.current = new WebSocket(withBasePath(url), protocols)
 
         state.wsRef.current.onopen = () => {
           clearTimeout(timeout)

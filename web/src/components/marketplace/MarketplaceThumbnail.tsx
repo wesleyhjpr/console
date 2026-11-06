@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useState } from 'react'
 import { CNCF_CATEGORY_GRADIENTS, CNCF_CATEGORY_ICONS } from '../../lib/cncf-constants'
 
@@ -120,7 +121,7 @@ function ProjectLogo({ projectName, iconPath }: { projectName: string; iconPath:
   return (
     <div className="w-12 h-12 rounded-xl bg-card/90 shadow-xs flex items-center justify-center">
       <img
-        src={getProjectLogoUrl(projectName)}
+        src={withOptionalBasePath(getProjectLogoUrl(projectName))}
         alt={projectName}
         className="w-10 h-10 rounded-lg object-contain"
         onError={() => setFailed(true)}

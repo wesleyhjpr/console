@@ -1,3 +1,4 @@
+import { appFetch } from '../basePath'
 /**
  * Internal API fetcher utilities shared across useCached* hooks.
  *
@@ -143,7 +144,7 @@ function makeRestFetcher(config: RestFetcherConfig) {
       headers.Authorization = `Bearer ${token}`
     }
 
-    const response = await fetch(url, {
+    const response = await appFetch(url, {
       method: 'GET',
       credentials: 'same-origin',
       headers,

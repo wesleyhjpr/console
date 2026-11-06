@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 /**
  * AI Summary Generation Utilities
  *
@@ -183,7 +184,7 @@ export async function generateAISummary(
   protocols: string[]
 ): Promise<AISummary> {
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(wsUrl, protocols)
+    const ws = new WebSocket(withBasePath(wsUrl), protocols)
 
     let responseContent = ''
     let didOpen = false

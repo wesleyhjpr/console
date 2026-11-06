@@ -1,3 +1,4 @@
+import { appFetch } from '../lib/basePath'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../lib/auth'
 import { isQuantumForcedToDemo } from '../lib/demoMode'
@@ -45,7 +46,7 @@ export function useQASMFiles(enabled?: boolean, forceDemo?: boolean): UseQASMFil
       setIsLoading(true)
       setError(null)
 
-      const response = await fetch('/api/quantum/qasm/listfiles', {
+      const response = await appFetch('/api/quantum/qasm/listfiles', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { useMemo } from 'react'
 import { AlertCircle, ExternalLink, Globe, ArrowRight, Server } from 'lucide-react'
 import { ClusterBadge } from '../ui/ClusterBadge'
@@ -145,7 +146,7 @@ export function GatewayStatus({ config: _config }: GatewayStatusProps) {
             {t('gatewayStatus.nGateways', { count: totalItems })}
           </span>
           <a
-            href={K8S_DOCS.gatewayApi}
+            href={withOptionalBasePath(K8S_DOCS.gatewayApi)}
             target="_blank"
             rel="noopener noreferrer"
             className="p-1 hover:bg-secondary rounded transition-colors text-muted-foreground hover:text-purple-400"
@@ -198,7 +199,7 @@ export function GatewayStatus({ config: _config }: GatewayStatusProps) {
             <p className="text-muted-foreground">
               {t('gatewayStatus.gatewayApiDesc')}{' '}
               <a
-                href={K8S_DOCS.gatewayApiGettingStarted}
+                href={withOptionalBasePath(K8S_DOCS.gatewayApiGettingStarted)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:underline"
@@ -306,7 +307,7 @@ export function GatewayStatus({ config: _config }: GatewayStatusProps) {
       {/* Footer links */}
       <div className="flex items-center justify-center gap-3 pt-2 mt-2 border-t border-border/50 text-2xs">
         <a
-          href={K8S_DOCS.gatewayApi}
+          href={withOptionalBasePath(K8S_DOCS.gatewayApi)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"
@@ -315,7 +316,7 @@ export function GatewayStatus({ config: _config }: GatewayStatusProps) {
         </a>
         <span className="text-muted-foreground/30">|</span>
         <a
-          href={K8S_DOCS.gatewayApiImplementations}
+          href={withOptionalBasePath(K8S_DOCS.gatewayApiImplementations)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"
@@ -324,7 +325,7 @@ export function GatewayStatus({ config: _config }: GatewayStatusProps) {
         </a>
         <span className="text-muted-foreground/30">|</span>
         <a
-          href={K8S_DOCS.gammaInitiative}
+          href={withOptionalBasePath(K8S_DOCS.gammaInitiative)}
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-purple-400 transition-colors"

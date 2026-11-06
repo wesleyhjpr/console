@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../lib/basePath'
 import { memo } from 'react'
 import { ExternalLink, Settings } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -80,7 +81,7 @@ const ProviderRow = memo(function ProviderRow({ provider, onConfigure }: Provide
 
         {provider.statusUrl && (
           <a
-            href={sanitizeUrl(provider.statusUrl)}
+            href={withOptionalBasePath(sanitizeUrl(provider.statusUrl))}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0 rounded p-1 text-muted-foreground transition-colors hover:bg-secondary/50 hover:text-foreground"

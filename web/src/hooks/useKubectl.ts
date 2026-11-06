@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 /**
  * Shared kubectl WebSocket service
  *
@@ -60,7 +61,7 @@ class KubectlService {
     this.isConnecting = true
     try {
       const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-      this.ws = new WebSocket(url, protocols)
+      this.ws = new WebSocket(withBasePath(url), protocols)
 
       this.ws.onopen = () => {
         this.isConnecting = false

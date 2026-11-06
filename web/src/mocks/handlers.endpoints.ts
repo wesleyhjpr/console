@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { http, HttpResponse, delay, passthrough } from 'msw'
 
 /**
@@ -56,20 +57,20 @@ export function createHandlers() {
   // Explicitly pass through GA4/analytics requests so the service worker
   // does not intercept them. Without this, cross-origin passthrough fails
   // in some browsers, breaking UTM campaign tracking (intern affiliate links).
-  http.all('https://www.google-analytics.com/*', () => passthrough()),
-  http.all('https://analytics.google.com/*', () => passthrough()),
-  http.all('https://www.googletagmanager.com/*', () => passthrough()),
+  http.all(withBasePath('https://www.google-analytics.com/*'), () => passthrough()),
+  http.all(withBasePath('https://analytics.google.com/*'), () => passthrough()),
+  http.all(withBasePath('https://www.googletagmanager.com/*'), () => passthrough()),
   http.all(/^https:\/\/[^/]*google-analytics\.com\//, () => passthrough()),
 
   // ── External resource passthrough ──────────────────────────────────
   // Pass through external resources so MSW doesn't warn about them
-  http.all('https://api.dicebear.com/*', () => passthrough()),
-  http.all('https://fonts.gstatic.com/*', () => passthrough()),
-  http.all('https://fonts.googleapis.com/*', () => passthrough()),
-  http.all('https://img.youtube.com/*', () => passthrough()),
+  http.all(withBasePath('https://api.dicebear.com/*'), () => passthrough()),
+  http.all(withBasePath('https://fonts.gstatic.com/*'), () => passthrough()),
+  http.all(withBasePath('https://fonts.googleapis.com/*'), () => passthrough()),
+  http.all(withBasePath('https://img.youtube.com/*'), () => passthrough()),
   // GitHub avatar URLs — return transparent 1x1 PNG to avoid CSP violation
   // (connect-src doesn't include github.com on Netlify)
-  http.get('https://github.com/*.png', () => {
+  http.get(withBasePath('https://github.com/*.png'), () => {
     const TRANSPARENT_1X1_PNG = new Uint8Array([
       137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,1,0,0,0,1,8,6,0,0,0,
       31,21,196,137,0,0,0,10,73,68,65,84,120,156,98,0,0,0,6,0,5,130,217,36,0,0,
@@ -77,11 +78,11 @@ export function createHandlers() {
     ])
     return new HttpResponse(TRANSPARENT_1X1_PNG, { headers: { 'Content-Type': 'image/png' } })
   }),
-  http.get('https://avatars.githubusercontent.com/*', () => passthrough()),
+  http.get(withBasePath('https://avatars.githubusercontent.com/*'), () => passthrough()),
 
   // ── Auth refresh (OAuth token exchange) ────────────────────────────
   // Mock the /auth/refresh endpoint used by AuthCallback and silent token refresh
-  http.post('/auth/refresh', async () => {
+  http.post(withBasePath('/auth/refresh'), async () => {
     await delay(100)
     return HttpResponse.json({
       token: 'mock-jwt-token-for-testing-only', // SECURITY: Safe - NOT A REAL TOKEN
@@ -90,18 +91,18 @@ export function createHandlers() {
   }),
 
   // Auth endpoints
-  http.get('/api/auth/me', async () => {
+  http.get(withBasePath('/api/auth/me'), async () => {
     await delay(100)
     return HttpResponse.json({ user: currentUser })
   }),
 
   // Also handle /api/me (used by auth.tsx)
-  http.get('/api/me', async () => {
+  http.get(withBasePath('/api/me'), async () => {
     await delay(100)
     return HttpResponse.json(currentUser)
   }),
 
-  http.post('/api/auth/login', async () => {
+  http.post(withBasePath('/api/auth/login'), async () => {
     await delay(200)
     return HttpResponse.json({
       user: currentUser,
@@ -109,17 +110,17 @@ export function createHandlers() {
     })
   }),
 
-  http.post('/api/auth/logout', async () => {
+  http.post(withBasePath('/api/auth/logout'), async () => {
     await delay(100)
     return HttpResponse.json({ success: true })
   }),
 
-  http.get('/api/auth/github', async () => {
+  http.get(withBasePath('/api/auth/github'), async () => {
     await delay(100)
     return HttpResponse.json({ url: '/auth/callback?code=mock-code' })
   }),
 
-  http.get('/auth/callback', async () => {
+  http.get(withBasePath('/auth/callback'), async () => {
     await delay(100)
     return HttpResponse.json({
       user: currentUser,
@@ -128,17 +129,17 @@ export function createHandlers() {
   }),
 
   // Health check
-  http.get('/api/health', async () => {
+  http.get(withBasePath('/api/health'), async () => {
     await delay(50)
     return HttpResponse.json({ status: 'ok', version: 'demo' })
   }),
 
   // Active users (for presence tracking) — return demo count when MSW is active
   // POST heartbeat is accepted but no-op in mock mode
-  http.get('/api/active-users', () => {
+  http.get(withBasePath('/api/active-users'), () => {
     return HttpResponse.json({ activeUsers: 3, totalConnections: 3 })
   }),
-  http.post('/api/active-users', () => {
+  http.post(withBasePath('/api/active-users'), () => {
     return new HttpResponse(null, { status: 204 })
   }),
 
@@ -148,7 +149,7 @@ export function createHandlers() {
   // via isBackendUnavailable() in demo mode, so no MSW handler is required.
   // Keeping a no-op stub for legacy `/api/permissions/summary` callers in
   // case any are added during demo flows.
-  http.get('/api/permissions/summary', async () => {
+  http.get(withBasePath('/api/permissions/summary'), async () => {
     await delay(50)
     const clusterPermissions = {
       isClusterAdmin: true,
@@ -178,13 +179,13 @@ export function createHandlers() {
   }),
 
   // Notifications
-  http.get('/api/notifications/unread-count', async () => {
+  http.get(withBasePath('/api/notifications/unread-count'), async () => {
     await delay(50)
     return HttpResponse.json({ count: 0 })
   }),
 
   // MCP Status
-  http.get('/api/mcp/status', async () => {
+  http.get(withBasePath('/api/mcp/status'), async () => {
     await delay(100)
     return HttpResponse.json({
       opsClient: { available: true, toolCount: 25 },
@@ -193,12 +194,12 @@ export function createHandlers() {
   }),
 
   // Clusters
-  http.get('/api/mcp/clusters', async () => {
+  http.get(withBasePath('/api/mcp/clusters'), async () => {
     await delay(150)
     return HttpResponse.json({ clusters: demoClusters })
   }),
 
-  http.get('/api/mcp/clusters/:cluster/health', async ({ params }) => {
+  http.get(withBasePath('/api/mcp/clusters/:cluster/health'), async ({ params }) => {
     await delay(100)
     const cluster = demoClusters.find((c) => c.name === params.cluster)
     return HttpResponse.json({
@@ -212,19 +213,19 @@ export function createHandlers() {
   }),
 
   // Pod issues
-  http.get('/api/mcp/pod-issues', async () => {
+  http.get(withBasePath('/api/mcp/pod-issues'), async () => {
     await delay(150)
     return HttpResponse.json({ issues: demoPodIssues })
   }),
 
   // Deployment issues
-  http.get('/api/mcp/deployment-issues', async () => {
+  http.get(withBasePath('/api/mcp/deployment-issues'), async () => {
     await delay(150)
     return HttpResponse.json({ issues: demoDeploymentIssues })
   }),
 
   // Pods list (for cluster-specific queries)
-  http.get('/api/mcp/pods', async () => {
+  http.get(withBasePath('/api/mcp/pods'), async () => {
     await delay(100)
     return HttpResponse.json({
       pods: [
@@ -236,7 +237,7 @@ export function createHandlers() {
   }),
 
   // Pod logs (tail container output) — see issue #6045
-  http.get('/api/mcp/pods/logs', async ({ request }) => {
+  http.get(withBasePath('/api/mcp/pods/logs'), async ({ request }) => {
     await delay(100)
     const url = new URL(request.url)
     const pod = url.searchParams.get('pod') || 'unknown-pod'
@@ -252,7 +253,7 @@ export function createHandlers() {
   }),
 
   // Deployments list (for cluster-specific queries)
-  http.get('/api/mcp/deployments', async () => {
+  http.get(withBasePath('/api/mcp/deployments'), async () => {
     await delay(100)
     return HttpResponse.json({
       deployments: [
@@ -264,12 +265,12 @@ export function createHandlers() {
   }),
 
   // Events
-  http.get('/api/mcp/events', async () => {
+  http.get(withBasePath('/api/mcp/events'), async () => {
     await delay(100)
     return HttpResponse.json({ events: demoEvents })
   }),
 
-  http.get('/api/mcp/events/warnings', async () => {
+  http.get(withBasePath('/api/mcp/events/warnings'), async () => {
     await delay(100)
     return HttpResponse.json({
       events: demoEvents.filter((e) => e.type === 'Warning'),
@@ -277,7 +278,7 @@ export function createHandlers() {
   }),
 
   // GPU nodes
-  http.get('/api/mcp/gpu-nodes', async () => {
+  http.get(withBasePath('/api/mcp/gpu-nodes'), async () => {
     await delay(100)
     return HttpResponse.json({ nodes: demoGPUNodes })
   }),
@@ -285,7 +286,7 @@ export function createHandlers() {
   // GPU node SSE stream — served by kc-agent (not the Go backend).
   // In demo mode there is no kc-agent, so return an empty SSE stream
   // that closes immediately; cards will fall back to demo data.
-  http.get('/gpu-nodes/stream', () => {
+  http.get(withBasePath('/gpu-nodes/stream'), () => {
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       start(controller) {
@@ -301,17 +302,17 @@ export function createHandlers() {
   // NVIDIA operator requests fall back to same-origin relative URLs when the
   // local kc-agent is suppressed. Pass them through so MSW doesn't warn during
   // cluster flows before the hook gracefully handles the missing backend.
-  http.all('/nvidia-operators', () => passthrough()),
-  http.all('/nvidia-operators/stream', () => passthrough()),
+  http.all(withBasePath('/nvidia-operators'), () => passthrough()),
+  http.all(withBasePath('/nvidia-operators/stream'), () => passthrough()),
 
   // Security issues
-  http.get('/api/mcp/security-issues', async () => {
+  http.get(withBasePath('/api/mcp/security-issues'), async () => {
     await delay(150)
     return HttpResponse.json({ issues: demoSecurityIssues })
   }),
 
   // User preferences (AI mode, theme, etc.)
-  http.get('/api/user/preferences', async () => {
+  http.get(withBasePath('/api/user/preferences'), async () => {
     await delay(100)
     return HttpResponse.json({
       aiMode: 'medium',
@@ -321,7 +322,7 @@ export function createHandlers() {
     })
   }),
 
-  http.put('/api/user/preferences', async ({ request }) => {
+  http.put(withBasePath('/api/user/preferences'), async ({ request }) => {
     await delay(100)
     const body = await request.json()
     return HttpResponse.json({ success: true, preferences: body })
@@ -334,7 +335,7 @@ export function createHandlers() {
 
 
   // Onboarding status
-  http.get('/api/onboarding/status', async () => {
+  http.get(withBasePath('/api/onboarding/status'), async () => {
     await delay(100)
     return HttpResponse.json({
       completed: currentUser.onboarded,
@@ -346,7 +347,7 @@ export function createHandlers() {
     })
   }),
 
-  http.post('/api/onboarding/complete', async () => {
+  http.post(withBasePath('/api/onboarding/complete'), async () => {
     await delay(100)
     currentUser.onboarded = true
     return HttpResponse.json({ success: true })
@@ -354,7 +355,7 @@ export function createHandlers() {
 
   // ── Prometheus query mock (vLLM metrics in demo mode) ────────────
   // Return mock Prometheus-style responses for AI/ML dashboard metrics
-  http.get('/prometheus/query', ({ request }) => {
+  http.get(withBasePath('/prometheus/query'), ({ request }) => {
     const url = new URL(request.url)
     const query = url.searchParams.get('query') || ''
     // Return a plausible scalar value based on the metric
@@ -409,12 +410,12 @@ export function createHandlers() {
   // Quantum proxy — pass through to the Netlify function (or Go backend in
   // local dev). Without these rules MSW swallows every /api/quantum/** request
   // in demo mode and the quantum panel never receives data.
-  http.get('/api/quantum/**', () => passthrough()),
-  http.post('/api/quantum/**', () => passthrough()),
-  http.delete('/api/quantum/**', () => passthrough()),
-  http.get('/api/result/histogram', () => passthrough()),
+  http.get(withBasePath('/api/quantum/**'), () => passthrough()),
+  http.post(withBasePath('/api/quantum/**'), () => passthrough()),
+  http.delete(withBasePath('/api/quantum/**'), () => passthrough()),
+  http.get(withBasePath('/api/result/histogram'), () => passthrough()),
 
-  http.post('/__test/reset', ({ request }) => {
+  http.post(withBasePath('/__test/reset'), ({ request }) => {
     if (!request.headers.get('X-Test-Request')) {
       return HttpResponse.json({ error: 'Forbidden' }, { status: 403 })
     }

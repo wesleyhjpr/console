@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -50,8 +51,12 @@ func (s *Server) setupMiddleware() {
 	}))
 
 	// CORS
+	frontendOrigin := s.config.FrontendURL
+	if frontendURL, err := url.Parse(frontendOrigin); err == nil && frontendURL.Scheme != "" && frontendURL.Host != "" {
+		frontendOrigin = frontendURL.Scheme + "://" + frontendURL.Host
+	}
 	s.app.Use(cors.New(cors.Config{
-		AllowOrigins:     s.config.FrontendURL,
+		AllowOrigins:     frontendOrigin,
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders:     "Origin,Content-Type,Accept,Authorization,X-Requested-With,X-KC-Client-Auth",
 		ExposeHeaders:    "X-Token-Refresh",
@@ -184,7 +189,7 @@ p{color:#94a3b8;font-size:.875rem}
 // Star field
 (function(){var s=document.getElementById('stars');for(var i=0;i<30;i++){var d=document.createElement('div');d.className='star';d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDelay=Math.random()*3+'s';s.appendChild(d)}})();
 // Poll /healthz and reload when ready
-setInterval(async function(){try{var r=await fetch('/healthz');if(r.ok){var d=await r.json();if(d.status==='ok')location.reload()}}catch(e){console.error('Health check failed:',e)}},2000);
+setInterval(async function(){try{var r=await fetch(document.querySelector('meta[name="console-base-path"]').content+'healthz');if(r.ok){var d=await r.json();if(d.status==='ok')location.reload()}}catch(e){console.error('Health check failed:',e)}},2000);
 </script>
 </body>
 </html>`

@@ -1,3 +1,4 @@
+import { withBasePath } from '../lib/basePath'
 import { useRef, useEffect, useCallback } from 'react'
 import { LOCAL_AGENT_WS_URL, KUBECTL_MEDIUM_TIMEOUT_MS } from '../lib/constants'
 import { getWsAuthParams } from '../lib/utils/wsAuth'
@@ -41,7 +42,7 @@ export function useDrillDownWebSocket(cluster: string) {
    */
   const openTrackedWs = useCallback(async (): Promise<WebSocket> => {
     const { url, protocols } = await getWsAuthParams(LOCAL_AGENT_WS_URL)
-    const ws = new WebSocket(url, protocols)
+    const ws = new WebSocket(withBasePath(url), protocols)
     activeWsRef.current.add(ws)
     const origClose = ws.close.bind(ws)
     ws.close = (...args: Parameters<WebSocket['close']>) => {

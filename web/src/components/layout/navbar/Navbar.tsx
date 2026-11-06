@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { useState, useEffect, Suspense, useCallback } from 'react'
 import { safeLazy } from '../../../lib/safeLazy'
 import { useTranslation } from 'react-i18next'
@@ -141,7 +142,7 @@ export function Navbar({ topOffset = 0 }: NavbarProps) {
         )}
         <Tooltip content={t('help.viewDocs')} side="bottom">
           <a
-            href={branding.docsUrl}
+            href={withOptionalBasePath(branding.docsUrl)}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden lg:flex items-center p-1.5 hover:bg-secondary rounded-md transition-colors cursor-pointer"

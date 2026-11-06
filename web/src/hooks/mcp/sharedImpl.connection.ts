@@ -1,3 +1,4 @@
+import { withBasePath } from '../../lib/basePath'
 // WebSocket connection management for cluster updates
 
 import { isDemoToken } from '../../lib/demoMode'
@@ -96,7 +97,7 @@ export async function connectSharedWebSocket() {
 
   try {
     const { url, protocols } = await getWsAuthParams(resolveAgentWsUrl())
-    const ws = new WebSocket(url, protocols)
+    const ws = new WebSocket(withBasePath(url), protocols)
 
     ws.onopen = () => {
       // Guard against race condition where onclose fires before onopen

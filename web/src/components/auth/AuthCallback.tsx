@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useEffect, useState, useRef } from 'react'
 import { Loader2, AlertTriangle } from 'lucide-react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -75,7 +76,7 @@ export function AuthCallback() {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), AUTH_REFRESH_TIMEOUT_MS)
 
-    fetch('/auth/refresh', {
+    appFetch('/auth/refresh', {
       method: 'POST',
       credentials: 'same-origin', // send the HttpOnly cookie
       headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -113,7 +114,7 @@ export function AuthCallback() {
 
         const agentController = new AbortController()
         const agentTimeoutId = setTimeout(() => agentController.abort(), AUTH_REFRESH_TIMEOUT_MS)
-        return fetch('/api/agent/token', {
+        return appFetch('/api/agent/token', {
           credentials: 'same-origin',
           headers: { 'X-Requested-With': 'XMLHttpRequest' },
           signal: agentController.signal,

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Save, RefreshCw, Check, X, ExternalLink, Loader2, Server } from 'lucide-react'
@@ -203,7 +204,7 @@ export function GitHubTokenSection({ forceVersionCheck }: GitHubTokenSectionProp
                   <span className="text-purple-400 font-medium">{t('settings.github.option1')}</span>
                   <div>
                     <a
-                      href={GITHUB_TOKEN_CLASSIC_URL}
+                      href={withOptionalBasePath(GITHUB_TOKEN_CLASSIC_URL)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary hover:underline inline-flex items-center gap-1"
@@ -221,7 +222,7 @@ export function GitHubTokenSection({ forceVersionCheck }: GitHubTokenSectionProp
                   <span className="text-purple-400 font-medium">{t('settings.github.option2')}</span>
                   <div>
                     <a
-                      href={GITHUB_TOKEN_CREATE_URL}
+                      href={withOptionalBasePath(GITHUB_TOKEN_CREATE_URL)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary hover:underline inline-flex items-center gap-1"

@@ -1,3 +1,4 @@
+import { withOptionalBasePath } from '../../../lib/basePath'
 import { Loader2 } from 'lucide-react'
 import { LazyMarkdown as ReactMarkdown } from '../../ui/LazyMarkdown'
 import remarkGfm from 'remark-gfm'
@@ -69,7 +70,7 @@ export function ReleaseNotesContent({
         {recentPRs.map((pr) => (
           <a
             key={pr.number}
-            href={`https://github.com/kubestellar/console/pull/${pr.number}`}
+            href={withOptionalBasePath(`https://github.com/kubestellar/console/pull/${pr.number}`)}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-start gap-2 px-2 py-1.5 rounded hover:bg-secondary/50 transition-colors group"

@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { reportAgentDataSuccess, isAgentUnavailable } from '../useLocalAgent'
 import { isDemoMode } from '../../lib/demoMode'
@@ -251,7 +252,7 @@ export function useServices(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/services?${params}`, {
+          const response = await appFetch(`/api/mcp/services?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {
@@ -284,7 +285,7 @@ export function useServices(cluster?: string, namespace?: string) {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), DEPLOY_ABORT_TIMEOUT_MS)
 
-      const response = await fetch(url, { method: 'GET', headers, signal: controller.signal })
+      const response = await appFetch(url, { method: 'GET', headers, signal: controller.signal })
       clearTimeout(timeoutId)
 
       if (!response.ok) {
@@ -474,7 +475,7 @@ export function useIngresses(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/ingresses?${params}`, {
+          const response = await appFetch(`/api/mcp/ingresses?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {
@@ -595,7 +596,7 @@ export function useNetworkPolicies(cluster?: string, namespace?: string) {
       if (namespace) params.append('namespace', namespace)
       if (isClusterModeBackend()) {
         try {
-          const response = await fetch(`/api/mcp/networkpolicies?${params}`, {
+          const response = await appFetch(`/api/mcp/networkpolicies?${params}`, {
             signal: AbortSignal.timeout(MCP_HOOK_TIMEOUT_MS),
           })
           if (response.ok) {

@@ -1,3 +1,4 @@
+import { appFetch } from '../../lib/basePath'
 import { FETCH_EXTERNAL_TIMEOUT_MS } from '../../lib/constants'
 import type { TFunction } from 'i18next'
 import type { StockSearchResult, YahooSearchQuote, StockData, YahooQuoteResponse } from './StockMarketTicker.types'
@@ -8,7 +9,7 @@ export async function fetchRealStockData(symbols: string[]): Promise<StockData[]
   try {
     const symbolsString = symbols.join(',')
     const yahooUrl = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${symbolsString}&fields=symbol,longName,regularMarketPrice,regularMarketChange,regularMarketChangePercent,regularMarketOpen,regularMarketDayHigh,regularMarketDayLow,regularMarketVolume,marketCap,fiftyTwoWeekHigh,fiftyTwoWeekLow`
-    const response = await fetch(
+    const response = await appFetch(
       `${CORS_PROXY}${encodeURIComponent(yahooUrl)}`,
       { signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) }
     )
@@ -101,7 +102,7 @@ export async function searchStocks(query: string): Promise<StockSearchResult[]> 
   try {
     // Using Yahoo Finance search API via CORS proxy
     const yahooSearchUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&quotesCount=10&newsCount=0`
-    const response = await fetch(
+    const response = await appFetch(
       `${CORS_PROXY}${encodeURIComponent(yahooSearchUrl)}`,
       { signal: AbortSignal.timeout(FETCH_EXTERNAL_TIMEOUT_MS) }
     )

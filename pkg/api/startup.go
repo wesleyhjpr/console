@@ -17,12 +17,13 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/kubestellar/console/pkg/api/transport"
 	ghhandlers "github.com/kubestellar/console/pkg/api/handlers/github"
 	"github.com/kubestellar/console/pkg/api/handlers/gitops"
 	"github.com/kubestellar/console/pkg/api/middleware"
+	"github.com/kubestellar/console/pkg/api/transport"
 	"github.com/kubestellar/console/pkg/fileutil"
 	"github.com/kubestellar/console/pkg/safego"
+	"github.com/kubestellar/console/pkg/webbase"
 )
 
 // startLoadingServer starts a temporary HTTP server that serves a loading page.
@@ -36,7 +37,7 @@ import (
 // back with HTTP 200 — which looks like a broken auth contract but is
 // actually the loading page's catch-all `/` handler answering the request.
 // A 503 on /health forces probes to keep polling until the real server is up.
-func startLoadingServer(addr string) *http.Server {
+func startLoadingServer(addr, basePath string) *http.Server {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -48,8 +49,15 @@ func startLoadingServer(addr string) *http.Server {
 		w.Write([]byte(`{"status":"starting"}`))
 	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		page, err := webbase.HTML([]byte(startupLoadingHTML), basePath)
+		if err != nil {
+			slog.Error("failed to render startup page", "error", err)
+			http.Error(w, "Failed to render startup page", http.StatusInternalServerError)
+			return
+		}
 		w.Header().Set("Content-Type", "text/html")
-		w.Write([]byte(startupLoadingHTML))
+		w.Header().Set("Cache-Control", "no-store")
+		w.Write(page)
 	})
 
 	srv := &http.Server{Addr: addr, Handler: mux}
@@ -58,7 +66,7 @@ func startLoadingServer(addr string) *http.Server {
 		slog.Error("[Server] failed to bind loading server", "addr", addr, "error", err)
 		return srv
 	}
-	
+
 	safego.GoWith("loading-page-server", func() {
 		slog.Info("[Server] loading page available", "addr", addr)
 		if err := srv.Serve(listener); err != nil && err != http.ErrServerClosed {
@@ -70,7 +78,7 @@ func startLoadingServer(addr string) *http.Server {
 
 // preCompressedStatic serves pre-compressed (.br, .gz) static assets with Content-Length headers.
 // This avoids chunked Transfer-Encoding, preventing ERR_INCOMPLETE_CHUNKED_ENCODING on slow networks.
-func preCompressedStatic(root string) fiber.Handler {
+func preCompressedStatic(root, basePath string) fiber.Handler {
 	const oneYear = 31536000
 	return func(c *fiber.Ctx) error {
 		p := c.Path()
@@ -94,19 +102,17 @@ func preCompressedStatic(root string) fiber.Handler {
 
 		// Content type
 		ext := filepath.Ext(filePath)
+		// HTML contains deployment-specific configuration; never serve its
+		// build-time .br/.gz variants or write regenerated files to disk.
+		if ext == ".html" {
+			return sendFrontendHTML(c, filePath, basePath)
+		}
 		contentType := ""
-		// HTML files must not be cached with immutable — they contain chunk
-		// references that change on every deploy. Only hashed assets (.js, .css)
-		// should use long-term immutable caching.
-		isHTML := false
 		switch ext {
 		case ".js":
 			contentType = "application/javascript"
 		case ".css":
 			contentType = "text/css"
-		case ".html":
-			contentType = "text/html"
-			isHTML = true
 		case ".json":
 			contentType = "application/json"
 		case ".svg":
@@ -125,12 +131,8 @@ func preCompressedStatic(root string) fiber.Handler {
 			contentType = "application/manifest+json"
 		}
 
-		// HTML must revalidate on every request so deploys take effect immediately.
 		// Hashed assets (.js, .css) are immutable — filenames change on rebuild.
 		cacheHeader := fmt.Sprintf("public, max-age=%d, immutable", oneYear)
-		if isHTML {
-			cacheHeader = "public, max-age=0, must-revalidate"
-		}
 
 		accept := c.Get("Accept-Encoding")
 
@@ -165,6 +167,22 @@ func preCompressedStatic(root string) fiber.Handler {
 		c.Set("Cache-Control", cacheHeader)
 		return c.SendFile(filePath)
 	}
+}
+
+func sendFrontendHTML(c *fiber.Ctx, filePath, basePath string) error {
+	source, err := os.ReadFile(filePath)
+	if err != nil {
+		slog.Error("failed to read frontend HTML", "path", filePath, "error", err)
+		return fiber.NewError(fiber.StatusInternalServerError, "Failed to read frontend HTML")
+	}
+	page, err := webbase.HTML(source, basePath)
+	if err != nil {
+		slog.Error("failed to render frontend HTML", "path", filePath, "error", err)
+		return fiber.NewError(fiber.StatusInternalServerError, "Failed to render frontend HTML")
+	}
+	c.Set("Content-Type", "text/html")
+	c.Set("Cache-Control", "no-store, must-revalidate")
+	return c.Send(page)
 }
 
 // In production (non-dev), frontend and backend are served from the same origin,
